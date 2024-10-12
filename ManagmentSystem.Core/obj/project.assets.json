@@ -7159,11 +7159,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
+      "projectUniqueName": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
       "projectName": "ManagmentSystem.Core",
-      "projectPath": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
+      "projectPath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
       "packagesPath": "C:\\Users\\KIIT\\.nuget\\packages\\",
-      "outputPath": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.Core\\obj\\",
+      "outputPath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\KIIT\\AppData\\Roaming\\NuGet\\NuGet.Config",

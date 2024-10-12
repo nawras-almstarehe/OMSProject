@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.34407.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagmentSystem.Pres", "ManagmentSystem.Pres\ManagmentSystem.Pres.csproj", "{0E907FB9-E36E-4EE7-8FA8-F94276A71911}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagmentSystem.Core", "ManagmentSystem.Core\ManagmentSystem.Core.csproj", "{1F8BC0F7-A59F-4981-B86A-FECE639AFD2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagmentSystem.Core", "ManagmentSystem.Core\ManagmentSystem.Core.csproj", "{1F8BC0F7-A59F-4981-B86A-FECE639AFD2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagmentSystem.EF", "ManagmentSystem.EF\ManagmentSystem.EF.csproj", "{C39BEDD8-3AF3-4AE9-8794-BBFB6232B391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagmentSystem.EF", "ManagmentSystem.EF\ManagmentSystem.EF.csproj", "{C39BEDD8-3AF3-4AE9-8794-BBFB6232B391}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

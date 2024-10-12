@@ -107,10 +107,43 @@ namespace ManagmentSystem.Pres
             {
                 spa.Options.SourcePath = "ClientApp";
 
+                //if (env.IsDevelopment())
+                //{
+                //    //spa.Options.StartupTimeout = TimeSpan.FromSeconds(520);
+                //    spa.UseReactDevelopmentServer(npmScript: "start");
+                //}
+
+                //if (env.IsDevelopment())
+                //{
+                //    // Use Vite's development server
+                //    app.UseDeveloperExceptionPage();
+                //    app.UseSpa(spa =>
+                //    {
+                //        spa.Options.SourcePath = "client"; // Path where your Vite app is located
+                //        spa.UseViteDevServer(); // Use Vite development server
+                //    });
+                //}
+                //else
+                //{
+                //    app.UseExceptionHandler("/Home/Error");
+                //    app.UseHsts();
+                //}
+
                 if (env.IsDevelopment())
                 {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    // Use Vite Development Server in development mode
+                    // Ensure you have Vite running on its default port (e.g., 5173)
+                    app.UseDeveloperExceptionPage();
+                    app.UseViteDevelopmentServer(); // You may need to create this middleware.
                 }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                    app.UseHsts();
+                }
+
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
             });
         }
     }

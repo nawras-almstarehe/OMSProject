@@ -7182,11 +7182,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.EF\\ManagmentSystem.EF.csproj",
+      "projectUniqueName": "D:\\New folder\\OMSProject\\ManagmentSystem.EF\\ManagmentSystem.EF.csproj",
       "projectName": "ManagmentSystem.EF",
-      "projectPath": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.EF\\ManagmentSystem.EF.csproj",
+      "projectPath": "D:\\New folder\\OMSProject\\ManagmentSystem.EF\\ManagmentSystem.EF.csproj",
       "packagesPath": "C:\\Users\\KIIT\\.nuget\\packages\\",
-      "outputPath": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.EF\\obj\\",
+      "outputPath": "D:\\New folder\\OMSProject\\ManagmentSystem.EF\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\KIIT\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7203,8 +7203,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\OMS\\ManagmentSystem\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj": {
-              "projectPath": "D:\\OMS\\ManagmentSystem\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj"
+            "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj": {
+              "projectPath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj"
             }
           }
         }
