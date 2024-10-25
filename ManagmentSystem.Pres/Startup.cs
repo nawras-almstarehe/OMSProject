@@ -35,10 +35,23 @@ namespace ManagmentSystem.Pres
         {
             services.Configure<JWT>(Configuration.GetSection("JWT"));
             services.AddCors();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Set your timeout
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true; // Make the session cookie essential
+            });
             services.AddControllersWithViews();
+
+            //services.AddDbContext<ApplicationDBContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //        b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
+
             services.AddDbContext<ApplicationDBContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
+                    options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                    ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,6 +103,8 @@ namespace ManagmentSystem.Pres
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession(); // Enable session before UseEndpoints
 
             //للسماح بالاتصال بالتطبيق من شبكات او بورتات اخرى اي ليس محلي (لوكال).ب
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

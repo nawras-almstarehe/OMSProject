@@ -56,7 +56,6 @@ D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.
 D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.json
 D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.dev.json
 D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.dll
-D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ref\ManagmentSystem.EF.dll
 D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.pdb
 D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.dll
 D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.pdb
@@ -65,8 +64,10 @@ D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfoInputs.cache
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfo.cs
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CoreCompileInputs.cache
-D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CopyComplete
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.dll
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ref\ManagmentSystem.EF.dll
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.pdb
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.genruntimeconfig.cache
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.sourcelink.json
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\Managmen.8C16187A.Up2Date
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\refint\ManagmentSystem.EF.dll

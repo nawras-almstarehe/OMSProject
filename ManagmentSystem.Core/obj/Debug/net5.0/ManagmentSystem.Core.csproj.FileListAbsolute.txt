@@ -45,9 +45,7 @@ D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.C
 D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.json
 D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.dev.json
 D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.dll
-D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ref\ManagmentSystem.Core.dll
 D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.pdb
-D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.AssemblyReference.cache
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfoInputs.cache
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfo.cs
@@ -56,3 +54,6 @@ D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.C
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ref\ManagmentSystem.Core.dll
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.pdb
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.genruntimeconfig.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.AssemblyReference.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.sourcelink.json
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\refint\ManagmentSystem.Core.dll

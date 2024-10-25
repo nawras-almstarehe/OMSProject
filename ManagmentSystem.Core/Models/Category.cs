@@ -10,11 +10,13 @@ namespace ManagmentSystem.Core.Models
 {
     public class Category
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string AName { get; set; }
         public string EName { get; set; }
         public string Description { get; set; }
         public DateTime LastAccessed { get; set; }
-        public ICollection<CategoryProduct> CategoryProducts { get; set; }
+        public ICollection<Product> Productes { get; set; }
+        public List<ImageFolder> ImageFolders { get; set; }
+        public List<CategoryProduct> CategoriesProductes { get; set; }
     }
 }

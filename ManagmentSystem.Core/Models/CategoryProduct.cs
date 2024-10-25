@@ -8,11 +8,13 @@ namespace ManagmentSystem.Core.Models
 {
     public class CategoryProduct
     {
-        public DateTime LastAccessed { get; set; }
-        public int? CategoryId { get; set; }
+        public string Id { get; set; }
+        public string CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int? ProductId { get; set; }
+        public string ProductId { get; set; }
         public Product Product { get; set; }
+        public DateTime LastAccessed { get; set; }
+        public DateTime AddedOn { get; set; }
     }
 }

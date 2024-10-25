@@ -3,7 +3,6 @@ using System;
 using ManagmentSystem.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ManagmentSystem.EF.Migrations
@@ -15,166 +14,872 @@ namespace ManagmentSystem.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.17")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.17");
 
-            modelBuilder.Entity("ManagmentSystem.Core.Models.Category", b =>
+            modelBuilder.Entity("ManagmentSystem.Core.Models.AccessListPrivilege", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
 
-                    b.Property<string>("AName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Code")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("LastAccessed")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("UserPositionId")
+                        .HasColumnType("VARCHAR(36)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserPositionId")
+                        .IsUnique();
+
+                    b.ToTable("AccessListPrivileges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "cabcf242-3e4e-4ad9-a82f-1b357efffb49",
+                            Code = 1f,
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserPositionId = "b0e4c635-0c47-4f8c-b97c-99b055bd267a"
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Category", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ManagmentSystem.Core.Models.CategoryProduct", b =>
                 {
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductId")
+                        .HasColumnType("VARCHAR(36)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("AddedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DateTime")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
 
                     b.Property<DateTime>("LastAccessed")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DateTime");
 
-                    b.HasKey("CategoryId", "ProductId");
+                    b.HasKey("ProductId", "CategoryId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("CategoryProductes");
                 });
 
-            modelBuilder.Entity("ManagmentSystem.Core.Models.Product", b =>
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Customer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("LastAccessed")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DateTime");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customeres");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Department", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("DepCode")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("DepartmentParentId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("DepartmentType")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<ulong>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id", "Code")
+                        .IsUnique();
+
+                    b.ToTable("Departmentes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b5079173-69ba-40b1-b375-9d7958bea99c",
+                            AName = "الإدارة العامة",
+                            Code = "GD",
+                            DepCode = "0001",
+                            DepartmentParentId = "",
+                            DepartmentType = "GeneralDepartment",
+                            EName = "General department",
+                            IsActive = 1ul,
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.ImageFolder", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ImageFolderes");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Invoice", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("ProcessType")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<decimal>("SpecialDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalCostAfterDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalCostWithoutDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Position", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("DepartmentId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<ulong>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<ulong>("IsLeader")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Positiones");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "05fb1167-86ce-4a88-91b5-0a065ae66e6a",
+                            AName = "المدير العام",
+                            DepartmentId = "b5079173-69ba-40b1-b375-9d7958bea99c",
+                            EName = "Manager General",
+                            IsActive = 1ul,
+                            IsLeader = 1ul,
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Privilege", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("ADescription")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("AName")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<float>("Code")
+                        .HasColumnType("float");
+
+                    b.Property<string>("EDescription")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("EName")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("varchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Privileges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "15408bef-2786-47bd-b958-900d73492ed3",
+                            ADescription = "مدير النظام",
+                            AName = "مدير النظام",
+                            Code = 1f,
+                            EDescription = "System manager",
+                            EName = "SystemManager",
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Process", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("InvoiceId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PriceItem")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProcessType")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("ProducerId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<float>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(20)")
+                        .HasDefaultValue("Request");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ProducerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Processes");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Producer", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Produceres");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Product", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("varchar(4000)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<ulong>("IsDiscount")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<float>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0f);
+
+                    b.Property<ulong>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("Productes");
                 });
 
-            modelBuilder.Entity("ManagmentSystem.Core.Models.Transaction", b =>
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Role", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("EName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("LastAccessed")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("DateTime");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Id")
+                        .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.ToTable("Roles");
 
-                    b.ToTable("Transactiones");
+                    b.HasData(
+                        new
+                        {
+                            Id = "c0de3799-b907-4951-8541-f7da578f5cd7",
+                            AName = "دور مدير النظام",
+                            EName = "Role system manager",
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.RolePrivilege", b =>
+                {
+                    b.Property<string>("RoleId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("PrivilegeId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("AddedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DateTime")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.HasKey("RoleId", "PrivilegeId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("PrivilegeId");
+
+                    b.ToTable("RolePrivileges");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = "c0de3799-b907-4951-8541-f7da578f5cd7",
+                            PrivilegeId = "15408bef-2786-47bd-b958-900d73492ed3",
+                            AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = "4cd39865-785a-4e6e-bdf0-3c257827e6a9",
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.SessionInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("DateTime");
+
+                    b.Property<ulong>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("SessionId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("ManagmentSystem.Core.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("AFirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("ALastName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("BlockedType")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("EFirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("ELastName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<ulong>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(0ul);
+
+                    b.Property<ulong>("IsBlocked")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("LastAccessed")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("DateTime");
 
                     b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
 
-                    b.Property<bool>("isAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isSeller")
-                        .HasColumnType("bit");
+                    b.Property<string>("UserType")
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Id", "UserName")
+                        .IsUnique();
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c6d10ce6-94ca-40a7-a19a-38485a79c0cb",
+                            AFirstName = "مدير",
+                            ALastName = "النظام",
+                            BlockedType = "None",
+                            EFirstName = "System",
+                            ELastName = "Manager",
+                            Email = "nawras4mstarehe@gmail.com",
+                            IsAdmin = 1ul,
+                            IsBlocked = 0ul,
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Password = "AQAAAAEAACcQAAAAENRBDSaUZGPpRa2bFRTX5gB6oif6S4N+uoUZJgkR5orpYrlyEaVriHcDzQXXLMm/Hg==",
+                            PhoneNumber = "0953244518",
+                            UserName = "admin",
+                            UserType = "Employee"
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserPosition", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("AddedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("DateTime")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<ulong>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("PositionId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersPositions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b0e4c635-0c47-4f8c-b97c-99b055bd267a",
+                            AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2025, 10, 26, 1, 17, 10, 760, DateTimeKind.Local).AddTicks(6664),
+                            IsActive = 1ul,
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PositionId = "05fb1167-86ce-4a88-91b5-0a065ae66e6a",
+                            StartDate = new DateTime(2024, 10, 26, 1, 17, 10, 760, DateTimeKind.Local).AddTicks(6219),
+                            Type = "HR",
+                            UserId = "c6d10ce6-94ca-40a7-a19a-38485a79c0cb",
+                            UserName = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserPositionRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("DateTime");
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("UserPositionId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserPositionId");
+
+                    b.ToTable("UserPositionRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1eedc01c-a94a-44f3-85e8-a7c732a57037",
+                            AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RoleId = "c0de3799-b907-4951-8541-f7da578f5cd7",
+                            UserPositionId = "b0e4c635-0c47-4f8c-b97c-99b055bd267a"
+                        });
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserProfile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("Language")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
+
+                    b.Property<DateTime>("LastAccessed")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("DateTime");
+
+                    b.Property<int>("Theme")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("RoleUserPosition", b =>
+                {
+                    b.Property<string>("RolesId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.Property<string>("UserPositionesId")
+                        .HasColumnType("VARCHAR(36)");
+
+                    b.HasKey("RolesId", "UserPositionesId");
+
+                    b.HasIndex("UserPositionesId");
+
+                    b.ToTable("RoleUserPosition");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.AccessListPrivilege", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.UserPosition", "UserPosition")
+                        .WithOne("AccessListPrivilege")
+                        .HasForeignKey("ManagmentSystem.Core.Models.AccessListPrivilege", "UserPositionId");
+
+                    b.Navigation("UserPosition");
                 });
 
             modelBuilder.Entity("ManagmentSystem.Core.Models.CategoryProduct", b =>
                 {
                     b.HasOne("ManagmentSystem.Core.Models.Category", "Category")
-                        .WithMany("CategoryProducts")
+                        .WithMany("CategoriesProductes")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ManagmentSystem.Core.Models.Product", "Product")
-                        .WithMany("CategoryProducts")
+                        .WithMany("CategoriesProductes")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -184,47 +889,229 @@ namespace ManagmentSystem.EF.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ManagmentSystem.Core.Models.Product", b =>
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Customer", b =>
                 {
                     b.HasOne("ManagmentSystem.Core.Models.User", "User")
-                        .WithMany("Products")
-                        .HasForeignKey("UserId");
+                        .WithOne("Customer")
+                        .HasForeignKey("ManagmentSystem.Core.Models.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ManagmentSystem.Core.Models.Transaction", b =>
+            modelBuilder.Entity("ManagmentSystem.Core.Models.ImageFolder", b =>
                 {
+                    b.HasOne("ManagmentSystem.Core.Models.Category", "Category")
+                        .WithMany("ImageFolders")
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("ManagmentSystem.Core.Models.Product", "Product")
-                        .WithMany("Transactions")
+                        .WithMany("ImageFolders")
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("ManagmentSystem.Core.Models.User", "User")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId");
+                    b.Navigation("Category");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Position", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.Department", "Department")
+                        .WithMany("Positions")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Process", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.Customer", "Customer")
+                        .WithMany("Processes")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("ManagmentSystem.Core.Models.Invoice", "Invoice")
+                        .WithMany("Processes")
+                        .HasForeignKey("InvoiceId");
+
+                    b.HasOne("ManagmentSystem.Core.Models.Producer", "Producer")
+                        .WithMany("Processes")
+                        .HasForeignKey("ProducerId");
+
+                    b.HasOne("ManagmentSystem.Core.Models.Product", "Product")
+                        .WithMany("Processes")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Producer");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Producer", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.User", "User")
+                        .WithOne("Producer")
+                        .HasForeignKey("ManagmentSystem.Core.Models.Producer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.RolePrivilege", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.Privilege", "Privilege")
+                        .WithMany("RolePrivileges")
+                        .HasForeignKey("PrivilegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ManagmentSystem.Core.Models.Role", "Role")
+                        .WithMany("RolePrivileges")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Privilege");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserPosition", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.Position", "Position")
+                        .WithMany("UserPositions")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ManagmentSystem.Core.Models.User", "User")
+                        .WithMany("UserPositions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserPositionRole", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.Role", "Role")
+                        .WithMany("UserPositionRoles")
+                        .HasForeignKey("RoleId");
+
+                    b.HasOne("ManagmentSystem.Core.Models.UserPosition", "UserPosition")
+                        .WithMany("UserPositionRoles")
+                        .HasForeignKey("UserPositionId");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("UserPosition");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserProfile", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.User", "User")
+                        .WithOne("UserProfile")
+                        .HasForeignKey("ManagmentSystem.Core.Models.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RoleUserPosition", b =>
+                {
+                    b.HasOne("ManagmentSystem.Core.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ManagmentSystem.Core.Models.UserPosition", null)
+                        .WithMany()
+                        .HasForeignKey("UserPositionesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ManagmentSystem.Core.Models.Category", b =>
                 {
-                    b.Navigation("CategoryProducts");
+                    b.Navigation("CategoriesProductes");
+
+                    b.Navigation("ImageFolders");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Customer", b =>
+                {
+                    b.Navigation("Processes");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Department", b =>
+                {
+                    b.Navigation("Positions");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Invoice", b =>
+                {
+                    b.Navigation("Processes");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Position", b =>
+                {
+                    b.Navigation("UserPositions");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Privilege", b =>
+                {
+                    b.Navigation("RolePrivileges");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Producer", b =>
+                {
+                    b.Navigation("Processes");
                 });
 
             modelBuilder.Entity("ManagmentSystem.Core.Models.Product", b =>
                 {
-                    b.Navigation("CategoryProducts");
+                    b.Navigation("CategoriesProductes");
 
-                    b.Navigation("Transactions");
+                    b.Navigation("ImageFolders");
+
+                    b.Navigation("Processes");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.Role", b =>
+                {
+                    b.Navigation("RolePrivileges");
+
+                    b.Navigation("UserPositionRoles");
                 });
 
             modelBuilder.Entity("ManagmentSystem.Core.Models.User", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Customer");
 
-                    b.Navigation("Transactions");
+                    b.Navigation("Producer");
+
+                    b.Navigation("UserPositions");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("ManagmentSystem.Core.Models.UserPosition", b =>
+                {
+                    b.Navigation("AccessListPrivilege");
+
+                    b.Navigation("UserPositionRoles");
                 });
 #pragma warning restore 612, 618
         }

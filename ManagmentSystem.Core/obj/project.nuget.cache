@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pxWrp/r6LxZM4j7usSTHRM7sVN/as2ZoYCXAA9s/zHrAUKZ2+R7oWXcgFX7XQoUe/tv44zSmDA2SfagJyuRvJQ==",
+  "dgSpecHash": "+P5BkWvSxOg=",
   "success": true,
   "projectFilePath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
   "expectedPackageFiles": [
@@ -130,5 +130,16 @@
     "C:\\Users\\KIIT\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\KIIT\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 6.7.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }
