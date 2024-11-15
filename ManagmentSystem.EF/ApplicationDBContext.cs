@@ -378,7 +378,7 @@ namespace ManagmentSystem.EF
             modelBuilder.Entity<RolePrivilege>()
                 .HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<User>()
-                .HasIndex(x => new {x.Id, x.UserName}).IsUnique();
+                .HasIndex(x => new {x.Id, x.UserName, x.Email}).IsUnique();
             modelBuilder.Entity<UserPosition>()
                 .HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<UserPositionRole>()

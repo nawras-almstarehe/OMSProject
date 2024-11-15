@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace ManagmentSystem.EF.Repositories
 {
@@ -55,105 +56,105 @@ namespace ManagmentSystem.EF.Repositories
         }
 
 
-        //public IEnumerable<T> AddRange(IEnumerable<T> entities)
-        //{
-        //    _context.Set<T>().AddRange(entities);
-        //    //_context.SaveChanges(); For added UnitOfWork
-        //    return entities;
-        //}
+        public IEnumerable<T> AddRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AddRange(entities);
+            //_context.SaveChanges(); For added UnitOfWork
+            return entities;
+        }
 
-        //public void Attach(T entity)
-        //{
-        //    _context.Set<T>().Attach(entity);
-        //}
+        public void Attach(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+        }
 
-        //public int Count()
-        //{
-        //    return _context.Set<T>().Count();
-        //}
+        public int Count()
+        {
+            return _context.Set<T>().Count();
+        }
 
-        //public int Count(Expression<Func<T, bool>> match)
-        //{
-        //    return _context.Set<T>().Count(match);
-        //}
+        public int Count(Expression<Func<T, bool>> match)
+        {
+            return _context.Set<T>().Count(match);
+        }
 
-        //public void Delete(T entity)
-        //{
-        //    _context.Set<T>().Remove(entity);
-        //}
+        public void Delete(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
 
-        //public void DeleteRange(IEnumerable<T> entities)
-        //{
-        //    _context.Set<T>().RemoveRange(entities);
-        //}
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
+        }
 
-        //public T Find(Expression<Func<T, bool>> match)
-        //{
-        //    return _context.Set<T>().SingleOrDefault(match);
-        //}
+        public async Task<T> Find(Expression<Func<T, bool>> match)
+        {
+            return await _context.Set<T>().SingleOrDefaultAsync(match);
+        }
 
-        //public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null)
-        //{
-        //    IQueryable<T> query = _context.Set<T>();
-        //    if (includes != null)
-        //    {
-        //        foreach (var include in includes)
-        //        {
-        //            query = query.Include(include);
-        //        }
-        //    }
+        public async Task<T> FindAsync(Expression<Func<T, bool>> match)
+        {
+            return await _context.Set<T>().SingleOrDefaultAsync(match);
+        }
 
-        //    return query.Where(match).ToList();
-        //}
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
 
-        //public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int take, int skip)
-        //{
-        //    return _context.Set<T>().Where(match).Skip(skip).Take(take).ToList();
-        //}
+            return query.Where(match).ToList();
+        }
 
-        //public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip, Expression<Func<T, object>> orderBy = null, string orderByDirection = "ASC")
-        //{
-        //    IQueryable<T> query = _context.Set<T>().Where(match);
-        //    if (take.HasValue)
-        //    {
-        //        query = query.Take(take.Value);
-        //    }
-        //    if (skip.HasValue)
-        //    {
-        //        query = query.Skip(skip.Value);
-        //    }
-        //    if (orderBy != null)
-        //    {
-        //        if (orderByDirection == Const.cnstAscending)
-        //        {
-        //            query = query.OrderBy(orderBy);
-        //        }
-        //        else
-        //        {
-        //            query = query.OrderByDescending(orderBy);
-        //        }
-        //    }
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int take, int skip)
+        {
+            return _context.Set<T>().Where(match).Skip(skip).Take(take).ToList();
+        }
 
-        //    return query.ToList();
-        //}
+        public IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip, Expression<Func<T, object>> orderBy = null, string orderByDirection = "ASC")
+        {
+            IQueryable<T> query = _context.Set<T>().Where(match);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+            if (skip.HasValue)
+            {
+                query = query.Skip(skip.Value);
+            }
+            if (orderBy != null)
+            {
+                if (orderByDirection == "ASC")
+                {
+                    query = query.OrderBy(orderBy);
+                }
+                else
+                {
+                    query = query.OrderByDescending(orderBy);
+                }
+            }
 
-        //public T FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null)
-        //{
-        //    IQueryable<T> query = _context.Set<T>();
-        //    if (includes != null)
-        //    {
-        //        foreach (var include in includes)
-        //        {
-        //            query = query.Include(include);
-        //        }
-        //    }
+            return query.ToList();
+        }
 
-        //    return query.SingleOrDefault(match);
-        //}
+        public T FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
 
-        //public T GetById(int id)
-        //{
-        //    return _context.Set<T>().Find(id);
-        //} 
+            return query.SingleOrDefault(match);
+        }
     }
 }

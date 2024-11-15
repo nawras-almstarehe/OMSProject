@@ -1,4 +1,5 @@
 ﻿using ManagmentSystem.Core.Interfaces;
+using ManagmentSystem.Core.Models;
 using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.EF.Repositories;
 using System;
@@ -17,10 +18,14 @@ namespace ManagmentSystem.EF.UnitOfWorks
             _context = context;
             //Categories = new BaseRepository<Category>(_context);//initial // Comment after add spicial method
             Categories = new CategoriesRepository(_context);// After add spicial method
+            Users = new UsersRepository(_context);
+            UserPositions = new UserPositionsRepository(_context);
         }
 
-        //public IBaseRepository<Category> Categories { get; private set; } After add spicial method
+        //public IBaseRepository<Category> Categories { get; private set; } Comment After add spicial method
         public ICategoriesRepository Categories { get; private set; } // After add spicial method
+        public IUsersRepository Users { get; private set; }
+        public IUserPositionsRepository UserPositions { get; private set; }
 
         public int Complete()
         {

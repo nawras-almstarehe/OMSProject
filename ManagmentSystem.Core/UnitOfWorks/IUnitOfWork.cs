@@ -11,6 +11,8 @@ namespace ManagmentSystem.Core.UnitOfWorks
     {
         //IBaseRepository<Category> Categories { get; } After add spicial method
         ICategoriesRepository Categories { get; } // After add spicial method
+        IUsersRepository Users { get; }
+        IUserPositionsRepository UserPositions { get; }
         int Complete();
     }
 }

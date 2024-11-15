@@ -18,6 +18,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ManagmentSystem.Core.Helpers;
 using Microsoft.EntityFrameworkCore;
+using ManagmentSystem.Core.IServices;
+using ManagmentSystem.EF.Services;
 
 namespace ManagmentSystem.Pres
 {
@@ -33,7 +35,6 @@ namespace ManagmentSystem.Pres
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JWT>(Configuration.GetSection("JWT"));
             services.AddCors();
 
             services.AddSession(options =>
@@ -48,10 +49,14 @@ namespace ManagmentSystem.Pres
             //        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             //        b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
 
+            //services.AddDbContext<ApplicationDBContext>(options =>
+            //        options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+            //        ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+            
             services.AddDbContext<ApplicationDBContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                    ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
+                    options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 31))));
 
+            services.Configure<JWT>(Configuration.GetSection("JWT"));
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,6 +78,7 @@ namespace ManagmentSystem.Pres
                     };
                 });
 
+            services.AddScoped<IAuthService, AuthService>();
             //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -115,7 +121,7 @@ namespace ManagmentSystem.Pres
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "api/{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

@@ -1,5 +1,6 @@
 ﻿using ManagmentSystem.Core.Models;
 using ManagmentSystem.Core.UnitOfWorks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,9 @@ using System.Threading.Tasks;
 namespace ManagmentSystem.Controllers
 {
     [EnableCors("CorsPolicy")]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -134,10 +136,10 @@ namespace ManagmentSystem.Controllers
         //}
 
 
-        //[HttpGet("GetAllSpicialMethod")]
-        //public IActionResult GetAllSpicialMethod()
-        //{
-        //    return Ok(_unitOfWork.Categories.GetAllSpecialMethod());//// After add spicial method now I can call to spicial method
-        //}
+        [HttpGet("GetAllSpicialMethod")]
+        public IActionResult GetAllSpicialMethod()
+        {
+            return Ok(_unitOfWork.Categories.GetAllSpecialMethod());//// After add spicial method now I can call to spicial method
+        }
     }
 }

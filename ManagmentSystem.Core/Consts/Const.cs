@@ -10,5 +10,6 @@ namespace ManagmentSystem.Core.Consts
     {
         public const string cnstAscending = "ASC";
         public const string cnstDescending = "DESC";
+        public const int cnstSuccessResultApi = 200;
     }
 }

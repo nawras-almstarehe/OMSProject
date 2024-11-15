@@ -1,5 +1,7 @@
 ﻿using ManagmentSystem.Core.Interfaces;
 using ManagmentSystem.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,8 +11,10 @@ using System.Threading.Tasks;
 
 namespace ManagmentSystem.Controllers
 {
+    [EnableCors("CorsPolicy")]
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductesController : ControllerBase
     {
         private readonly IBaseRepository<Product> _productRepository;
