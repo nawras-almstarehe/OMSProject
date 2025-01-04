@@ -5,11 +5,25 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig(({ mode }) => {
   return {
+    //NoteBase
+    //base: './',
+    //root: 'wwwroot', // Where your static files will be served from
+    //build: {
+    //  outDir: '../wwwroot/dist', // Output directory for built files
+    //},
+
     base: './',
-    root: 'wwwroot', // Where your static files will be served from
-  build: {
-    outDir: '../wwwroot/dist', // Output directory for built files
-  },
+    build: {
+      outDir: 'build',
+    },
+
+    //new
+    //root: 'ClientApp', // Ensure this points to your ClientApp directory  
+    //base: '/ClientApp/public', // Ensure the base points where your app will be hosted  
+    //plugins: [react()],
+    //build: {
+    //  outDir: '../ClientApp', // Adjust this if you're outputting to wwwroot directory
+    //}, 
     
     css: {
       preprocessorOptions: {

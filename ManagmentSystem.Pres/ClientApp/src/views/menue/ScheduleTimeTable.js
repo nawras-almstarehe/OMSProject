@@ -1,17 +1,13 @@
-import React, { useEffect, useState, createRef } from 'react';
-import { CRow, CCol, CCard, CCardHeader, CCardBody } from '@coreui/react';
+import React, { useEffect, useState, createRef } from 'react'
+import { CRow, CCol, CCard, CCardHeader, CCardBody } from '@coreui/react'
 
 const ScheduleTimeTable = () => {
   return (
     <>
       <CCard className="mb-4">
-        <CCardHeader>
-        Schedule & Time Table
-        </CCardHeader>
+        <CCardHeader>Schedule & Time Table</CCardHeader>
         <CCardBody>
-          <CRow>
-            
-          </CRow>
+          <CRow></CRow>
         </CCardBody>
       </CCard>
     </>

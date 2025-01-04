@@ -50,13 +50,9 @@ const Calender = () => {
   return (
     <>
       <CCard className="mb-4">
-        <CCardHeader>
-        Calender
-        </CCardHeader>
+        <CCardHeader>Calender</CCardHeader>
         <CCardBody>
-          <CRow>
-            
-          </CRow>
+          <CRow></CRow>
         </CCardBody>
       </CCard>
     </>

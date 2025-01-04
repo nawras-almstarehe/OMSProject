@@ -1,5 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../../../actions/authActions'
+import { useNavigate, Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -17,6 +19,20 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  const error = useSelector((state) => state.auth.error)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    await dispatch(login({ userName, password }))
+    if (!error) {
+      navigate('/home') // Navigate to home page after successful login
+    }
+  }
+
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>

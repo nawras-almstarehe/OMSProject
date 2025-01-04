@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { userLogout } from '../actions/authActions'
 import {
   CContainer,
   CDropdown,
@@ -32,8 +33,15 @@ const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
+  const user = useSelector((state) => state.auth.user)
   const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const navigate = useNavigate()
+  const sidebarShow = useSelector((state) => state.theme.sidebarShow)
+
+  const handleLogout = () => {
+    dispatch(userLogout())
+    navigate('/') // Navigate back to login after logout
+  }
 
   useEffect(() => {
     document.addEventListener('scroll', () => {

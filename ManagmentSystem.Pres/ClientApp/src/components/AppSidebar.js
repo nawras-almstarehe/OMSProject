@@ -21,7 +21,7 @@ import navigation from '../_nav'
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const sidebarShow = useSelector((state) => state.theme.sidebarShow)
 
   return (
     <CSidebar
@@ -37,7 +37,6 @@ const AppSidebar = () => {
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
           <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          
         </CSidebarBrand>
         {/* <span>SCHOOL</span> */}
         <CCloseButton

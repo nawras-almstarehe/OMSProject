@@ -1,17 +1,13 @@
-import React, { useEffect, useState, createRef } from 'react';
-import { CRow, CCol, CCard, CCardHeader, CCardBody } from '@coreui/react';
+import React, { useEffect, useState, createRef } from 'react'
+import { CRow, CCol, CCard, CCardHeader, CCardBody } from '@coreui/react'
 
 const Students = () => {
   return (
     <>
       <CCard className="mb-4">
-        <CCardHeader>
-        Students
-        </CCardHeader>
+        <CCardHeader>Students</CCardHeader>
         <CCardBody>
-          <CRow>
-            
-          </CRow>
+          <CRow></CRow>
         </CCardBody>
       </CCard>
     </>
