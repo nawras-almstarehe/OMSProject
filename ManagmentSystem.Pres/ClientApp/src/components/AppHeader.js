@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { userLogout } from '../actions/authActions'
+import { toggleTheme } from '../actions/themeActions'
 import {
   CContainer,
   CDropdown,
@@ -33,10 +34,11 @@ const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
-  const user = useSelector((state) => state.auth.user)
+  //const user = useSelector((state) => state.authReducer.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const sidebarShow = useSelector((state) => state.theme.sidebarShow)
+  //const theme = useSelector((state) => state.theme.theme)
 
   const handleLogout = () => {
     dispatch(userLogout())
@@ -54,7 +56,7 @@ const AppHeader = () => {
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
       <CContainer className="border-bottom px-4" fluid>
         <CHeaderToggler
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          onClick={() => dispatch(toggleTheme({ theme: colorMode, sidebarShow: !sidebarShow }))}
           style={{ marginInlineStart: '-14px' }}
         >
           <CIcon icon={cilMenu} size="lg" />

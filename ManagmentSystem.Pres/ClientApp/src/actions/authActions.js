@@ -20,12 +20,14 @@ export const loginFailure = (error) => ({
 
 // Async action for logging in
 export const login = (credentials) => {
+  debugger
   return async (dispatch) => {
     const { email, password } = credentials
-
+    debugger
     // Mock API call (replace with your actual API call)
     // Here you would make a POST request to your authentication endpoint.
     const response = await new Promise((resolve, reject) => {
+      debugger
       setTimeout(() => {
         if (email === 'user@example.com' && password === 'password') {
           resolve({ user: { email }, token: 'mocked-token-12345' })
@@ -37,6 +39,7 @@ export const login = (credentials) => {
 
     // Handle the response
     try {
+      debugger
       const { user, token } = response
       dispatch(loginSuccess(user, token))
       localStorage.setItem('token', token) // Store token in localStorage

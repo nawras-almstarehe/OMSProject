@@ -27,6 +27,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    debugger
     await dispatch(login({ userName, password }))
     if (!error) {
       navigate('/home') // Navigate to home page after successful login
@@ -62,7 +63,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton onClick={handleSubmit} color="primary" className="px-4">
                           Login
                         </CButton>
                       </CCol>

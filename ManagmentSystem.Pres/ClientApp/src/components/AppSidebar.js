@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
+import { toggleTheme } from '../actions/themeActions'
 import {
   CCloseButton,
   CSidebar,
@@ -22,6 +22,7 @@ const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.theme.sidebarShow)
+  const theme = useSelector((state) => state.theme.theme)
 
   return (
     <CSidebar
@@ -31,7 +32,7 @@ const AppSidebar = () => {
       unfoldable={unfoldable}
       visible={sidebarShow}
       onVisibleChange={(visible) => {
-        dispatch({ type: 'set', sidebarShow: visible })
+        dispatch(toggleTheme({ theme: theme, sidebarShow: visible }))
       }}
     >
       <CSidebarHeader className="border-bottom">
@@ -42,7 +43,7 @@ const AppSidebar = () => {
         <CCloseButton
           className="d-lg-none"
           dark
-          onClick={() => dispatch({ type: 'set', sidebarShow: false })}
+          onClick={() => dispatch(toggleTheme({ theme: theme, sidebarShow: false }))}
         />
       </CSidebarHeader>
       <AppSidebarNav items={navigation} />
