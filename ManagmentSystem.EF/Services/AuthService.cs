@@ -4,6 +4,7 @@ using ManagmentSystem.Core.Models;
 using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -119,8 +120,9 @@ namespace ManagmentSystem.EF.Services
         {
             var hasher = new PasswordHasher<User>();
             var UserPassword = user.Password;
-            var PasswordHashed = hasher.HashPassword(user, Password);
-            return UserPassword == PasswordHashed;
+            var result = hasher.VerifyHashedPassword(null, UserPassword, Password);
+            bool isPasswordValid = result == PasswordVerificationResult.Success;
+            return isPasswordValid;
             //return BCrypt.Net.BCrypt.Verify(plainPassword, hashedPassword);
         }
     }

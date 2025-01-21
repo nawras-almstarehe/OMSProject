@@ -35,7 +35,9 @@ namespace ManagmentSystem.Pres
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options => { 
+                options.AddPolicy("AllowAllOrigins", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }); 
+            });
 
             services.AddSession(options =>
             {
@@ -52,7 +54,7 @@ namespace ManagmentSystem.Pres
             //services.AddDbContext<ApplicationDBContext>(options =>
             //        options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
             //        ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
-            
+
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 31))));
 
@@ -108,12 +110,13 @@ namespace ManagmentSystem.Pres
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            //للسماح بالاتصال بالتطبيق من شبكات او بورتات اخرى اي ليس محلي (لوكال).ب
+            //app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors("AllowAllOrigins");
             app.UseRouting();
 
             app.UseSession(); // Enable session before UseEndpoints
 
-            //للسماح بالاتصال بالتطبيق من شبكات او بورتات اخرى اي ليس محلي (لوكال).ب
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseAuthentication();
             app.UseAuthorization();
 

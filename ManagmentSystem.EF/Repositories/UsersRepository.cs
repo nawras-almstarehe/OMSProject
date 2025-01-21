@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using ManagmentSystem.Core.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace ManagmentSystem.EF.Repositories
 {
@@ -19,31 +20,26 @@ namespace ManagmentSystem.EF.Repositories
     {
         private new readonly ApplicationDBContext _context;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAuthService _authService;
         
         public UsersRepository(ApplicationDBContext context) : base(context)
         {
+            
         }
-        public UsersRepository(ApplicationDBContext context, IUnitOfWork unitOfWork, IAuthService authService) : base(context)
+        
+        public UsersRepository(ApplicationDBContext context, IUnitOfWork unitOfWork) : base(context)
         {
+            _context = context;
             _unitOfWork = unitOfWork;
-            _authService = authService;
         }
 
-        public async Task<AuthModel> LoginAsync(VMLogin model)
-        {
-            var authModel = new AuthModel();
-            authModel = await _authService.LoginAsync(model);
-            return authModel;
-        }
         public async Task<VMResult> RegisterLocalAsync(VMRegister model)
         {
             try
             {
-                if (await _unitOfWork.Users.FindByEmailAsync(model.Username) is not null)
+                if (await FindByEmailAsync(model.Username) is not null)
                     return new VMResult { Message = "Email is already registered!" };
 
-                if (await _unitOfWork.Users.FindByUserNameAsync(model.Username) is not null)
+                if (await FindByUserNameAsync(model.Username) is not null)
                     return new VMResult { Message = "Username is already registered!" };
 
                 var user = new User
@@ -60,7 +56,7 @@ namespace ManagmentSystem.EF.Repositories
                     IsBlocked = model.IsBlocked,
                 };
 
-                var result = await _unitOfWork.Users.CreateUserAsync(user, model.Password);
+                var result = await CreateUserAsync(user, model.Password);
 
                 if (!result.Successed)
                 {
@@ -111,7 +107,7 @@ namespace ManagmentSystem.EF.Repositories
                 {
                     return null;
                 }
-                user = await _unitOfWork.Users.FindAsync(x => x.Email == Email);
+                user = await FindAsync(x => x.Email == Email);
                 return user;
             }
             catch (Exception)
@@ -129,7 +125,7 @@ namespace ManagmentSystem.EF.Repositories
                 {
                     return null;
                 }
-                user = await _unitOfWork.Users.FindAsync(x => x.UserName == Username);
+                user = await FindAsync(x => x.UserName == Username);
                 return user;
             }
             catch (Exception)

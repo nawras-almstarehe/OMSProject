@@ -3,9 +3,9 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGOUT = 'LOGOUT'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 
-export const loginSuccess = (user, token) => ({
+export const loginSuccess = (Username, token, Email, PriviligeCode) => ({
   type: LOGIN_SUCCESS,
-  payload: { user, token },
+  payload: { Username, token, Email, PriviligeCode },
 })
 
 export const logout = () => ({
@@ -22,28 +22,47 @@ export const loginFailure = (error) => ({
 export const login = (credentials) => {
   debugger
   return async (dispatch) => {
-    const { email, password } = credentials
-    debugger
+    const { userName, password } = credentials
+    const UserObj = {
+      Username: userName,
+      Password: password,
+      Email: ''
+    }
     // Mock API call (replace with your actual API call)
     // Here you would make a POST request to your authentication endpoint.
-    const response = await new Promise((resolve, reject) => {
-      debugger
-      setTimeout(() => {
-        if (email === 'user@example.com' && password === 'password') {
-          resolve({ user: { email }, token: 'mocked-token-12345' })
-        } else {
-          reject('Invalid credentials')
-        }
-      }, 1000)
-    })
+
+    const response = await fetch('https://localhost:44329/api/Users/Login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(UserObj),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      dispatch(loginFailure(errorData))
+    }
+
+    //const response1 = await new Promise((resolve, reject) => {
+    //  debugger
+    //  setTimeout(() => {
+    //    if (userName === 'user@example.com' && password === 'password') {
+    //      resolve({ user: { userName }, token: 'mocked-token-12345' })
+    //    } else {
+    //      reject('Invalid credentials')
+    //    }
+    //  }, 1000)
+    //})
 
     // Handle the response
     try {
       debugger
-      const { user, token } = response
-      dispatch(loginSuccess(user, token))
+      const responseData = await response.json();
+      const { username, token, email, priviligecode } = responseData
+      dispatch(loginSuccess(username, token, email, priviligecode))
       localStorage.setItem('token', token) // Store token in localStorage
-      localStorage.setItem('user', JSON.stringify(user)) // Store user info
+      localStorage.setItem('Username', username) // Store user info
     } catch (error) {
       dispatch(loginFailure(error))
     }
@@ -55,6 +74,6 @@ export const userLogout = () => {
   return (dispatch) => {
     dispatch(logout())
     localStorage.removeItem('token') // Clear token from storage
-    localStorage.removeItem('user') // Clear user info
+    localStorage.removeItem('Username') // Clear user info
   }
 }

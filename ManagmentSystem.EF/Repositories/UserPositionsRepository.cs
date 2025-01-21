@@ -17,9 +17,11 @@ namespace ManagmentSystem.EF.Repositories
         private readonly IUnitOfWork _unitOfWork;
         public UserPositionsRepository(ApplicationDBContext context) : base(context)
         {
+            _context = context;
         }
         public UserPositionsRepository(ApplicationDBContext context, IUnitOfWork unitOfWork) : base(context)
         {
+            _context = context;
             _unitOfWork = unitOfWork;
         }
         public async Task<UserPosition> GetUserPositionByUserId(string UserId)

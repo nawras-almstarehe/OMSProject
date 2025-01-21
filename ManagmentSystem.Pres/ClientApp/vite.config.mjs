@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
     base: './',
     build: {
       outDir: 'build',
+      sourcemap: true
     },
 
     //new

@@ -10,7 +10,6 @@ namespace ManagmentSystem.Core.Interfaces
 {
     public interface IUsersRepository : IBaseRepository<User>
     {
-        Task<AuthModel> LoginAsync(VMLogin model);
         Task<VMResult> RegisterLocalAsync(VMRegister model);
         public Task<VMResult> CreateUserAsync(User user, string password);
         public Task<User> FindByEmailAsync(string Email);

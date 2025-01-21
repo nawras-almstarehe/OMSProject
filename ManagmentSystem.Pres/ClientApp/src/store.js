@@ -11,7 +11,7 @@ const store = createStore(
 )
 
 // Check for saved user and token in localStorage
-const user = JSON.parse(localStorage.getItem('user'))
+const user = localStorage.getItem('Username')
 const token = localStorage.getItem('token')
 
 if (user && token) {
