@@ -13,6 +13,8 @@ namespace ManagmentSystem.Core.UnitOfWorks
         ICategoriesRepository Categories { get; } // After add spicial method
         IUsersRepository Users { get; }
         IUserPositionsRepository UserPositions { get; }
+        IImagesRepository Images { get; }
         int Complete();
+        Task<int> CompleteAsync();
     }
 }

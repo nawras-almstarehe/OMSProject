@@ -4,8 +4,8 @@ import { LOGIN_SUCCESS, LOGOUT, LOGIN_FAILURE } from '../actions/authActions'
 const initialState = {
   user: null,
   token: null,
-  Email: null,
-  PriviligeCode: null,
+  email: null,
+  priviligeCode: null,
   error: null,
 }
 
@@ -16,8 +16,8 @@ const authReducer = (state = initialState, action) => {
         ...state,
         user: action.payload.Username,
         token: action.payload.token,
-        Email: action.payload.Email,
-        PriviligeCode: action.payload.PriviligeCode,
+        email: action.payload.Email,
+        priviligeCode: action.payload.PriviligeCode,
         error: null,
       }
     case LOGOUT:
@@ -25,8 +25,8 @@ const authReducer = (state = initialState, action) => {
         ...state,
         user: null,
         token: null,
-        Email: null,
-        PriviligeCode: null,
+        email: null,
+        priviligeCode: null,
       }
     case LOGIN_FAILURE:
       return {

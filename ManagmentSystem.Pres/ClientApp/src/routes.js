@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Calender = React.lazy(() => import('./views/menue/Calender'))
+const Category = React.lazy(() => import('./views/menue/Category'))
 const Announcement = React.lazy(() => import('./views/menue/Announcement'))
 const LearningMaterials = React.lazy(() => import('./views/menue/LearningMaterials'))
 const Teachers = React.lazy(() => import('./views/menue/Teachers'))
@@ -14,8 +14,8 @@ const Grades = React.lazy(() => import('./views/menue/Grades'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/menue', name: 'menue', element: Calender, exact: true },
-  { path: '/menue/calender', name: 'Calender', element: Calender },
+  { path: '/menue', name: 'menue', element: Category, exact: true },
+  { path: '/menue/category', name: 'Category', element: Category },
   { path: '/menue/announcement', name: 'Announcement', element: Announcement },
   { path: '/menue/learningMaterials', name: 'Learning Materials', element: LearningMaterials },
   { path: '/menue/Teachers', name: 'Teachers', element: Teachers },

@@ -1,9 +1,13 @@
-﻿using ManagmentSystem.Core.Models;
-using ManagmentSystem.Core.UnitOfWorks;
+﻿using ManagmentSystem.Core.IServices;
+using ManagmentSystem.Core.Models;
+using ManagmentSystem.Core.VModels;
+using ManagmentSystem.Pres.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,44 +15,52 @@ using System.Threading.Tasks;
 
 namespace ManagmentSystem.Controllers
 {
-    [EnableCors("CorsPolicy")]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CategoriesController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public CategoriesController(IUnitOfWork unitOfWork)
+        private readonly ICategoryService _categoryService;
+        private readonly ILogger<UsersController> _logger;
+        public CategoriesController(ICategoryService categoryService, ILogger<UsersController> logger)
         {
-            _unitOfWork = unitOfWork;
+            _categoryService = categoryService;
+            _logger = logger;
         }
 
-        [HttpGet("GetCategories")]
-        public async Task<IActionResult> GetCategories()
+        [HttpPost("GetCategories")]
+        public async Task<IActionResult> GetCategories([FromBody] VMObjectPost CategoryPost)
         {
+            if (CategoryPost == null)
+            {
+                return BadRequest("Invalid request payload.");
+            }
+
             try
             {
-                return Ok(await _unitOfWork.Categories.GetAll());
+                var (categories, totalItems) = await _categoryService.GetCategoriesAll(CategoryPost.page, CategoryPost.pageSize, CategoryPost.filter, CategoryPost.sort);
+                _logger.LogInformation("Test log", categories);
+                return Ok(new VMResaultDataList<Category>(totalItems, categories));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(message: ex.Message, ex);
                 throw;
             }
         }
 
         [HttpGet("GetCategory")]
-        public async Task<IActionResult> GetCategory(int Id)
+        public async Task<IActionResult> GetCategory(string Id)
         {
+            if (Id == null || Id == "")
+            {
+                return BadRequest("Invalid request payload.");
+            }
+
             try
             {
-                if (!Id.Equals(null) && Id != 0)
-                {
-                    return Ok(await _unitOfWork.Categories.GetByIdAsync(Id));
-                }
-                else
-                {
-                    return BadRequest();
-                }
+                var Category = await _categoryService.GetCategory(Id);
+                _logger.LogInformation("Test log", Category);
+                return Ok(Category);
             }
             catch (Exception)
             {
@@ -59,48 +71,60 @@ namespace ManagmentSystem.Controllers
         [HttpPost("AddCategory")]
         public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
+            if (category == null)
+            {
+                return BadRequest("Invalid request payload.");
+            }
             try
             {
-                //return Ok(_unitOfWork.Categories.Add(new Category { Name = "NewCat" })); For added UnitOfWork
-                var categoryObj = await _unitOfWork.Categories.Add(category);
-                 _unitOfWork.Complete();
-                return Ok(categoryObj);
+                var result = await _categoryService.AddCategory(category);
+                _logger.LogInformation("Test log", result);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                _logger.LogError(message: ex.Message, ex);
+                throw;
             }
         }
 
         [HttpPut("UpdateCategory")]
         public async Task<IActionResult> UpdateCategory([FromBody] Category category)
         {
+            if (category == null)
+            {
+                return BadRequest("Invalid request payload.");
+            }
             try
             {
-                //return Ok(_unitOfWork.Categories.Add(new Category { Name = "NewCat" })); For added UnitOfWork
-                var categoryObj = await _unitOfWork.Categories.Update(category);
-                _unitOfWork.Complete();
-                return Ok(categoryObj);
+                var result = await _categoryService.UpdateCategory(category);
+                _logger.LogInformation("Test log", result);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                _logger.LogError(message: ex.Message, ex);
+                throw;
             }
         }
 
-        [HttpDelete("DeleteCategory/{id}")]
-        public IActionResult DeleteCategory(int id)
+        [HttpDelete("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory(string id)
         {
+            if (id == null || id == "")
+            {
+                return BadRequest("Invalid request payload.");
+            }
             try
             {
-                //return Ok(_unitOfWork.Categories.Add(new Category { Name = "NewCat" })); For added UnitOfWork
-                _unitOfWork.Categories.Delete(id);
-                _unitOfWork.Complete();
-                return Ok();
+                var result = await _categoryService.DeleteCategory(id);
+                _logger.LogInformation("Test log", result);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                throw ex.InnerException;
+                _logger.LogError(message: ex.Message, ex);
+                throw;
             }
         }
 
@@ -136,10 +160,10 @@ namespace ManagmentSystem.Controllers
         //}
 
 
-        [HttpGet("GetAllSpicialMethod")]
-        public IActionResult GetAllSpicialMethod()
-        {
-            return Ok(_unitOfWork.Categories.GetAllSpecialMethod());//// After add spicial method now I can call to spicial method
-        }
+        //[HttpGet("GetAllSpicialMethod")]
+        //public IActionResult GetAllSpicialMethod()
+        //{
+        //    return Ok(_unitOfWork.Categories.GetAllSpecialMethod());//// After add spicial method now I can call to spicial method
+        //}
     }
 }

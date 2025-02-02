@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,8 @@ namespace ManagmentSystem.Core.Models
 {
     public class Department
     {
-        public string Id { get; set; }
-        public string DepartmentParentId { get; set; }
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString(); public string DepartmentParentId { get; set; }
         public string DepartmentType { get; set; }
         public string Code { get; set; }
         public string DepCode { get; set; }

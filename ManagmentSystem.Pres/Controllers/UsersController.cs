@@ -8,6 +8,8 @@ using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Authorization;
 using ManagmentSystem.Core.IServices;
 using ManagmentSystem.EF.Services;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace ManagmentSystem.Pres.Controllers
 {
@@ -16,9 +18,11 @@ namespace ManagmentSystem.Pres.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public UsersController(IAuthService authService)
+        private readonly ILogger<UsersController> _logger;
+        public UsersController(IAuthService authService, ILogger<UsersController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         //[HttpGet("Register")]
@@ -43,11 +47,15 @@ namespace ManagmentSystem.Pres.Controllers
             {
                 var Result = new AuthModel();
                 Result =  await _authService.LoginAsync(user);
-                return Ok(Result);
+                _logger.LogInformation("Test log", Result);
+                return Ok(VMAllResultApi<object>.SuccessResult("Products retrieved successfully.", Result));
+                //return Ok(Result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError(message: ex.Message, ex);
+                return BadRequest(VMAllResultApi<object>.FailureResult($"An error occurred: {ex.Message}"));
+                //throw;
             }
         }
     }

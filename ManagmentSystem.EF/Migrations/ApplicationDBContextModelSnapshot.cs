@@ -45,10 +45,10 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "28d4676e-0d61-4793-b567-3a50390fd534",
+                            Id = "dc23a697-fc4c-4998-a957-b49cec132c47",
                             Code = 1f,
                             LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserPositionId = "c6f11443-3cf6-4900-9921-8d14d6fc1745"
+                            UserPositionId = "85b5441e-2aea-469f-9344-39b2f4a3ba33"
                         });
                 });
 
@@ -189,7 +189,7 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f3bb378c-7c75-492c-9c8a-200ec2cec921",
+                            Id = "18717c4e-dd50-4c8d-b381-6a1be6a085ee",
                             AName = "الإدارة العامة",
                             Code = "GD",
                             DepCode = "0001",
@@ -314,9 +314,9 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "448661d3-4a79-4461-a520-fdd98e8bf32c",
+                            Id = "5a80a13a-3a9e-4bdc-9569-b643c9e31cd5",
                             AName = "المدير العام",
-                            DepartmentId = "f3bb378c-7c75-492c-9c8a-200ec2cec921",
+                            DepartmentId = "18717c4e-dd50-4c8d-b381-6a1be6a085ee",
                             EName = "Manager General",
                             IsActive = 1ul,
                             IsLeader = 1ul,
@@ -361,7 +361,7 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "073c30c6-30f5-4355-84b3-83ecf8f30841",
+                            Id = "b3f87e86-5fc5-4322-9499-a6b9e32e86be",
                             ADescription = "مدير النظام",
                             AName = "مدير النظام",
                             Code = 1f,
@@ -539,7 +539,7 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b4585b0f-939a-4879-a5cd-d768773b0266",
+                            Id = "b8f1bd3a-1342-405f-a273-8aea25955e41",
                             AName = "دور مدير النظام",
                             EName = "Role system manager",
                             LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -578,10 +578,10 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = "b4585b0f-939a-4879-a5cd-d768773b0266",
-                            PrivilegeId = "073c30c6-30f5-4355-84b3-83ecf8f30841",
+                            RoleId = "b8f1bd3a-1342-405f-a273-8aea25955e41",
+                            PrivilegeId = "b3f87e86-5fc5-4322-9499-a6b9e32e86be",
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Id = "705346b5-4503-406f-ae25-876745de69ef",
+                            Id = "cce15c5d-c748-468b-a0e9-24b9c9a07df0",
                             LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -683,7 +683,7 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9cc6946a-1adc-4f74-92af-8244216deef9",
+                            Id = "4dbb1c30-f4e0-492a-bde7-29aa2c85cb50",
                             AFirstName = "مدير",
                             ALastName = "النظام",
                             BlockedType = "None",
@@ -693,7 +693,7 @@ namespace ManagmentSystem.EF.Migrations
                             IsAdmin = 1ul,
                             IsBlocked = 0ul,
                             LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Password = "AQAAAAEAACcQAAAAEIlxiBm1ypefLZ5yoS1axwz6vEBGTb7CizFG99mlVwIQfUOKpF4WpiWewoG9/dj70g==",
+                            Password = "AQAAAAEAACcQAAAAELqG3iREopw9zxjFMhH+pUIDDmoAMEYInpRFRd1M4JEKKFDr9KYUBJ31I2vKKAUbNw==",
                             PhoneNumber = "0953244518",
                             UserName = "admin",
                             UserType = "Employee"
@@ -752,15 +752,15 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c6f11443-3cf6-4900-9921-8d14d6fc1745",
+                            Id = "85b5441e-2aea-469f-9344-39b2f4a3ba33",
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 10, 29, 19, 45, 13, 761, DateTimeKind.Local).AddTicks(6409),
+                            EndDate = new DateTime(2026, 2, 1, 13, 34, 20, 46, DateTimeKind.Local).AddTicks(470),
                             IsActive = 1ul,
                             LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PositionId = "448661d3-4a79-4461-a520-fdd98e8bf32c",
-                            StartDate = new DateTime(2024, 10, 29, 19, 45, 13, 759, DateTimeKind.Local).AddTicks(4782),
+                            PositionId = "5a80a13a-3a9e-4bdc-9569-b643c9e31cd5",
+                            StartDate = new DateTime(2025, 2, 1, 13, 34, 20, 43, DateTimeKind.Local).AddTicks(1849),
                             Type = "HR",
-                            UserId = "9cc6946a-1adc-4f74-92af-8244216deef9",
+                            UserId = "4dbb1c30-f4e0-492a-bde7-29aa2c85cb50",
                             UserName = "admin"
                         });
                 });
@@ -797,11 +797,11 @@ namespace ManagmentSystem.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bcf4c001-c2b6-4f96-bc7a-529c15b05630",
+                            Id = "614a68c0-00f2-40e9-b750-9bf1c6f4dd00",
                             AddedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastAccessed = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RoleId = "b4585b0f-939a-4879-a5cd-d768773b0266",
-                            UserPositionId = "c6f11443-3cf6-4900-9921-8d14d6fc1745"
+                            RoleId = "b8f1bd3a-1342-405f-a273-8aea25955e41",
+                            UserPositionId = "85b5441e-2aea-469f-9344-39b2f4a3ba33"
                         });
                 });
 

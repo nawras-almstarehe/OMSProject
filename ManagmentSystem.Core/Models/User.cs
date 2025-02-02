@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,8 @@ namespace ManagmentSystem.Core.Models
 {
     public class User
     {
-        public string Id { get; set; }
-        public string UserName { get; set; }
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString(); public string UserName { get; set; }
         public string AFirstName { get; set; }
         public string EFirstName { get; set; }
         public string ALastName { get; set; }

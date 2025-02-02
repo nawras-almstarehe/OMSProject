@@ -11,6 +11,7 @@ import {
   cilPenAlt,
   cilTask,
   cilColorBorder,
+  cilTags
 } from '@coreui/icons'
 import { CNavItem, CNavTitle } from '@coreui/react'
 
@@ -31,9 +32,9 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Calender',
-    to: '/menue/calender',
-    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+    name: 'Category',
+    to: '/menue/category',
+    icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,

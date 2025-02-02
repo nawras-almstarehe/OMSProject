@@ -35,8 +35,7 @@ namespace ManagmentSystem.EF.Services
 
             if (user is null || !VerifyPassword(user, model.Password))
             {
-                authModel.Message = "Username or Password is incorrect!";
-                return authModel;
+                throw new ServiceException("Username or Password is incorrect!", 400);
             }
 
             var jwtSecurityToken = await CreateJwtToken(user);

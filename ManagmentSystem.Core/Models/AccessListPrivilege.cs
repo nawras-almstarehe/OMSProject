@@ -9,8 +9,8 @@ namespace ManagmentSystem.Core.Models
 {
     public class AccessListPrivilege
     {
-        public string Id { get; set; }
-        public string UserPositionId { get; set; }
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString(); public string UserPositionId { get; set; }
         public double Code { get; set; }
         public DateTime LastAccessed { get; set; }
         public virtual UserPosition UserPosition { get; set; }

@@ -20,14 +20,18 @@ namespace ManagmentSystem.EF
         {
             modelBuilder.Entity<Role>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.LastAccessed).HasColumnType("DateTime").ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<Privilege>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.Code).HasColumnType("float");
                 eb.Property(x => x.AName).HasColumnType("varchar(200)");
                 eb.Property(x => x.EName).HasColumnType("varchar(200)");
@@ -38,7 +42,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<RolePrivilege>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AddedOn).HasColumnType("DateTime");
                 eb.Property(x => x.LastAccessed).HasColumnType("DateTime").ValueGeneratedOnAddOrUpdate();
                 eb.Property(x => x.RoleId).HasColumnType("VARCHAR(36)");
@@ -46,7 +52,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<User>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.UserName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.AFirstName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EFirstName).HasColumnType("varchar(200)").IsRequired();
@@ -63,7 +71,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<Department>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.DepartmentParentId).HasColumnType("VARCHAR(36)");
@@ -75,7 +85,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<Position>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.DepartmentId).HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
@@ -85,7 +97,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<UserPosition>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.UserId).HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.UserName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.IsActive).HasColumnType("bit");
@@ -98,7 +112,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<UserPositionRole>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AddedOn).HasColumnType("DateTime");
                 eb.Property(x => x.RoleId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.UserPositionId).HasColumnType("VARCHAR(36)");
@@ -106,7 +122,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<UserProfile>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.UserId).HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.UserName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.ImagePath).HasColumnType("varchar(200)");
@@ -116,14 +134,18 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<AccessListPrivilege>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.Code).HasColumnType("float");
                 eb.Property(x => x.UserPositionId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.LastAccessed).HasColumnType("DateTime").ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<Product>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.Description).HasColumnType("varchar(4000)");
@@ -134,7 +156,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<Category>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.Description).HasColumnType("varchar(4000)");
@@ -142,7 +166,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<CategoryProduct>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.CategoryId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.ProductId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.AddedOn).HasColumnType("DateTime");
@@ -150,7 +176,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<ImageFolder>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.ImagePath).HasColumnType("varchar(4000)");
                 eb.Property(x => x.ProductId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.CategoryId).HasColumnType("VARCHAR(36)");
@@ -158,7 +186,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<Customer>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.Address).HasColumnType("varchar(200)").IsRequired();
@@ -167,7 +197,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<Producer>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.Address).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
@@ -176,7 +208,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<Invoice>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.Code).HasColumnType("varchar(200)");
                 eb.Property(x => x.AddedOn).HasColumnType("DateTime");
                 eb.Property(x => x.TotalCost).HasColumnType("decimal(18,2)");
@@ -190,7 +224,9 @@ namespace ManagmentSystem.EF
             });            
             modelBuilder.Entity<Process>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.Code).HasColumnType("varchar(200)");
                 eb.Property(x => x.Quantity).HasColumnType("float").IsRequired();
                 eb.Property(x => x.AddedOn).HasColumnType("DateTime");
@@ -208,7 +244,9 @@ namespace ManagmentSystem.EF
             });
             modelBuilder.Entity<SessionInfo>(eb =>
             {
-                eb.Property(x => x.Id).HasColumnType("VARCHAR(36)");
+                eb.HasKey(x => x.Id);
+                eb.Property(x => x.Id)
+                    .HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.SessionId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.UserId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.UserName).HasColumnType("varchar(200)");

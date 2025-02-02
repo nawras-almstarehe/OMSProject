@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManagmentSystem.Core.VModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,11 +12,12 @@ namespace ManagmentSystem.Core.Interfaces
     {
         //T GetById(int id);
         Task<IEnumerable<T>> GetAll();
-        Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(string id);
         Task<T> Add(T entity);
         Task<T> Update(T entity);
-        void Delete(int id);
-        T GetById(int id);
+        void DeleteEntity(T entity);
+        int Delete(string id);
+        T GetById(string id);
 
         Task<T> FindAsync(Expression<Func<T, bool>> match);
         T FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null);
@@ -23,10 +25,13 @@ namespace ManagmentSystem.Core.Interfaces
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int take, int skip);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip,
             Expression<Func<T, object>> orderBy = null, string orderByDirection = "ASC");
+        Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> match, int? take, int? skip, ObjSort orderBy = null);
         IEnumerable<T> AddRange(IEnumerable<T> entities);
         void DeleteRange(IEnumerable<T> entities);
         void Attach(T entity);
         int Count();
         int Count(Expression<Func<T, bool>> match);
+        Task<int> CountAsync(Expression<Func<T, bool>> match);
+        Task<int> CountAllAsync();
     }
 }

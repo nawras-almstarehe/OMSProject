@@ -20,6 +20,8 @@ using ManagmentSystem.Core.Helpers;
 using Microsoft.EntityFrameworkCore;
 using ManagmentSystem.Core.IServices;
 using ManagmentSystem.EF.Services;
+using Serilog;
+using System.IO;
 
 namespace ManagmentSystem.Pres
 {
@@ -45,8 +47,13 @@ namespace ManagmentSystem.Pres
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true; // Make the session cookie essential
             });
+            //services.AddSingleton<IWebHostEnvironment>(sp =>
+            //{
+            //    var env = sp.GetRequiredService<IWebHostEnvironment>();
+            //    env.WebRootPath ??= Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            //    return env;
+            //});
             services.AddControllersWithViews();
-
             //services.AddDbContext<ApplicationDBContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
             //        b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
@@ -81,6 +88,8 @@ namespace ManagmentSystem.Pres
                 });
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IImageService, ImageService>();
             //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -106,10 +115,20 @@ namespace ManagmentSystem.Pres
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            app.UseSerilogRequestLogging();  // Add this line to enable Serilog request logging
 
+            // Set WebRootPath manually if necessary
+            env.WebRootPath ??= Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+            // Ensure wwwroot directory exists
+            if (!Directory.Exists(env.WebRootPath))
+            {
+                Directory.CreateDirectory(env.WebRootPath);
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles(); // ✅ Serve static files
+            app.UseSpaStaticFiles();
             //للسماح بالاتصال بالتطبيق من شبكات او بورتات اخرى اي ليس محلي (لوكال).ب
             //app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseCors("AllowAllOrigins");

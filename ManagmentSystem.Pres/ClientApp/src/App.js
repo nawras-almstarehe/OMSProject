@@ -17,7 +17,6 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const storedTheme = useSelector((state) => state.theme.theme)
-  debugger
   const token = useSelector((state) => state.auth.token)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1])

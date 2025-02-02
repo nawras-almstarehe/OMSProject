@@ -1,0 +1,15 @@
+.table th, .table td {
+  border-right: 1px solid #dee2e6; /* Right border for each cell */
+}
+
+  .table th:last-child, .table td:last-child {
+    border-right: none; /* Remove right border for the last column */
+  }
+
+.table th {
+  background-color: #f8f9fa; /* Optional: background color for header */
+}
+
+.columnHeader {
+  text-align: center;
+}
