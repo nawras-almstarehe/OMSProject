@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\public\Images\" />
+    <Folder Include="ClientApp\public\locales\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

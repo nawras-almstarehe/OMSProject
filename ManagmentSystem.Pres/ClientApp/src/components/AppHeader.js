@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { userLogout } from '../actions/authActions'
@@ -25,15 +25,18 @@ import {
   cilMenu,
   cilMoon,
   cilSun,
+  cilGlobeAlt
 } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
+import { useTranslation } from "react-i18next";
 
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-
+  const { i18n } = useTranslation();
+  const [isRTL, setIsRTL] = useState(false);
   //const user = useSelector((state) => state.authReducer.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -45,12 +48,23 @@ const AppHeader = () => {
     navigate('/') // Navigate back to login after logout
   }
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    //document.documentElement.dir = i18n.dir(lng); // Change direction dynamically
+  };
+
   useEffect(() => {
     document.addEventListener('scroll', () => {
       headerRef.current &&
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     })
   }, [])
+
+  //useEffect(() => {
+  //  const direction = i18n.dir(); // Get current language direction (ltr/rtl)
+  //  document.documentElement.dir = direction; // Apply direction to <html>
+  //  setIsRTL(direction === 'rtl');
+  //}, [i18n.language]);
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -132,6 +146,31 @@ const AppHeader = () => {
                 onClick={() => setColorMode('auto')}
               >
                 <CIcon className="me-2" icon={cilContrast} size="lg" /> Auto
+              </CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
+          <CDropdown variant="nav-item" placement="bottom-end">
+            <CDropdownToggle caret={false}>
+              <CIcon icon={cilGlobeAlt} size="lg" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <CDropdownItem
+                active={i18n.lang === 'ar'}
+                className="d-flex align-items-center"
+                as="button"
+                type="button"
+                onClick={() => changeLanguage("ar")}
+              >
+                🇸🇦 العربية
+              </CDropdownItem>
+              <CDropdownItem
+                active={i18n.lang === 'en'}
+                className="d-flex align-items-center"
+                as="button"
+                type="button"
+                onClick={() => changeLanguage("en")}
+              >
+                🇺🇸 English
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>

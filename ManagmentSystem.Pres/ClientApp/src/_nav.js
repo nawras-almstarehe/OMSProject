@@ -2,88 +2,36 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
   cilSpeedometer,
-  cilCalendar,
-  cilBullhorn,
-  cilBook,
-  cilUser,
-  cilGroup,
-  cilColumns,
-  cilPenAlt,
-  cilTask,
-  cilColorBorder,
   cilTags
 } from '@coreui/icons'
 import { CNavItem, CNavTitle } from '@coreui/react'
+import { useTranslation } from 'react-i18next';
 
-const _nav = [
-  {
-    component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
+const _nav = () => {
+  const { t } = useTranslation(); // Initialize translation hook
+
+  return [
+    {
+      component: CNavItem,
+      name: t('dashboard'), // Translate 'Dashboard'
+      to: '/dashboard',
+      icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+      badge: {
+        color: 'info',
+        text: t('new'), // Translate 'NEW'
+      },
     },
-  },
-  {
-    component: CNavTitle,
-    name: 'Menue',
-  },
-  {
-    component: CNavItem,
-    name: 'Category',
-    to: '/menue/category',
-    icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Announcement',
-    to: '/menue/announcement',
-    icon: <CIcon icon={cilBullhorn} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Learning Materials',
-    to: '/menue/learningMaterials',
-    icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Teachers',
-    to: '/menue/Teachers',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Students',
-    to: '/menue/Students',
-    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Schedule & Time Table',
-    to: '/menue/ScheduleTimeTable',
-    icon: <CIcon icon={cilColumns} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Teaching And Classes',
-    to: '/menue/TeachingAndClasses',
-    icon: <CIcon icon={cilPenAlt} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Quizes',
-    to: '/menue/Quizes',
-    icon: <CIcon icon={cilTask} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Grades',
-    to: '/menue/Grades',
-    icon: <CIcon icon={cilColorBorder} customClassName="nav-icon" />,
-  },
-]
+    {
+      component: CNavTitle,
+      name: t('menu'), // Translate 'Menue'
+    },
+    {
+      component: CNavItem,
+      name: t('category'), // Translate 'Category'
+      to: '/menue/category',
+      icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
+    },
+  ];
+};
 
-export default _nav
+export default _nav;

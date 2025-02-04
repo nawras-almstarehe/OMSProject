@@ -28,8 +28,10 @@ import CIcon from '@coreui/icons-react'
 import MultiImagesUploadModal from "../../components/MultiImagesUploadModal";
 import '../../costumStyle/stylesCostum.css'
 import apiService from '../../shared/apiService';
+import { useTranslation } from 'react-i18next';
 
 const Category = () => {
+  const { t, i18n } = useTranslation()
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
@@ -234,7 +236,7 @@ const Category = () => {
       </CModal>
       {visibleModalImages && <MultiImagesUploadModal show={visibleModalImages} handleClose={() => setVisibleModalImages(false)} itemId={selectedItemId} />}
       <CCard className="mb-4">
-        <CCardHeader>Category</CCardHeader>
+        <CCardHeader>{t('category')}</CCardHeader>
         <CCardBody>
           <CRow>
             <CSmartTable

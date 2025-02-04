@@ -1,1 +1,35 @@
-// Here you can add other styles
+/*// Here you can add other styles
+
+html, body, #root {
+  height: 100%;
+  //overflow: hidden;
+}
+
+.main {
+  min-height: calc(100vh - 56px); // Adjust based on header height
+  overflow-y: auto; // Enables scrolling when content overflows
+}
+
+.container {
+  max-width: 100% !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+html[dir="rtl"] .sidebar {
+  right: 0 !important;
+  left: auto !important;
+}
+
+html[dir="rtl"] .header {
+  justify-content: flex-end !important;
+  text-align: right !important;
+}
+
+html[dir="rtl"] .header-nav {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+*/
