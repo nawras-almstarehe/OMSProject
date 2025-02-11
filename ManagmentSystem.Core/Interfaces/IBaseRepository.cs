@@ -14,11 +14,11 @@ namespace ManagmentSystem.Core.Interfaces
         Task<IEnumerable<T>> GetAll();
         Task<T> GetByIdAsync(string id);
         Task<T> Add(T entity);
-        Task<T> Update(T entity);
+        void Update(T entity);
         void DeleteEntity(T entity);
         int Delete(string id);
         T GetById(string id);
-
+        T Find(Expression<Func<T, bool>> match);
         Task<T> FindAsync(Expression<Func<T, bool>> match);
         T FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null);

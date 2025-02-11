@@ -127,17 +127,9 @@ namespace ManagmentSystem.EF.Services
             try
             {
                 var categoryObj = new Category {Id = category.Id, EName = category.EName, AName = category.AName, Description = category.Description };
-                var Category = _unitOfWork.Categories.Update(categoryObj);
-                if (Category != null)
-                {
-                    await _unitOfWork.CompleteAsync();
-                    return 1;
-                }
-                else
-                {
-                    return 0;
-                }
-
+                _unitOfWork.Categories.Update(categoryObj);
+                await _unitOfWork.CompleteAsync();
+                return 1;
             }
             catch (Exception)
             {

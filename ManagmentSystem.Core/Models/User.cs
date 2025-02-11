@@ -11,7 +11,8 @@ namespace ManagmentSystem.Core.Models
     public class User
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); public string UserName { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString(); 
+        public string UserName { get; set; }
         public string AFirstName { get; set; }
         public string EFirstName { get; set; }
         public string ALastName { get; set; }

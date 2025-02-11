@@ -2,9 +2,10 @@ import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
   cilSpeedometer,
-  cilTags
+  cilTags,
+  cilSettings
 } from '@coreui/icons'
-import { CNavItem, CNavTitle } from '@coreui/react'
+import { CNavItem, CNavTitle, CNavGroup } from '@coreui/react'
 import { useTranslation } from 'react-i18next';
 
 const _nav = () => {
@@ -30,6 +31,19 @@ const _nav = () => {
       name: t('category'), // Translate 'Category'
       to: '/menue/category',
       icon: <CIcon icon={cilTags} customClassName="nav-icon" />,
+    },
+    {
+      component: CNavGroup,
+      name: t('configuration'),
+      to: '/configuration',
+      icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+      items: [
+        {
+          component: CNavItem,
+          name: t('users'),
+          to: '/configuration/users',
+        },
+      ],
     },
   ];
 };

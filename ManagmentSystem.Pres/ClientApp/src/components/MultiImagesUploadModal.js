@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CButton, CFormInput, CRow, CCol } from "@coreui/react";
 import apiService from '../shared/apiService';
+import { useTranslation } from 'react-i18next';
 
-const MultiImagesUploadModal = ({ show, handleClose, itemId }) => {
+const MultiImagesUploadModal = ({ show, handleClose, itemId, isRTL }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [images, setImages] = useState([]);
+  const { t, i18n } = useTranslation()
 
-  // Fetch existing images for the item
   useEffect(() => {
     fetchData();
   }, [show, itemId]);
@@ -23,12 +24,10 @@ const MultiImagesUploadModal = ({ show, handleClose, itemId }) => {
     }
   };
 
-  // Handle file selection
   const handleFileChange = (event) => {
     setSelectedFiles([...event.target.files]);
   };
 
-  // Handle image upload
   const handleUpload = async () => {
     const formData = new FormData();
     selectedFiles.forEach(file => {
@@ -46,7 +45,6 @@ const MultiImagesUploadModal = ({ show, handleClose, itemId }) => {
     }
   };
 
-  // Handle image deletion
   const handleDelete = async (imageId) => {
     try {
       const confirmDelete = window.confirm('Are you sure you want to delete this item?');
@@ -64,19 +62,23 @@ const MultiImagesUploadModal = ({ show, handleClose, itemId }) => {
   return (
     <CModal visible={show} onClose={handleClose} size="lg" backdrop="static">
       <CModalHeader>
-        <CModalTitle>Manage Images</CModalTitle>
+        <CModalTitle>{t('editImages')}</CModalTitle>
       </CModalHeader>
       <CModalBody>
-        {/* File Upload Input */}
-        <CFormInput type="file" multiple onChange={handleFileChange} label="Select Images" />
+        <CFormInput
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          label={t('selectImages')}
+          lang={i18n.language}
+          dir={isRTL ? 'rtl' : 'ltr'}
+        />
 
-        {/* Upload Button */}
         <CButton color="primary" className="mt-3" onClick={handleUpload} disabled={selectedFiles.length === 0}>
-          Upload Images
+          {t('uploadImages') }
         </CButton>
 
-        {/* Display Uploaded Images */}
-        <h5 className="mt-4">Uploaded Images</h5>
+        <h5 className="mt-4">{t('uploadedImages')}</h5>
         <CRow>
           {images.map((img) => (
             <CCol xs="4" md="3" key={img.id} className="position-relative text-center">
@@ -94,7 +96,7 @@ const MultiImagesUploadModal = ({ show, handleClose, itemId }) => {
         </CRow>
       </CModalBody>
       <CModalFooter>
-        <CButton color="secondary" onClick={handleClose}>Close</CButton>
+        <CButton color="secondary" onClick={handleClose}>{t('close')}</CButton>
       </CModalFooter>
     </CModal>
   );

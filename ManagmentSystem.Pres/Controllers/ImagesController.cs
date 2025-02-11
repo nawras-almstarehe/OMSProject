@@ -28,7 +28,11 @@ namespace ManagmentSystem.Pres.Controllers
         {
             if (itemId == null || itemId == "" || files.Count == 0)
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
 
             try
@@ -39,8 +43,7 @@ namespace ManagmentSystem.Pres.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -49,7 +52,11 @@ namespace ManagmentSystem.Pres.Controllers
         {
             if (categoryId == null || categoryId == "")
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
 
             try
@@ -60,8 +67,7 @@ namespace ManagmentSystem.Pres.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -70,7 +76,11 @@ namespace ManagmentSystem.Pres.Controllers
         {
             if (imageId == null || imageId == "")
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
 
             try
@@ -81,8 +91,7 @@ namespace ManagmentSystem.Pres.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

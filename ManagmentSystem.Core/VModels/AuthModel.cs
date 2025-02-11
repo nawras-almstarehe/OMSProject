@@ -15,6 +15,7 @@ namespace ManagmentSystem.Core.VModels
         public bool IsAuthenticated { get; set; }
         public int Language { get; set; }
         public int Theme { get; set; }
+        public int Result { get; set; }
         public string Message { get; set; }
         public DateTime ExpiresOn { get; set; }
     }

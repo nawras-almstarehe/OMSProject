@@ -1,10 +1,18 @@
-.table th, .table td {
-  border-right: 1px solid #dee2e6; /* Right border for each cell */
+html[dir="ltr"] .table th, .table td {
+  border-right: 1px solid #dee2e6;
 }
 
-  .table th:last-child, .table td:last-child {
-    border-right: none; /* Remove right border for the last column */
-  }
+html[dir="ltr"] .table th:last-child, .table td:last-child {
+  border-right: none;
+}
+
+html[dir="rtl"] .table th, .table td {
+  border-left: 1px solid #dee2e6;
+}
+
+html[dir="rtl"] .table th:last-child, .table td:last-child {
+  border-left: none;
+}
 
 .table th {
   background-color: #f8f9fa; /* Optional: background color for header */

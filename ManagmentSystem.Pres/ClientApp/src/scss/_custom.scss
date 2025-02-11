@@ -1,35 +1,107 @@
-/*// Here you can add other styles
-
-html, body, #root {
-  height: 100%;
-  //overflow: hidden;
+.ruby-display {
+  display: ruby !important;
 }
 
-.main {
-  min-height: calc(100vh - 56px); // Adjust based on header height
-  overflow-y: auto; // Enables scrolling when content overflows
+html[dir="rtl"] .ms-auto {
+  margin-right: auto !important;
+  margin-left: unset !important;
 }
 
-.container {
-  max-width: 100% !important;
+html[dir="rtl"] .me-auto {
+  margin-left: auto !important;
+  margin-right: unset !important;
 }
 
-.table-responsive {
-  overflow-x: auto;
+html[dir="ltr"] .ms-auto {
+  margin-left: auto !important;
+  margin-right: unset !important;
 }
 
-html[dir="rtl"] .sidebar {
-  right: 0 !important;
-  left: auto !important;
-}
-
-html[dir="rtl"] .header {
-  justify-content: flex-end !important;
-  text-align: right !important;
+html[dir="ltr"] .me-auto {
+  margin-right: auto !important;
+  margin-left: unset !important;
 }
 
 html[dir="rtl"] .header-nav {
-  margin-left: 0 !important;
-  margin-right: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  padding-right: 0 !important;
+  margin-bottom: 0 !important;
+  list-style: none !important;
+  justify-content: flex-end !important; /* Ensure items align properly */
 }
-*/
+
+html[dir="ltr"] .header-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  padding-left: 0 !important;
+  margin-bottom: 0 !important;
+  list-style: none !important;
+  justify-content: flex-start !important;
+}
+
+html[dir="rtl"] .sidebar-nav .nav-icon {
+  margin-left: var(--cui-sidebar-nav-link-icon-margin) !important;
+  margin-right: unset !important;
+}
+
+html[dir="ltr"] .sidebar-nav .nav-icon {
+  margin-right: var(--cui-sidebar-nav-link-icon-margin) !important;
+  margin-left: unset !important;
+}
+
+html[dir="rtl"] .sidebar-toggler {
+  margin-right: auto;
+  margin-left: unset !important;
+}
+
+html[dir="ltr"] .sidebar-toggler {
+  margin-right: unset !important;
+  margin-left: auto;
+}
+
+html[dir="rtl"] .modal-header .btn-close {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+html[dir="ltr"] .modal-header .btn-close {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+html[dir="rtl"] .me-2 {
+  margin-left: .5rem !important;
+  margin-right: unset !important;
+}
+
+html[dir="ltr"] .me-2 {
+  margin-right: .5rem !important;
+  margin-left: unset !important;
+}
+
+html[dir="rtl"] .ms-2 {
+  margin-right: .5rem !important;
+  margin-left: unset !important;
+}
+
+html[dir="ltr"] .ms-2 {
+  margin-left: .5rem !important;
+  margin-right: unset !important;
+}
+
+html[dir="rtl"] .sidebar-nav .nav-group-toggle:after {
+  margin-right: auto !important;
+  margin-left: unset !important;
+}
+
+html[dir="ltr"] .sidebar-nav .nav-group-toggle:after {
+  margin-right: unset !important;
+  margin-left: auto !important;
+}
+
+.custom-switch .form-check-input {
+  width: 4em !important;
+  height: 1.6em !important;
+  cursor: pointer;
+}

@@ -16,24 +16,17 @@ import { logo } from 'src/assets/brand/logo' // School logo
 import navigation from '../_nav'
 import { useTranslation } from 'react-i18next';
 
-const AppSidebar = () => {
+const AppSidebar = (props) => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.theme.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.theme.sidebarShow)
   const theme = useSelector((state) => state.theme.theme)
   const navItems = navigation();
   const { i18n } = useTranslation();
-  const [isRTL, setIsRTL] = useState(false);
-
-  //useEffect(() => {
-  //  const direction = i18n.dir(); // Get current language direction (ltr/rtl)
-  //  document.documentElement.dir = direction; // Apply direction to <html>
-  //  setIsRTL(direction === 'rtl');
-  //}, [i18n.language]);
 
   return (
     <CSidebar
-      className="border-end"
+      className={`border-end ${props.isRTL ? 'sidebar-end' : ''}`}
       colorScheme="dark"
       position="fixed"
       unfoldable={unfoldable}

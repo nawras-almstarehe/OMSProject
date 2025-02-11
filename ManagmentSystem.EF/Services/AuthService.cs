@@ -33,7 +33,7 @@ namespace ManagmentSystem.EF.Services
 
             var user = await _unitOfWork.Users.FindByUserNameAsync(model.Username);
 
-            if (user is null || !VerifyPassword(user, model.Password))
+            if (user is null || user.Password == "Sys_Pass_Temp" || !VerifyPassword(user, model.Password))
             {
                 throw new ServiceException("Username or Password is incorrect!", 400);
             }
@@ -119,7 +119,7 @@ namespace ManagmentSystem.EF.Services
         {
             var hasher = new PasswordHasher<User>();
             var UserPassword = user.Password;
-            var result = hasher.VerifyHashedPassword(null, UserPassword, Password);
+            var result = hasher.VerifyHashedPassword(user, UserPassword, Password);
             bool isPasswordValid = result == PasswordVerificationResult.Success;
             return isPasswordValid;
             //return BCrypt.Net.BCrypt.Verify(plainPassword, hashedPassword);

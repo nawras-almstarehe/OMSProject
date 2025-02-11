@@ -22,6 +22,7 @@ using ManagmentSystem.Core.IServices;
 using ManagmentSystem.EF.Services;
 using Serilog;
 using System.IO;
+using ManagmentSystem.Pres.Middleware;
 
 namespace ManagmentSystem.Pres
 {
@@ -90,9 +91,12 @@ namespace ManagmentSystem.Pres
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IUserService, UserService>();
             //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            // ✅ Register Global Exception Middleware
+            services.AddTransient<GlobalExceptionHandler>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -125,6 +129,9 @@ namespace ManagmentSystem.Pres
             {
                 Directory.CreateDirectory(env.WebRootPath);
             }
+
+            // ✅ Apply the Middleware
+            app.UseMiddleware<GlobalExceptionHandler>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles(); // ✅ Serve static files

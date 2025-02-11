@@ -35,7 +35,7 @@ import { useTranslation } from "react-i18next";
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [isRTL, setIsRTL] = useState(false);
   //const user = useSelector((state) => state.authReducer.user)
   const dispatch = useDispatch()
@@ -78,14 +78,14 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
+              {t('dashboard')}
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
+            <CNavLink href="#">{t('users')}</CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
+            <CNavLink href="#">{t('settings')}</CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">

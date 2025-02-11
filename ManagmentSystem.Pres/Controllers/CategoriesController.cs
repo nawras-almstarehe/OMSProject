@@ -32,7 +32,11 @@ namespace ManagmentSystem.Controllers
         {
             if (CategoryPost == null)
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
 
             try
@@ -43,8 +47,7 @@ namespace ManagmentSystem.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -53,7 +56,11 @@ namespace ManagmentSystem.Controllers
         {
             if (Id == null || Id == "")
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
 
             try
@@ -62,9 +69,9 @@ namespace ManagmentSystem.Controllers
                 _logger.LogInformation("Test log", Category);
                 return Ok(Category);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -73,7 +80,11 @@ namespace ManagmentSystem.Controllers
         {
             if (category == null)
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
             try
             {
@@ -83,8 +94,7 @@ namespace ManagmentSystem.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -93,7 +103,11 @@ namespace ManagmentSystem.Controllers
         {
             if (category == null)
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
             try
             {
@@ -103,8 +117,7 @@ namespace ManagmentSystem.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
@@ -113,7 +126,11 @@ namespace ManagmentSystem.Controllers
         {
             if (id == null || id == "")
             {
-                return BadRequest("Invalid request payload.");
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
             }
             try
             {
@@ -123,8 +140,7 @@ namespace ManagmentSystem.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(message: ex.Message, ex);
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 

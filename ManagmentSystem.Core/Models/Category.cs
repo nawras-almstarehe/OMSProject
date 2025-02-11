@@ -11,7 +11,8 @@ namespace ManagmentSystem.Core.Models
     public class Category
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); public string AName { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString(); 
+        public string AName { get; set; }
         public string EName { get; set; }
         public string Description { get; set; }
         public DateTime LastAccessed { get; set; }

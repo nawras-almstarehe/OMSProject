@@ -37,10 +37,14 @@ namespace ManagmentSystem.EF.Repositories
             return entity;
         }
 
-        public async Task<T> Update(T entity)
+        public void Update(T entity)
         {
-            _context.Set<T>().Update(entity);
-            return entity;
+            var existingEntity = _context.Set<T>().Find(entity.GetType().GetProperty("Id").GetValue(entity));
+            if (existingEntity != null)
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+                _context.Entry(existingEntity).State = EntityState.Modified;
+            }
         }
 
         public void DeleteEntity(T entity)
@@ -95,9 +99,9 @@ namespace ManagmentSystem.EF.Repositories
             return _context.Set<T>().Count(match);
         }
 
-        public async Task<T> Find(Expression<Func<T, bool>> match)
+        public T Find(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<T>().SingleOrDefaultAsync(match);
+            return _context.Set<T>().SingleOrDefault(match);
         }
 
         public async Task<T> FindAsync(Expression<Func<T, bool>> match)

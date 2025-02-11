@@ -14,14 +14,12 @@ import {
   CCard,
   CCardHeader,
   CCardBody,
-  CAlert,
   CFormTextarea
 } from '@coreui/react-pro'
 import {
   cilPlus,
   cilPencil,
   cilTrash,
-  cilCheckCircle,
   cilImage
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -30,7 +28,7 @@ import '../../costumStyle/stylesCostum.css'
 import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
 
-const Category = () => {
+const Category = (props) => {
   const { t, i18n } = useTranslation()
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -40,9 +38,10 @@ const Category = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [activePage, setActivePage] = useState(1)
   const [visibleModal, setVisibleModal] = useState(false)
+  const [titleModal, setTitleModal] = useState('')
   const [visibleModalImages, setVisibleModalImages] = useState(false)
   const [validated, setValidated] = useState(false)
-  const [dataRow, setDataRow] = useState({id: '', eName: '', aName: '', description: ''})
+  const [dataRow, setDataRow] = useState({ id: '', eName: '', aName: '', description: '' })
   const [selectedItemId, setSelectedItemId] = useState(null);
 
   const fetchData = async () => {
@@ -95,7 +94,8 @@ const Category = () => {
   };
 
   const handleAdd = () => {
-    setVisibleModal(!visibleModal)
+    setVisibleModal(!visibleModal);
+    setTitleModal(t('addCategory'));
   };
 
   const handleEdit = async (item) => {
@@ -108,6 +108,7 @@ const Category = () => {
         description: response.description
       };
       setDataRow(dataRow);
+      setTitleModal(t('editCategory'))
     } catch (error) {
       console.error('Failed to fetch data:', error);
     } finally {
@@ -122,29 +123,19 @@ const Category = () => {
       alert('Please fill out all required fields.');
       return;
     }
-    var newCategory = {};
-    if (dataRow.id == null || dataRow.id == '') {
-      newCategory = {
-        id: dataRow.id,
-        ename: dataRow.eName,
-        aname: dataRow.aName,
-        description: dataRow.description
-      };
-    } else {
-      newCategory = {
-        id: dataRow.id,
-        ename: dataRow.eName,
-        aname: dataRow.aName,
-        description: dataRow.description
-      };
-    }
+    var newCategory = {
+      id: dataRow.id,
+      ename: dataRow.eName,
+      aname: dataRow.aName,
+      description: dataRow.description
+    };
     try {
       if (dataRow.id == null || dataRow.id == '') {
         const data = await apiService.post('api/Categories/AddCategory', newCategory);
       } else {
         const data = await apiService.put('api/Categories/UpdateCategory', newCategory);
       }
-      
+
       setValidated(false);
       setVisibleModal(false);
       setDataRow({ id: '', eName: '', aName: '', description: '' });
@@ -184,8 +175,8 @@ const Category = () => {
         aria-labelledby="AddCategoryModalLabel"
         backdrop="static"
       >
-        <CModalHeader>
-          <CModalTitle id="AddCategoryModalLabel">Add Category</CModalTitle>
+        <CModalHeader className={props.isRTL ? 'modal-header-rtl' : ''}>
+          <CModalTitle id="AddCategoryModalLabel">{titleModal}</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm
@@ -197,7 +188,7 @@ const Category = () => {
               <CFormInput
                 type="text"
                 id="eName"
-                label="English Name"
+                label={t('englishName')}
                 value={dataRow.eName}
                 onChange={handleChange}
                 required
@@ -207,7 +198,7 @@ const Category = () => {
               <CFormInput
                 type="text"
                 id="aName"
-                label="Arabic Name"
+                label={t('arabicName')}
                 value={dataRow.aName}
                 onChange={handleChange}
                 required
@@ -216,7 +207,7 @@ const Category = () => {
             <CCol xs={12}>
               <CFormTextarea
                 id="description"
-                label="Description"
+                label={t('description')}
                 rows={3}
                 value={dataRow.description}
                 onChange={handleChange}
@@ -226,101 +217,106 @@ const Category = () => {
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="secondary" onClick={closeModalCU}>
-            Close
+          <CButton color="secondary" variant="outline" onClick={closeModalCU}>
+            {t('close')}
           </CButton>
           <CButton color="primary" onClick={handleSaveChanges}>
-            Save Changes
+            {t('saveChanges')}
           </CButton>
         </CModalFooter>
       </CModal>
-      {visibleModalImages && <MultiImagesUploadModal show={visibleModalImages} handleClose={() => setVisibleModalImages(false)} itemId={selectedItemId} />}
+      {visibleModalImages && <MultiImagesUploadModal show={visibleModalImages} handleClose={() => setVisibleModalImages(false)} itemId={selectedItemId} isRTL={props.isRTL} />}
       <CCard className="mb-4">
         <CCardHeader>{t('category')}</CCardHeader>
         <CCardBody>
           <CRow>
-            <CSmartTable
-              columns={[
-                {
-                  key: 'actions', label: (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                      <CButton onClick={handleAdd} size="sm">
-                        <CIcon icon={cilPlus} ClassName="nav-icon" />
-                      </CButton>
-                    </div>
-                  ), _style: { width: '20%' }, filter: false, sorter: false,
-                },
-                { key: 'aName', label: 'AName', _props: { className: 'columnHeader' }, },
-                { key: 'eName', label: 'EName', _props: { className: 'columnHeader' }, },
-                { key: 'description', label: 'Description', _props: { className: 'columnHeader' }, },
-                {
-                  key: 'actionsAdditional', label: (<></>), _style: { width: '20%' }, filter: false, sorter: false,
-                },
-              ]}
-              items={data}
-              columnFilter={{ external: true }}
-              columnSorter={{ external: true }}
-              pagination={{ external: true }}
-              loading={loading}
-              tableProps={{
-                responsive: true,
-                striped: true,
-                hover: true,
-              }}
-              onSorterChange={(value) => {
-                setActivePage(1)
-                handleSortChange(value)
-              }}
-              onColumnFilterChange={(filter) => {
-                setActivePage(1)
-                handleFilterChange(filter)
-              }}
-              itemsPerPage={itemsPerPage}
-              paginationProps={{
-                activePage,
-                pages: records > 0 ? Math.ceil(records / itemsPerPage) : 1,
-              }}
-              onActivePageChange={(page) => setActivePage(page)}
-              onItemsPerPageChange={(pageSize) => {
-                setActivePage(1)
-                setItemsPerPage(pageSize)
-              }}
-              scopedColumns={{
-                actions: (item) => {
-                  return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
-                      <CButton
-                        size="sm"
-                        onClick={() => handleEdit(item)}
-                        className="me-2"
-                      >
-                        <CIcon icon={cilPencil} ClassName="nav-icon" />
-                      </CButton>
-                      <CButton
-                        size="sm"
-                        onClick={() => handleConfirmDelete(item)}
-                        className="me-2"
-                      >
-                        <CIcon icon={cilTrash} ClassName="nav-icon" />
-                      </CButton>
-                    </td>
-                  )
-                },
-                actionsAdditional: (item) => {
-                  return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
-                      <CButton
-                        size="sm"
-                        onClick={() => handleShowModalImages(item)}
-                        className="me-2"
-                      >
-                        <CIcon icon={cilImage} ClassName="nav-icon" />
-                      </CButton>
-                    </td>
-                  )
-                },
-              }}
-            />
+            {data.length > 0 ? (
+              <CSmartTable
+                columns={[
+                  {
+                    key: 'actions', label: (
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <CButton onClick={handleAdd} size="sm">
+                          <CIcon icon={cilPlus} ClassName="nav-icon" />
+                        </CButton>
+                      </div>
+                    ), _style: { width: '6%' }, filter: false, sorter: false,
+                  },
+                  { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
+                  { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, },
+                  { key: 'description', label: t('description'), _props: { className: 'columnHeader' }, },
+                  {
+                    key: 'actionsAdditional', label: (<></>), _style: { width: '10%' }, filter: false, sorter: false,
+                  },
+                ]}
+                items={data}
+                columnFilter={{ external: true }}
+                columnSorter={{ external: true }}
+                pagination={{ external: true }}
+                loading={loading}
+                tableProps={{
+                  responsive: true,
+                  striped: true,
+                  hover: true,
+                }}
+                onSorterChange={(value) => {
+                  setActivePage(1)
+                  handleSortChange(value)
+                }}
+                onColumnFilterChange={(filter) => {
+                  setActivePage(1)
+                  handleFilterChange(filter)
+                }}
+                itemsPerPage={itemsPerPage}
+                paginationProps={{
+                  activePage,
+                  pages: records > 0 ? Math.ceil(records / itemsPerPage) : 1,
+                }}
+                onActivePageChange={(page) => setActivePage(page)}
+                onItemsPerPageChange={(pageSize) => {
+                  setActivePage(1)
+                  setItemsPerPage(pageSize)
+                }}
+                scopedColumns={{
+                  actions: (item) => {
+                    return (
+                      <td style={{ display: 'flex', justifyContent: 'center' }}>
+                        <CButton
+                          size="sm"
+                          onClick={() => handleEdit(item)}
+                          className="me-2"
+                        >
+                          <CIcon icon={cilPencil} ClassName="nav-icon" />
+                        </CButton>
+                        <CButton
+                          size="sm"
+                          onClick={() => handleConfirmDelete(item)}
+                          className="me-2"
+                        >
+                          <CIcon icon={cilTrash} ClassName="nav-icon" />
+                        </CButton>
+                      </td>
+                    )
+                  },
+                  actionsAdditional: (item) => {
+                    return (
+                      <td style={{ display: 'flex', justifyContent: 'center' }}>
+                        <CButton
+                          size="sm"
+                          onClick={() => handleShowModalImages(item)}
+                          className="me-2"
+                        >
+                          <CIcon icon={cilImage} ClassName="nav-icon" />
+                        </CButton>
+                      </td>
+                    )
+                  },
+                }}
+              />
+            ) :
+              (<div className="text-center text-muted p-3">
+                {t('noItemsFound')}
+              </div>)}
           </CRow>
         </CCardBody>
       </CCard>

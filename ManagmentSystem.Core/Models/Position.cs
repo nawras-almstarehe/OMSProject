@@ -10,7 +10,8 @@ namespace ManagmentSystem.Core.Models
     public class Position
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); public string AName { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string AName { get; set; }
         public string EName { get; set; }
         public bool IsLeader { get; set; }
         public bool IsActive { get; set; }
