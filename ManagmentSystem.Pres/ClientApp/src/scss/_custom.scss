@@ -105,3 +105,11 @@ html[dir="ltr"] .sidebar-nav .nav-group-toggle:after {
   height: 1.6em !important;
   cursor: pointer;
 }
+
+.invalid-modal {
+  display: block;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: .875em;
+  color: var(--cui-form-invalid-color);
+}

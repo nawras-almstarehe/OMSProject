@@ -40,5 +40,11 @@
   "consumer": "زبون",
   "noItemsFound": "لم يتم العثور على أي عناصر",
   "yes": "نعم",
-  "no": "لا"
+  "no": "لا",
+  "fieldRequired": "حقل {0} مطلوب",
+  "deleteConfirmation": "هل أنت متأكد من حذف هذا العنصر؟",
+  "fieldToFetchData": "فشل في جلب البيانات:",
+  "failedPostData": "فشل في إرسال البيانات:",
+  "failedDeleteData": "فشل في الحذف:",
+  "fieldInvalid":  "قيمة الحقل {0} غير صالحة"
 }

@@ -71,3 +71,5 @@ D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\refint\ManagmentSys
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.pdb
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.genruntimeconfig.cache
 D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ref\ManagmentSystem.EF.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ar\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\en\ManagmentSystem.Core.resources.dll

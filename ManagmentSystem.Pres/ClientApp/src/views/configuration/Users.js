@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -15,17 +15,22 @@ import {
   CCardHeader,
   CCardBody,
   CFormSelect,
-  CFormSwitch
-} from '@coreui/react-pro'
+  CFormSwitch,
+  CToast,
+  CToastBody,
+  CToastClose
+} from '@coreui/react-pro';
 import {
   cilPlus,
   cilPencil,
   cilTrash
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import '../../costumStyle/stylesCostum.css'
+} from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import '../../costumStyle/stylesCostum.css';
 import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
+import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik components
+import * as Yup from 'yup'; // Import Yup
 
 const Enum_User_Type = {
   None: '0',
@@ -41,18 +46,20 @@ const Enum_User_Blocked_Type = {
 };
 
 const Users = (props) => {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
   const [filter, setFilter] = useState({});
-  const [records, setRecords] = useState(0)
-  const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [activePage, setActivePage] = useState(1)
-  const [visibleModal, setVisibleModal] = useState(false)
-  const [titleModal, setTitleModal] = useState('')
-  const [validated, setValidated] = useState(false)
-  const [dataRow, setDataRow] = useState(
+  const [records, setRecords] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [activePage, setActivePage] = useState(1);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleToast, setVisibleToast] = useState({ visible: false, message: '' });
+  const [titleModal, setTitleModal] = useState('');
+  const [validatePassword, setValidatePassword] = useState('');
+  const [errorPost, setErrorPost] = useState('');
+  const [initialValues, setInitialValues] = useState(
     {
       id: '',
       userName: '',
@@ -68,8 +75,24 @@ const Users = (props) => {
       isBlocked: false,
       isAdmin: false
     }
-  )
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  );
+
+  const userSchema = Yup.object().shape({
+    userName: Yup.string().required(t('fieldRequired').replace("{0}", t('userName'))),
+    aFirstName: Yup.string().required(t('fieldRequired').replace("{0}", t('aFirstName'))),
+    eFirstName: Yup.string().required(t('fieldRequired').replace("{0}", t('eFirstName'))),
+    aLastName: Yup.string().required(t('fieldRequired').replace("{0}", t('aLastName'))),
+    eLastName: Yup.string().required(t('fieldRequired').replace("{0}", t('eLastName'))),
+    phoneNumber: Yup.string()
+      .required(t('fieldRequired').replace("{0}", t('phoneNumber')))
+      .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im, t('fieldInvalid').replace("{0}", t('phoneNumber'))),
+    email: Yup.string()
+      .email(t('fieldInvalid').replace("{0}", t('email')))
+      .required(t('fieldRequired').replace("{0}", t('email'))),
+    userType: Yup.string().required(t('fieldRequired').replace("{0}", t('userType'))),
+    isBlocked: Yup.boolean(),
+    isAdmin: Yup.boolean()
+  });
 
   const fetchData = async () => {
     setLoading(true);
@@ -85,36 +108,18 @@ const Users = (props) => {
       setData(tableData);
       setRecords(totalItems);
     } catch (error) {
-      console.error('Failed to fetch data:', error);
+      setVisibleToast({ visible: true, message: t('fieldToFetchData') + error });
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const preprocessData = (data) => {
-      return data.map((item) => ({
-        ...item,
-        userName: item.userName || '',
-        aFirstName: item.aFirstName || '',
-        eFirstName: item.eFirstName || '',
-        aLastName: item.aLastName || '',
-        eLastName: item.eLastName || '',
-        phoneNumber: item.phoneNumber || '',
-        email: item.email || '',
-        password: item.password || '',
-        blockedType: item.blockedType || '',
-        userType: item.userType || '',
-        isBlocked: item.isBlocked || false,
-        isAdmin: item.isAdmin || false,
-      }));
-    };
-    setData(preprocessData(data));
     fetchData();
   }, [sort, filter, itemsPerPage, activePage]);
 
   const handleSortChange = (sorter) => {
-    setSort({ column: sorter.column, state: sorter.state })
+    setSort({ column: sorter.column, state: sorter.state });
   };
 
   const handleFilterChange = (value) => {
@@ -125,16 +130,8 @@ const Users = (props) => {
     setFilter({ ...filter, [columnKey]: value });
   };
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setDataRow((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
   const handleAdd = () => {
-    setVisibleModal(!visibleModal)
+    setVisibleModal(true);
     setTitleModal(t('addUser'));
   };
 
@@ -156,78 +153,49 @@ const Users = (props) => {
         isBlocked: response.isBlocked,
         isAdmin: response.isAdmin,
       };
-      setDataRow(dataRow);
       setTitleModal(t('editUser'));
+      setVisibleModal(true);
+
+      return dataRow;
+
     } catch (error) {
-      console.error('Failed to fetch data:', error);
-    } finally {
-      setVisibleModal(!visibleModal)
+      setVisibleToast({ visible: true, message: t('fieldToFetchData') + error });
     }
   };
 
-  const handleSaveChanges = async (event) => {
-    event.preventDefault();
-    if (!dataRow.userName ||
-      !dataRow.aFirstName ||
-      !dataRow.eFirstName ||
-      !dataRow.aLastName ||
-      !dataRow.eLastName ||
-      !dataRow.phoneNumber ||
-      !dataRow.email ||
-      !dataRow.userType
-    ) {
-      setValidated(true);
-      alert('Please fill out all required fields.');
-      return;
-    }
-    var newUser = {
-      id: dataRow.id,
-      userName: dataRow.userName,
-      aFirstName: dataRow.aFirstName,
-      eFirstName: dataRow.eFirstName,
-      aLastName: dataRow.aLastName,
-      eLastName: dataRow.eLastName,
-      phoneNumber: dataRow.phoneNumber,
-      email: dataRow.email,
-      password: dataRow.password,
-      blockedType: dataRow.blockedType,
-      userType: dataRow.userType,
-      isBlocked: dataRow.isBlocked,
-      isAdmin: dataRow.isAdmin,
-    };
+  const handleSaveChanges = async (values) => {
     try {
-      if (dataRow.id == null || dataRow.id == '') {
-        const data = await apiService.post('api/Users/AddUser', newUser);
+      const newUser = {
+        id: values.id,
+        userName: values.userName,
+        aFirstName: values.aFirstName,
+        eFirstName: values.eFirstName,
+        aLastName: values.aLastName,
+        eLastName: values.eLastName,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        password: values.password,
+        blockedType: values.blockedType,
+        userType: values.userType,
+        isBlocked: values.isBlocked,
+        isAdmin: values.isAdmin,
+      };
+      var res = {};
+      if (values.id == null || values.id == '') {
+        res = await apiService.post('api/Users/AddUser', newUser);
       } else {
-        const data = await apiService.put('api/Users/UpdateUser', newUser);
+        res = await apiService.put('api/Users/UpdateUser', newUser);
       }
 
-      setValidated(false);
-      setVisibleModal(false);
-      setDataRow({
-        id: '',
-        userName: '',
-        aFirstName: '',
-        eFirstName: '',
-        aLastName: '',
-        eLastName: '',
-        phoneNumber: '',
-        email: '',
-        password: '',
-        blockedType: '',
-        userType: '',
-        isBlocked: false,
-        isAdmin: false
-      });
-      fetchData();
+      return res;
     } catch (error) {
-      console.error("Upload failed:", error);
+      setVisibleToast({ visible: true, message: t('failedPostData') + error });
     }
   };
 
   const closeModalCU = () => {
     setVisibleModal(false);
-    setDataRow({
+    setInitialValues({
       id: '',
       userName: '',
       aFirstName: '',
@@ -242,165 +210,249 @@ const Users = (props) => {
       isBlocked: false,
       isAdmin: false
     });
+    setValidatePassword('');
+    setErrorPost('');
   };
 
   const handleConfirmDelete = async (item) => {
     try {
-      const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+      const confirmDelete = window.confirm(t('deleteConfirmation'));
       if (confirmDelete) {
-        const response = await apiService.delete(`api/Users/DeleteUser?id=${item.id}`);
+        await apiService.delete(`api/Users/DeleteUser?id=${item.id}`);
         fetchData();
       }
     } catch (error) {
-      console.error("Upload failed:", error);
+      setVisibleToast({ visible: true, message: t('failedDeleteData') + error });
     }
   };
 
   return (
     <>
+      <CToast autohide={true} visible={visibleToast.visible} color="danger" className="text-white align-items-center">
+        <div className="d-flex">
+          <CToastBody>{visibleToast.message}</CToastBody>
+          <CToastClose className="me-2 m-auto" white />
+        </div>
+      </CToast>
       <CModal
         visible={visibleModal}
         onClose={closeModalCU}
         aria-labelledby="AddUserModalLabel"
         backdrop="static"
         size="xl"
-      //className={props.isRTL ? 'text-end' : 'text-start'}
       >
         <CModalHeader>
           <CModalTitle id="AddUserModalLabel">{titleModal}</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CForm className="needs-validation" noValidate validated={validated}>
-            <CRow className="mb-3">
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="userName"
-                  label={t('userName')}
-                  value={dataRow.userName}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="aFirstName"
-                  label={t('aFirstName')}
-                  value={dataRow.aFirstName}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="eFirstName"
-                  label={t('eFirstName')}
-                  value={dataRow.eFirstName}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol md={4}>
-                <CFormInput
-                  type="password"
-                  id="password"
-                  label={t('password')}
-                  value={dataRow.password}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="aLastName"
-                  label={t('aLastName')}
-                  value={dataRow.aLastName}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="eLastName"
-                  label={t('eLastName')}
-                  value={dataRow.eLastName}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol md={4}>
-                <CFormInput
-                  type="text"
-                  id="phoneNumber"
-                  label={t('phoneNumber')}
-                  value={dataRow.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormInput
-                  type="email"
-                  id="email"
-                  label={t('email')}
-                  value={dataRow.email}
-                  onChange={handleChange}
-                  required
-                />
-              </CCol>
-              <CCol md={4}>
-                <CFormSelect
-                  id="userType"
-                  label={t('userType')}
-                  value={dataRow.userType}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value=""></option>
-                  <option value="employee">{t('employee')}</option>
-                  <option value="producer">{t('producer')}</option>
-                  <option value="consumer">{t('consumer')}</option>
-                </CFormSelect>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol md={2}>
-                <CFormSwitch
-                  id="isAdmin"
-                  label={t('isAdmin')}
-                  checked={dataRow.isAdmin}
-                  onChange={(e) => setDataRow({ ...dataRow, isAdmin: e.target.checked })}
-                  className="custom-switch"
-                />
-              </CCol>
-              <CCol md={2}>
-                <CFormSwitch
-                  id="isBlocked"
-                  label={t('Block')}
-                  checked={dataRow.isBlocked}
-                  onChange={(e) => setDataRow({ ...dataRow, isBlocked: e.target.checked })}
-                  className="custom-switch"
-                />
-              </CCol>
-            </CRow>
-          </CForm>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={userSchema}
+            onSubmit={async (values, { resetForm }) => {
+              const res = await handleSaveChanges(values);
+              if (res && res.result == 1) {
+                setVisibleModal(false);
+                resetForm();
+                fetchData();
+              } else if (res && res.result == 3) {
+                setValidatePassword(res.message);
+              } else if (res && res.result == 0) {
+                setErrorPost(res.message);
+              }
+            }}
+            enableReinitialize={true} //Very Important
+          >
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+              <CForm onSubmit={handleSubmit}>
+                <CRow className="mb-3">
+                  <CCol md={4}>
+                    <CFormInput
+                      type="text"
+                      id="userName"
+                      label={t('userName')}
+                      value={values.userName}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.userName && errors.userName}
+                    />
+                    {touched.userName && errors.userName && (
+                      <div className="invalid-feedback">{errors.userName}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      type="text"
+                      id="aFirstName"
+                      label={t('aFirstName')}
+                      value={values.aFirstName}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.aFirstName && errors.aFirstName}
+                    />
+                    {touched.aFirstName && errors.aFirstName && (
+                      <div className="invalid-feedback">{errors.aFirstName}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      type="text"
+                      id="eFirstName"
+                      label={t('eFirstName')}
+                      value={values.eFirstName}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.eFirstName && errors.eFirstName}
+                    />
+                    {touched.eFirstName && errors.eFirstName && (
+                      <div className="invalid-feedback">{errors.eFirstName}</div>
+                    )}
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol md={4}>
+                    <CFormInput
+                      type="password"
+                      id="password"
+                      label={t('password')}
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={validatePassword}
+                    />
+                    {validatePassword && (
+                      <div className="invalid-feedback">{validatePassword}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      type="text"
+                      id="aLastName"
+                      label={t('aLastName')}
+                      value={values.aLastName}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.aLastName && errors.aLastName}
+                    />
+                    {touched.aLastName && errors.aLastName && (
+                      <div className="invalid-feedback">{errors.aLastName}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      type="text"
+                      id="eLastName"
+                      label={t('eLastName')}
+                      value={values.eLastName}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.eLastName && errors.eLastName}
+                    />
+                    {touched.eLastName && errors.eLastName && (
+                      <div className="invalid-feedback">{errors.eLastName}</div>
+                    )}
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol md={4}>
+                    <CFormInput
+                      type="text"
+                      id="phoneNumber"
+                      label={t('phoneNumber')}
+                      value={values.phoneNumber}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.phoneNumber && errors.phoneNumber}
+                    />
+                    {touched.phoneNumber && errors.phoneNumber && (
+                      <div className="invalid-feedback">{errors.phoneNumber}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormInput
+                      type="email"
+                      id="email"
+                      label={t('email')}
+                      value={values.email}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      autoComplete="off"
+                      invalid={touched.email && errors.email}
+                    />
+                    {touched.email && errors.email && (
+                      <div className="invalid-feedback">{errors.email}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormSelect
+                      id="userType"
+                      label={t('userType')}
+                      value={values.userType}
+                      onChange={handleChange}
+                      required
+                      onBlur={handleBlur}
+                      invalid={touched.userType && errors.userType}
+                    >
+                      <option value=""></option>
+                      <option value="employee">{t('employee')}</option>
+                      <option value="producer">{t('producer')}</option>
+                      <option value="consumer">{t('consumer')}</option>
+                    </CFormSelect>
+                    {touched.userType && errors.userType && (
+                      <div className="invalid-feedback">{errors.userType}</div>
+                    )}
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol md={2}>
+                    <CFormSwitch
+                      id="isAdmin"
+                      label={t('isAdmin')}
+                      checked={values.isAdmin}
+                      onChange={handleChange}
+                      className="custom-switch"
+                      onBlur={handleBlur}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CFormSwitch
+                      id="isBlocked"
+                      label={t('Block')}
+                      checked={values.isBlocked}
+                      onChange={handleChange}
+                      className="custom-switch"
+                      onBlur={handleBlur}
+                    />
+                  </CCol>
+                </CRow>
+                {errorPost && (
+                  <div className="invalid-modal">{errorPost}</div>
+                )}
+                <CModalFooter>
+                  <CButton color="secondary" variant="outline" onClick={closeModalCU}>
+                    {t('close')}
+                  </CButton>
+                  <CButton color="primary" type="submit">
+                    {t('saveChanges')}
+                  </CButton>
+                </CModalFooter>
+              </CForm>
+            )}
+          </Formik>
         </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" variant="outline" onClick={closeModalCU}>
-            {t('close')}
-          </CButton>
-          <CButton color="primary" onClick={handleSaveChanges}>
-            {t('saveChanges')}
-          </CButton>
-        </CModalFooter>
       </CModal>
       <CCard className="mb-4">
         <CCardHeader>{t('users')}</CCardHeader>
@@ -495,7 +547,12 @@ const Users = (props) => {
                     <td style={{ display: 'flex', justifyContent: 'center' }}>
                       <CButton
                         size="sm"
-                        onClick={() => handleEdit(item)}
+                        onClick={async () => {
+                          const itemValue = await handleEdit(item);
+                          setInitialValues(itemValue)
+                          setVisibleModal(true)
+                          setTitleModal(t('editCategory'))
+                        }}
                         className="me-2"
                       >
                         <CIcon icon={cilPencil} ClassName="nav-icon" />
@@ -526,7 +583,7 @@ const Users = (props) => {
         </CCardBody>
       </CCard>
     </>
-  )
-}
+  );
+};
 
 export default Users

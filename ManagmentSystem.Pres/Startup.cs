@@ -23,6 +23,12 @@ using ManagmentSystem.EF.Services;
 using Serilog;
 using System.IO;
 using ManagmentSystem.Pres.Middleware;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using ManagmentSystem.Core.Resources;
+using Microsoft.Extensions.Localization;
+using Microsoft.CodeAnalysis;
 
 namespace ManagmentSystem.Pres
 {
@@ -48,21 +54,8 @@ namespace ManagmentSystem.Pres
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true; // Make the session cookie essential
             });
-            //services.AddSingleton<IWebHostEnvironment>(sp =>
-            //{
-            //    var env = sp.GetRequiredService<IWebHostEnvironment>();
-            //    env.WebRootPath ??= Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-            //    return env;
-            //});
-            services.AddControllersWithViews();
-            //services.AddDbContext<ApplicationDBContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-            //        b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
-
-            //services.AddDbContext<ApplicationDBContext>(options =>
-            //        options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-            //        ServerVersion.AutoDetect(Configuration.GetConnectionString("DefaultConnection"))));
-
+            //services.AddControllersWithViews();
+            
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 31))));
 
@@ -88,11 +81,31 @@ namespace ManagmentSystem.Pres
                     };
                 });
 
+            // ✅ Add localization support
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddSingleton<IStringLocalizer<SharedResource>, StringLocalizer<SharedResource>>();
+
+            services.AddLocalization();
+            services.AddControllersWithViews()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(ManagmentSystem.Core.Resources.SharedResource));
+                });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { "en", "ar" };
+                options.SetDefaultCulture(supportedCultures[0])
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IUserService, UserService>();
-            //services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // ✅ Register Global Exception Middleware
@@ -118,6 +131,18 @@ namespace ManagmentSystem.Pres
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            //var supportedCultures = new[]
+            //{
+            //    new CultureInfo("en"),
+            //    new CultureInfo("ar")
+            //};
+
+            //var localizationOptions = new RequestLocalizationOptions
+            //{
+            //    DefaultRequestCulture = new RequestCulture("en"),
+            //    SupportedCultures = supportedCultures,
+            //    SupportedUICultures = supportedCultures
+            //};
 
             app.UseSerilogRequestLogging();  // Add this line to enable Serilog request logging
 
@@ -139,6 +164,8 @@ namespace ManagmentSystem.Pres
             //للسماح بالاتصال بالتطبيق من شبكات او بورتات اخرى اي ليس محلي (لوكال).ب
             //app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseCors("AllowAllOrigins");
+            //app.UseRequestLocalization(localizationOptions);
+            app.UseRequestLocalization();
             app.UseRouting();
 
             app.UseSession(); // Enable session before UseEndpoints
@@ -156,29 +183,7 @@ namespace ManagmentSystem.Pres
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
-
-                //if (env.IsDevelopment())
-                //{
-                //    //spa.Options.StartupTimeout = TimeSpan.FromSeconds(520);
-                //    spa.UseReactDevelopmentServer(npmScript: "start");
-                //}
-
-                //if (env.IsDevelopment())
-                //{
-                //    // Use Vite's development server
-                //    app.UseDeveloperExceptionPage();
-                //    app.UseSpa(spa =>
-                //    {
-                //        spa.Options.SourcePath = "client"; // Path where your Vite app is located
-                //        spa.UseViteDevServer(); // Use Vite development server
-                //    });
-                //}
-                //else
-                //{
-                //    app.UseExceptionHandler("/Home/Error");
-                //    app.UseHsts();
-                //}
-
+                
                 if (env.IsDevelopment())
                 {
                     // Use Vite Development Server in development mode

@@ -26,17 +26,16 @@ import {
   cilMoon,
   cilSun,
   cilGlobeAlt
-} from '@coreui/icons'
-
-import { AppBreadcrumb } from './index'
-import { AppHeaderDropdown } from './header/index'
+} from '@coreui/icons';
+import apiService from '../shared/apiService';
+import { AppBreadcrumb } from './index';
+import { AppHeaderDropdown } from './header/index';
 import { useTranslation } from "react-i18next";
 
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const { i18n, t } = useTranslation();
-  const [isRTL, setIsRTL] = useState(false);
   //const user = useSelector((state) => state.authReducer.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -48,9 +47,15 @@ const AppHeader = () => {
     navigate('/') // Navigate back to login after logout
   }
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    //document.documentElement.dir = i18n.dir(lng); // Change direction dynamically
+  const setLanguage = async (culture) => {
+    try {
+      const response = await apiService.get(`api/Config/SetLanguage?culture=${culture}`);
+      if (response.success) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Failed to set language:', error);
+    }
   };
 
   useEffect(() => {
@@ -59,12 +64,6 @@ const AppHeader = () => {
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     })
   }, [])
-
-  //useEffect(() => {
-  //  const direction = i18n.dir(); // Get current language direction (ltr/rtl)
-  //  document.documentElement.dir = direction; // Apply direction to <html>
-  //  setIsRTL(direction === 'rtl');
-  //}, [i18n.language]);
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -159,7 +158,7 @@ const AppHeader = () => {
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
-                onClick={() => changeLanguage("ar")}
+                onClick={() => setLanguage('ar')}
               >
                 🇸🇦 العربية
               </CDropdownItem>
@@ -168,7 +167,7 @@ const AppHeader = () => {
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
-                onClick={() => changeLanguage("en")}
+                onClick={() => setLanguage('en')}
               >
                 🇺🇸 English
               </CDropdownItem>

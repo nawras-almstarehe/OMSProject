@@ -40,5 +40,11 @@
   "consumer": "Consumer",
   "noItemsFound": "No items found",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "fieldRequired": "{0} field is required",
+  "deleteConfirmation": "Are you sure you want to delete this item?",
+  "fieldToFetchData": "Failed to fetch data:",
+  "failedPostData": "Failed to post data:",
+  "failedDeleteData": "Failed to dalete data:",
+  "fieldInvalid":  "{0} field is invalid"
 }

@@ -57,3 +57,11 @@ D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\refint\ManagmentS
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.pdb
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.genruntimeconfig.cache
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ref\ManagmentSystem.Core.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ar\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\en\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.GenerateResource.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ar\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\en\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.resources
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.ar.resources
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.en.resources

@@ -1,16 +1,19 @@
 ﻿using ManagmentSystem.Core.IServices;
 using ManagmentSystem.Core.Models;
+using ManagmentSystem.Core.Resources;
 using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ManagmentSystem.EF.Services
@@ -19,24 +22,40 @@ namespace ManagmentSystem.EF.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
-        public UserService(IUnitOfWork unitOfWork, IWebHostEnvironment env)
+        private readonly IStringLocalizer<SharedResource> _localizer;
+        public UserService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer)
         {
             _unitOfWork = unitOfWork;
             _env = env ?? throw new ArgumentNullException(nameof(env));
+            _localizer = localizer;
         }
         public async Task<AuthModel> AddUser(User user)
         {
             try
             {
+
                 if (await _unitOfWork.Users.FindByEmailAsync(user.Email) is not null)
-                    return new AuthModel { Result = 0, Message = "Email is already registered!" };
+                    return new AuthModel { Result = 0, Message = _localizer["EmailIsAlreadyRegistered"] };
 
                 if (await _unitOfWork.Users.FindByUserNameAsync(user.UserName) is not null)
-                    return new AuthModel { Result = 0, Message = "Username is already registered!" };
+                    return new AuthModel { Result = 0, Message = _localizer["UserNameIsAlreadyRegistered"] };
 
                 var PasswordHashed = "";
                 if (!string.IsNullOrEmpty(user.Password))
                 {
+                    string passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
+                    if (!Regex.IsMatch(user.Password, passwordRegex))
+                    {
+                        return new AuthModel { Result = 3, Message = _localizer["ValidatePassword"] };
+                    }
+                    if (user.Password.Length > 25)
+                    {
+                        return new AuthModel { Result = 3, Message = _localizer["PasswordToolLong"] };
+                    }
+                    if (user.Password.Length < 8)
+                    {
+                        return new AuthModel { Result = 3, Message = _localizer["PasswordTooShort"] };
+                    }
                     var hasher = new PasswordHasher<User>();
                     PasswordHashed = hasher.HashPassword(user, user.Password);
                 }
@@ -67,7 +86,7 @@ namespace ManagmentSystem.EF.Services
                 }
                 else
                 {
-                    return new AuthModel { Result = 0, Message = "Failed" };
+                    return new AuthModel { Result = 0, Message = _localizer["Failed"] };
                 }
 
             }
@@ -202,19 +221,33 @@ namespace ManagmentSystem.EF.Services
             {
                 var UserCurr = await _unitOfWork.Users.GetByIdAsync(user.Id);
                 if (UserCurr == null)
-                    return new AuthModel { Result = 0, Message = "User not found!" };
+                    return new AuthModel { Result = 0, Message = _localizer["UserNotFound"] };
 
                 var UserCurrByEmail = await CheckExistEmailForUpdate(user.Email, user.Id);
                 var UserCurrByUserName = await CheckExistUserNameForUpdate(user.UserName, user.Id);
 
                 if (UserCurrByEmail)
-                    return new AuthModel { Result = 0, Message = "Email is already registered!" };
+                    return new AuthModel { Result = 0, Message = _localizer["EmailIsAlreadyRegistered"] };
 
                 if (UserCurrByUserName)
-                    return new AuthModel { Result = 0, Message = "Username is already registered!" };
+                    return new AuthModel { Result = 0, Message = _localizer["UserNameIsAlreadyRegistered"] };
 
                 if (!string.IsNullOrEmpty(user.Password))
                 {
+                    string passwordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
+                    if (!Regex.IsMatch(user.Password, passwordRegex))
+                    {
+                        return new AuthModel { Result = 0, Message = _localizer["ValidatePassword"] };
+                    }
+                    if (user.Password.Length > 25)
+                    {
+                        return new AuthModel { Result = 0, Message = _localizer["PasswordToolLong"] };
+                    }
+                    if (user.Password.Length < 8)
+                    {
+                        return new AuthModel { Result = 0, Message = _localizer["PasswordTooShort"] };
+                    }
+
                     var hasher = new PasswordHasher<User>();
                     UserCurr.Password = hasher.HashPassword(user, user.Password);
                 }
@@ -237,7 +270,7 @@ namespace ManagmentSystem.EF.Services
             }
             catch (Exception ex)
             {
-                return new AuthModel { Result = 0, Message = $"Error: {ex.Message}" };
+                return new AuthModel { Result = 0, Message = _localizer["Error"] + ex.Message };
             }
         }
     }
