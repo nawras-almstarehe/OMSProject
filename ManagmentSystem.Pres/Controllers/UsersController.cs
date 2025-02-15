@@ -11,6 +11,10 @@ using ManagmentSystem.EF.Services;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Linq;
+using System.Security.Claims;
 
 namespace ManagmentSystem.Pres.Controllers
 {
@@ -31,6 +35,15 @@ namespace ManagmentSystem.Pres.Controllers
         [HttpPost("GetUsers")]
         public async Task<IActionResult> GetUsers([FromBody] VMObjectPost UserPost)
         {
+            // 1. Access the User property from HttpContext
+            var claims = User.Claims;
+
+            // 2. Extract specific claims
+            var username = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var userId = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value; // Or the specific claim you used for User ID
+
+            // Example of accessing all claims
+            var allClaims = claims.Select(c => new { Type = c.Type, Value = c.Value }).ToList();
             if (UserPost == null)
             {
                 return BadRequest(new
@@ -145,21 +158,6 @@ namespace ManagmentSystem.Pres.Controllers
             }
         }
 
-        //[HttpGet("Register")]
-        //public async Task<IActionResult> Register([FromBody] VMRegister user)
-        //{
-        //    try
-        //    {
-        //        var Result = new VMResult();
-        //        Result = await _unitOfWork.Users.RegisterLocalAsync(user);
-        //        return Ok(Result);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
-
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] VMLogin user)
         {
@@ -182,6 +180,15 @@ namespace ManagmentSystem.Pres.Controllers
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        [HttpPost("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); //Invalidate the authentication cookie
+            //HttpContext.Session.Clear(); // Clear session data
+                                         //Potentially add code here to revoke refresh tokens
+            return Ok(new { message = "Logged out successfully." });
         }
     }
 }

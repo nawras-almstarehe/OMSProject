@@ -10,6 +10,8 @@ namespace ManagmentSystem.Core.VModels
     {
         public string Token { get; set; }
         public string Username { get; set; }
+        public string AFullName { get; set; }
+        public string EFullName { get; set; }
         public string Email { get; set; }
         public double PriviligeCode { get; set; }
         public bool IsAuthenticated { get; set; }

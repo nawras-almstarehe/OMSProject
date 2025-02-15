@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ManagmentSystem.Core.Models;
-using Microsoft.Extensions.Hosting;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace ManagmentSystem.EF
 {
@@ -15,6 +11,18 @@ namespace ManagmentSystem.EF
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                // In case options are not already configured (unlikely, but just in case)
+                optionsBuilder.UseSqlServer("DefaultConnection");
+            }
+
+            // Enable sensitive data logging and log to the console
+            optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +43,7 @@ namespace ManagmentSystem.EF
                 eb.Property(x => x.Code).HasColumnType("float");
                 eb.Property(x => x.AName).HasColumnType("varchar(200)");
                 eb.Property(x => x.EName).HasColumnType("varchar(200)");
-                eb.Property(x => x.Type).HasColumnType("varchar(20)");
+                eb.Property(x => x.Type).HasColumnType("int");
                 eb.Property(x => x.ADescription).HasColumnType("varchar(4000)");
                 eb.Property(x => x.EDescription).HasColumnType("varchar(4000)");
                 eb.Property(x => x.LastAccessed).HasColumnType("DateTime").ValueGeneratedOnAddOrUpdate();
@@ -65,8 +73,8 @@ namespace ManagmentSystem.EF
                 eb.Property(x => x.PhoneNumber).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.IsBlocked).HasColumnType("bit");
                 eb.Property(x => x.IsAdmin).HasColumnType("bit").HasDefaultValue(false);
-                eb.Property(x => x.BlockedType).HasColumnType("varchar(20)");
-                eb.Property(x => x.UserType).HasColumnType("varchar(20)");
+                eb.Property(x => x.BlockedType).HasColumnType("int");
+                eb.Property(x => x.UserType).HasColumnType("int");
                 eb.Property(x => x.LastAccessed).HasColumnType("DateTime").ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<Department>(eb =>
@@ -77,7 +85,7 @@ namespace ManagmentSystem.EF
                 eb.Property(x => x.AName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.EName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.DepartmentParentId).HasColumnType("VARCHAR(36)");
-                eb.Property(x => x.DepartmentType).HasColumnType("varchar(20)");
+                eb.Property(x => x.DepartmentType).HasColumnType("int");
                 eb.Property(x => x.Code).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.DepCode).HasColumnType("varchar(200)");
                 eb.Property(x => x.IsActive).HasColumnType("bit");
@@ -103,7 +111,7 @@ namespace ManagmentSystem.EF
                 eb.Property(x => x.UserId).HasColumnType("VARCHAR(36)").IsRequired();
                 eb.Property(x => x.UserName).HasColumnType("varchar(200)").IsRequired();
                 eb.Property(x => x.IsActive).HasColumnType("bit");
-                eb.Property(x => x.Type).HasColumnType("varchar(20)");
+                eb.Property(x => x.Type).HasColumnType("int");
                 eb.Property(x => x.AddedOn).HasColumnType("DateTime");
                 eb.Property(x => x.StartDate).HasColumnType("DateTime").IsRequired();
                 eb.Property(x => x.EndDate).HasColumnType("DateTime").IsRequired();
@@ -234,7 +242,7 @@ namespace ManagmentSystem.EF
                 eb.Property(x => x.PriceItem).HasColumnType("decimal(18,2)");
                 eb.Property(x => x.Discount).HasColumnType("decimal(18,2)");
                 eb.Property(x => x.Note).HasColumnType("varchar(4000)");
-                eb.Property(x => x.Status).HasColumnType("varchar(20)").HasDefaultValue(VNProcess.Enum_Status.Request.ToString());
+                eb.Property(x => x.Status).HasColumnType("int").HasDefaultValue((int)VNProcess.Enum_Status.Request);
                 eb.Property(x => x.ProcessType).HasColumnType("varchar(20)");
                 eb.Property(x => x.InvoiceId).HasColumnType("VARCHAR(36)");
                 eb.Property(x => x.ProductId).HasColumnType("VARCHAR(36)");
@@ -457,6 +465,7 @@ namespace ManagmentSystem.EF
                     ADescription = "مدير النظام",
                     EDescription = "System manager",
                     Code = (double)VMPrivilege.Enum_Privilege.SystemManager,
+                    Type = (int)VMPrivilege.Enum_Privilege_Type.None,
                 });
 
             modelBuilder.Entity<RolePrivilege>()
@@ -481,8 +490,8 @@ namespace ManagmentSystem.EF
                     PhoneNumber = "0953244518",
                     IsBlocked = false,
                     IsAdmin = true,
-                    BlockedType = VMUser.Enum_User_Blocked_Type.None.ToString(),
-                    UserType = VMUser.Enum_User_Type.Employee.ToString(),
+                    BlockedType = (int)VMUser.Enum_User_Blocked_Type.None,
+                    UserType = (int)VMUser.Enum_User_Type.Employee,
                 });
             modelBuilder.Entity<Department>()
                 .HasData(new Department
@@ -494,7 +503,7 @@ namespace ManagmentSystem.EF
                     DepCode = "0001",
                     DepartmentParentId = "",
                     IsActive = true,
-                    DepartmentType = VMDepartment.Enum_Department_Type.GeneralDepartment.ToString(),
+                    DepartmentType = (int)VMDepartment.Enum_Department_Type.GeneralDepartment,
                 });
             modelBuilder.Entity<Position>()
                 .HasData(new Position
@@ -515,7 +524,7 @@ namespace ManagmentSystem.EF
                     UserId = userId,
                     IsActive = true,
                     PositionId = positionId,
-                    Type = VMUserPosition.Enum_UserPosition_Type.HR.ToString(),
+                    Type = (int)VMUserPosition.Enum_UserPosition_Type.HR,
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddMonths(12),
 

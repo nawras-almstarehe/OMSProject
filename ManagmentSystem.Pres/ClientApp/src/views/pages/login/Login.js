@@ -27,8 +27,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    debugger
-    await dispatch(login({ userName, password }))
+    dispatch(login({ userName, password }))
     if (!error) {
       navigate('/home') // Navigate to home page after successful login
     }

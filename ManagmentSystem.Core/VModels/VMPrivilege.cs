@@ -17,5 +17,9 @@ namespace ManagmentSystem.Core.VModels
             Execute = 8,
             Delete = 16
         }
+        public enum Enum_Privilege_Type
+        {
+            None = 0
+        }
     }
 }

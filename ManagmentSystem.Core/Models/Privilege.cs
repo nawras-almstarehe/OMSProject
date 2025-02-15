@@ -10,8 +10,9 @@ namespace ManagmentSystem.Core.Models
     public class Privilege
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); public double Code { get; set; }
-        public string Type { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString(); 
+        public double Code { get; set; }
+        public int Type { get; set; }
         public string AName { get; set; }
         public string EName { get; set; }
         public string EDescription { get; set; }

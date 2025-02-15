@@ -11,7 +11,7 @@ namespace ManagmentSystem.Core.Models
     {
         [Key]
         public string Id { get; set; } = Guid.NewGuid().ToString(); public bool IsActive { get; set; }
-        public string Type { get; set; }
+        public int Type { get; set; }
         public DateTime LastAccessed { get; set; }
         public DateTime AddedOn { get; set; }
         public DateTime StartDate { get; set; }

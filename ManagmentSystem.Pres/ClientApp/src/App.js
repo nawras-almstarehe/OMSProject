@@ -5,7 +5,7 @@ import i18n from 'i18next';
 import apiService from '../src/shared/apiService';
 import { CSpinner, useColorModes } from '@coreui/react';
 import './scss/style.scss';
-
+import TokenCheck from './shared/TokenCheck';
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 
@@ -42,10 +42,11 @@ const App = () => {
       return
     }
     setColorMode(storedTheme)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <HashRouter>
+      <TokenCheck />
       <Suspense
         fallback={
           <div className="pt-3 text-center">

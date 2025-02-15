@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   CAvatar,
   CBadge,
@@ -8,7 +8,7 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-} from '@coreui/react'
+} from '@coreui/react';
 import {
   cilBell,
   cilCreditCard,
@@ -19,12 +19,26 @@ import {
   cilSettings,
   cilTask,
   cilUser,
-} from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
+  cilAccountLogout
+} from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import { useNavigate, NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from "react-i18next";
+import { userLogout } from '../../actions/authActions';
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { i18n, t } = useTranslation();
+
+  const handleLogout = () => {
+    dispatch(userLogout())
+    navigate('/login') // Navigate back to login after logout
+  }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
@@ -84,9 +98,12 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+        <CDropdownItem
+          as="button"
+          type="button"
+          onClick={handleLogout}>
+          <CIcon icon={cilAccountLogout} className="me-2" />
+          { t('logout')}
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

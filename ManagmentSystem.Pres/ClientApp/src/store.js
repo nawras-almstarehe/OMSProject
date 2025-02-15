@@ -1,8 +1,6 @@
-/* eslint-disable prettier/prettier */
-import { legacy_createStore as createStore, applyMiddleware } from 'redux'
-import { thunk } from 'redux-thunk'
-import rootReducer from './reducers'
-import { loginSuccess } from './actions/authActions'
+import { legacy_createStore as createStore, applyMiddleware } from 'redux';
+import { thunk } from 'redux-thunk';
+import rootReducer from './reducers';
 //import { composeWithDevTools } from 'redux-devtools-extension'
 
 const store = createStore(
@@ -10,11 +8,4 @@ const store = createStore(
   applyMiddleware(thunk)
 )
 
-// Check for saved user and token in localStorage
-const user = localStorage.getItem('Username')
-const token = localStorage.getItem('token')
-
-if (user && token) {
-  store.dispatch(loginSuccess(user, token)) // Restore user session
-}
-export default store
+export default store;

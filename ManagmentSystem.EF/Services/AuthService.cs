@@ -1,10 +1,12 @@
 ﻿using ManagmentSystem.Core.Helpers;
 using ManagmentSystem.Core.IServices;
 using ManagmentSystem.Core.Models;
+using ManagmentSystem.Core.Resources;
 using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -21,34 +23,54 @@ namespace ManagmentSystem.EF.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly JWT _jwt;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public AuthService(IUnitOfWork unitOfWork, IOptions<JWT> jwt)
+        public AuthService(IUnitOfWork unitOfWork, IOptions<JWT> jwt, IStringLocalizer<SharedResource> localizer)
         {
             _unitOfWork = unitOfWork;
             _jwt = jwt.Value;
+            _localizer = localizer;
         }
         public async Task<AuthModel> LoginAsync(VMLogin model)
         {
             var authModel = new AuthModel();
-
             var user = await _unitOfWork.Users.FindByUserNameAsync(model.Username);
-
             if (user is null || user.Password == "Sys_Pass_Temp" || !VerifyPassword(user, model.Password))
             {
-                throw new ServiceException("Username or Password is incorrect!", 400);
+                throw new ServiceException(_localizer["UsernameOrPasswordIsIncorrect"], 400);
             }
-
-            var jwtSecurityToken = await CreateJwtToken(user);
-            var PrivilegeCode = await _unitOfWork.UserPositions.GetUserPrivilegesAsync(user.Id);
-
+            double PrivilegeCode = await _unitOfWork.UserPositions.GetUserPrivilegesAsync(user.Id);
+            var jwtSecurityToken = CreateJwtToken(user, PrivilegeCode);
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-            authModel.Email = user.Email;
             authModel.Username = user.UserName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
-            authModel.PriviligeCode = PrivilegeCode;
-
             return authModel;
+        }
+        private JwtSecurityToken CreateJwtToken(User user, double privilegeCode)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("uid", user.Id),
+                new Claim("privilegeCode", privilegeCode.ToString()),
+                new Claim("aFullName", user.AFirstName.ToString() + " " + user.ALastName.ToString()),
+                new Claim("eFullName", user.EFirstName.ToString() + " " + user.ELastName.ToString())
+            };
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwt.Issuer,
+                audience: _jwt.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(_jwt.DurationInMinutes),
+                signingCredentials: signingCredentials);
+
+            return jwtSecurityToken;
         }
 
         public async Task<AuthModel> RegisterAsync(VMRegister model)
@@ -90,30 +112,6 @@ namespace ManagmentSystem.EF.Services
             }
         }
 
-        private async Task<JwtSecurityToken> CreateJwtToken(User user)
-        {
-            double privilegeCode = await _unitOfWork.UserPositions.GetUserPrivilegesAsync(user.Id);
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("uid", user.Id),
-                new Claim("privilegeCode", privilegeCode.ToString())
-            };
-
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: _jwt.Issuer,
-                audience: _jwt.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddDays(_jwt.DurationInDays),
-                signingCredentials: signingCredentials);
-
-            return jwtSecurityToken;
-        }
 
         public bool VerifyPassword(User user, string Password)
         {
@@ -122,7 +120,6 @@ namespace ManagmentSystem.EF.Services
             var result = hasher.VerifyHashedPassword(user, UserPassword, Password);
             bool isPasswordValid = result == PasswordVerificationResult.Success;
             return isPasswordValid;
-            //return BCrypt.Net.BCrypt.Verify(plainPassword, hashedPassword);
         }
     }
 }

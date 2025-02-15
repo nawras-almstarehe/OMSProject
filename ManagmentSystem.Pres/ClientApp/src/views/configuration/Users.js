@@ -33,16 +33,16 @@ import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik component
 import * as Yup from 'yup'; // Import Yup
 
 const Enum_User_Type = {
-  None: '0',
-  Employee: '1',
-  Producer: '2',
-  Consumer: '3'
+  None: 0,
+  Employee: 1,
+  Producer: 2,
+  Consumer: 3
 };
 
 const Enum_User_Blocked_Type = {
-  None: '0',
-  ByAdmin: '1',
-  BySystem: '2'
+  None: 0,
+  ByAdmin: 1,
+  BySystem: 2
 };
 
 const Users = (props) => {
@@ -70,8 +70,8 @@ const Users = (props) => {
       phoneNumber: '',
       email: '',
       password: '',
-      blockedType: '',
-      userType: '',
+      blockedType: 0,
+      userType: 0,
       isBlocked: false,
       isAdmin: false
     }
@@ -89,7 +89,8 @@ const Users = (props) => {
     email: Yup.string()
       .email(t('fieldInvalid').replace("{0}", t('email')))
       .required(t('fieldRequired').replace("{0}", t('email'))),
-    userType: Yup.string().required(t('fieldRequired').replace("{0}", t('userType'))),
+    userType: Yup.number().required(t('fieldRequired').replace("{0}", t('userType')))
+      .notOneOf([Enum_User_Type.None], t('fieldCannotBeNone').replace("{0}", t('userType'))),
     isBlocked: Yup.boolean(),
     isAdmin: Yup.boolean()
   });
@@ -205,8 +206,8 @@ const Users = (props) => {
       phoneNumber: '',
       email: '',
       password: '',
-      blockedType: '',
-      userType: '',
+      blockedType: 0,
+      userType: 0,
       isBlocked: false,
       isAdmin: false
     });
@@ -262,7 +263,7 @@ const Users = (props) => {
             }}
             enableReinitialize={true} //Very Important
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
               <CForm onSubmit={handleSubmit}>
                 <CRow className="mb-3">
                   <CCol md={4}>
@@ -401,15 +402,15 @@ const Users = (props) => {
                       id="userType"
                       label={t('userType')}
                       value={values.userType}
-                      onChange={handleChange}
+                      onChange={(e) => setFieldValue('userType', parseInt(e.target.value, 10))}
                       required
                       onBlur={handleBlur}
                       invalid={touched.userType && errors.userType}
                     >
-                      <option value=""></option>
-                      <option value="employee">{t('employee')}</option>
-                      <option value="producer">{t('producer')}</option>
-                      <option value="consumer">{t('consumer')}</option>
+                      <option value={Enum_User_Type.None}></option>
+                      <option value={Enum_User_Type.Employee}>{t('employee')}</option>
+                      <option value={Enum_User_Type.Producer}>{t('producer')}</option>
+                      <option value={Enum_User_Type.Consumer}>{t('consumer')}</option>
                     </CFormSelect>
                     {touched.userType && errors.userType && (
                       <div className="invalid-feedback">{errors.userType}</div>

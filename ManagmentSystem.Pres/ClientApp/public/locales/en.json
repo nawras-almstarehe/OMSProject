@@ -19,7 +19,7 @@
   "uploadImages": "Upload images",
   "uploadedImages": "Uploaded images",
   "selectImages": "Select Images",
-  "configuration": "configuration",
+  "configuration": "Configuration",
   "addUser": "Add user",
   "editUser": "Edit user",
   "userName": "User name",
@@ -46,5 +46,8 @@
   "fieldToFetchData": "Failed to fetch data:",
   "failedPostData": "Failed to post data:",
   "failedDeleteData": "Failed to dalete data:",
-  "fieldInvalid":  "{0} field is invalid"
+  "fieldInvalid": "{0} field is invalid",
+  "fieldCannotBeNone": "{0} field cannot be empty",
+  "logout": "Logout",
+  "login": "Login"
 }

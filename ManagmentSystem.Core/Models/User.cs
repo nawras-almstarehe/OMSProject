@@ -25,8 +25,8 @@ namespace ManagmentSystem.Core.Models
         //public bool IsCustomer { get; set; }
         public bool IsBlocked { get; set; }
         public bool IsAdmin { get; set; }
-        public string BlockedType { get; set; }
-        public string UserType { get; set; }
+        public int BlockedType { get; set; }
+        public int UserType { get; set; }
         public DateTime LastAccessed { get; set; }
         public ICollection<Position> Positions { get; set; }
         public List<UserPosition> UserPositions { get; set; }

@@ -95,7 +95,6 @@ namespace ManagmentSystem.EF.Services
                 throw;
             }
         }
-
         public async Task<bool> CheckExistEmailForUpdate(string Email, string id)
         {
             try
@@ -132,21 +131,6 @@ namespace ManagmentSystem.EF.Services
         {
             try
             {
-                //var images = _unitOfWork.Images.FindAll(i => i.User == Id);
-                //if (images.Any())
-                //{
-                //    foreach (var image in images)
-                //    {
-                //        var filePath = Path.Combine(_env.WebRootPath, image.ImagePath.TrimStart('/'));
-                //        if (System.IO.File.Exists(filePath))
-                //        {
-                //            System.IO.File.Delete(filePath);
-                //        }
-                //    }
-                //    _unitOfWork.Images.DeleteRange(images);
-                //    await _unitOfWork.CompleteAsync();
-                //}
-
                 var User = _unitOfWork.Users.Delete(Id);
                 if (User != 0)
                 {
@@ -157,14 +141,12 @@ namespace ManagmentSystem.EF.Services
                 {
                     return 0;
                 }
-
             }
             catch (Exception)
             {
                 throw;
             }
         }
-
         public async Task<VMUser> GetUser(string Id)
         {
             try
@@ -178,7 +160,6 @@ namespace ManagmentSystem.EF.Services
                 throw;
             }
         }
-
         public async Task<(IEnumerable<VMUser> users, int totalItems)> GetUsersAll(int page, int pageSize, Dictionary<string, string> search = null, ObjSort sort = null)
         {
             try
@@ -214,7 +195,6 @@ namespace ManagmentSystem.EF.Services
                 throw;
             }
         }
-
         public async Task<AuthModel> UpdateUser(User user)
         {
             try

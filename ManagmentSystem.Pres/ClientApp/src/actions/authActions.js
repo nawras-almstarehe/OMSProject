@@ -3,9 +3,9 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGOUT = 'LOGOUT'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 
-export const loginSuccess = (Username, token, Email, PriviligeCode) => ({
+export const loginSuccess = (Username, token) => ({
   type: LOGIN_SUCCESS,
-  payload: { Username, token, Email, PriviligeCode },
+  payload: { Username, token },
 })
 
 export const logout = () => ({
@@ -40,8 +40,8 @@ export const login = (credentials) => {
     }
     try {
       const responseData = await response.json();
-      const { username, token, email, priviligeCode } = responseData.data
-      dispatch(loginSuccess(username, token, email, priviligeCode))
+      const { username, token } = responseData.data
+      dispatch(loginSuccess(username, token))
       localStorage.setItem('token', token) // Store token in localStorage
       localStorage.setItem('Username', username) // Store user info
     } catch (error) {
@@ -52,9 +52,21 @@ export const login = (credentials) => {
 
 // Action for logging out
 export const userLogout = () => {
-  return (dispatch) => {
-    dispatch(logout())
-    localStorage.removeItem('token') // Clear token from storage
-    localStorage.removeItem('Username') // Clear user info
-  }
-}
+  return async (dispatch) => {
+    try {
+      await fetch('https://localhost:44329/api/Users/Logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Include token if needed
+        },
+      });
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+
+    dispatch(logout());
+    localStorage.removeItem('token');
+    localStorage.removeItem('Username');
+  };
+};

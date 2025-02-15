@@ -38,7 +38,7 @@ namespace ManagmentSystem.Core.VModels
 
         [Required, StringLength(256)]
         public string Password { get; set; }
-        public string UserType { get; set; }
+        public int UserType { get; set; }
         public bool IsBlocked { get; set; }
         public bool IsAdmin { get; set; }
         public string PhoneNumber { get; set; }

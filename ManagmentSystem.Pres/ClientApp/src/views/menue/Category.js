@@ -78,7 +78,6 @@ const Category = (props) => {
 
   useEffect(() => {
     fetchData();
-    setVisibleToast({ visible: true, message: t('fieldToFetchData') });
   }, [sort, filter, itemsPerPage, activePage]);
 
   const handleSortChange = (sorter) => {

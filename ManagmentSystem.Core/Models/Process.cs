@@ -17,7 +17,7 @@ namespace ManagmentSystem.Core.Models
         public decimal PriceItem { get; set; }
         public decimal Discount { get; set; }
         public string Note { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public string ProcessType { get; set; }
         public DateTime LastAccessed { get; set; }
         public string InvoiceId { get; set; }

@@ -46,5 +46,8 @@
   "fieldToFetchData": "فشل في جلب البيانات:",
   "failedPostData": "فشل في إرسال البيانات:",
   "failedDeleteData": "فشل في الحذف:",
-  "fieldInvalid":  "قيمة الحقل {0} غير صالحة"
+  "fieldInvalid": "قيمة الحقل {0} غير صالحة",
+  "fieldCannotBeNone": "قيمة الحقل {0} لايمكن أن تكون فارغة",
+  "logout": "تسجيل الخروج",
+  "login": "تسجيل الدخول"
 }

@@ -11,16 +11,16 @@ namespace ManagmentSystem.Core.VModels
     {
         public enum Enum_User_Blocked_Type
         {
-            None = '0',
-            ByAdmin = '1',
-            BySystem = '2'
+            None = 0,
+            ByAdmin = 1,
+            BySystem = 2
         }
         public enum Enum_User_Type
         {
-            None = '0',
-            Employee = '1',
-            Producer = '2',
-            Consumer = '3'
+            None = 0,
+            Employee = 1,
+            Producer = 2,
+            Consumer = 3
         }
 
         public string id { get; set; }
@@ -33,8 +33,8 @@ namespace ManagmentSystem.Core.VModels
         public string phoneNumber { get; set; }
         public bool isBlocked { get; set; }
         public bool isAdmin { get; set; }
-        public string blockedType { get; set; }
-        public string userType { get; set; }
+        public int blockedType { get; set; }
+        public int userType { get; set; }
         public List<Position> positions { get; set; }
         public List<UserPosition> userPositions { get; set; }
         public Customer customer { get; set; }
@@ -43,7 +43,7 @@ namespace ManagmentSystem.Core.VModels
 
         public VMUser(string Id, string UserName, string AFirstName, string EFirstName,
             string ALastName, string ELastName, string Email, string PhoneNumber,
-            bool IsBlocked, bool IsAdmin, string BlockedType, string UserType)
+            bool IsBlocked, bool IsAdmin, int BlockedType, int UserType)
         {
             id = Id;
             userName = UserName;

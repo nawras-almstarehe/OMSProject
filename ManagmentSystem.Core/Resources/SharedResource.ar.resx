@@ -141,4 +141,7 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>المستخدم غير موجود</value>
   </data>
+  <data name="UsernameOrPasswordIsIncorrect" xml:space="preserve">
+    <value>اسم المستخدم أو كلمة السر خاطئة!</value>
+  </data>
 </root>

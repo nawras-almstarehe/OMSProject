@@ -28,6 +28,7 @@ import {
   cilGlobeAlt
 } from '@coreui/icons';
 import apiService from '../shared/apiService';
+import tokenService from '../shared/tokenService';
 import { AppBreadcrumb } from './index';
 import { AppHeaderDropdown } from './header/index';
 import { useTranslation } from "react-i18next";
@@ -36,15 +37,16 @@ const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const { i18n, t } = useTranslation();
-  //const user = useSelector((state) => state.authReducer.user)
+  const [tokenContent, setTokenContent] = useState({});
+  const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const sidebarShow = useSelector((state) => state.theme.sidebarShow)
+  const sidebarShow = useSelector((state) => state.theme.sidebarShow);
   //const theme = useSelector((state) => state.theme.theme)
 
   const handleLogout = () => {
     dispatch(userLogout())
-    navigate('/') // Navigate back to login after logout
+    navigate('/login') // Navigate back to login after logout
   }
 
   const setLanguage = async (culture) => {
@@ -59,6 +61,7 @@ const AppHeader = () => {
   };
 
   useEffect(() => {
+    setTokenContent(tokenService.decodeToken(token));
     document.addEventListener('scroll', () => {
       headerRef.current &&
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
@@ -76,15 +79,7 @@ const AppHeader = () => {
         </CHeaderToggler>
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
-            <CNavLink to="/dashboard" as={NavLink}>
-              {t('dashboard')}
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">{t('users')}</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">{t('settings')}</CNavLink>
+            {i18n.language === 'ar' ? tokenContent.aFullName : tokenContent.eFullName}
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
@@ -154,7 +149,7 @@ const AppHeader = () => {
             </CDropdownToggle>
             <CDropdownMenu>
               <CDropdownItem
-                active={i18n.lang === 'ar'}
+                active={i18n.language === 'ar'}
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
@@ -163,7 +158,7 @@ const AppHeader = () => {
                 🇸🇦 العربية
               </CDropdownItem>
               <CDropdownItem
-                active={i18n.lang === 'en'}
+                active={i18n.language === 'en'}
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
