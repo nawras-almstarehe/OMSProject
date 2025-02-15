@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ManagmentSystem.Pres/wwwroot/uploads
+/.vs/ManagmentSystem/DesignTimeBuild/.dtbcache.v2
