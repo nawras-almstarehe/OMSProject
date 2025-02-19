@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { toggleTheme } from '../actions/themeActions'
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../actions/themeActions';
 import {
   CCloseButton,
   CSidebar,
@@ -8,19 +8,18 @@ import {
   CSidebarFooter,
   CSidebarHeader,
   CSidebarToggler,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { AppSidebarNav } from './AppSidebarNav'
-import { logo } from 'src/assets/brand/logo' // School logo
-// sidebar nav config
-import navigation from '../_nav'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import { AppSidebarNav } from './AppSidebarNav';
+import { logo } from 'src/assets/brand/logo'; // School logo
+import navigation from '../_nav';
 import { useTranslation } from 'react-i18next';
 
 const AppSidebar = (props) => {
-  const dispatch = useDispatch()
-  const unfoldable = useSelector((state) => state.theme.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.theme.sidebarShow)
-  const theme = useSelector((state) => state.theme.theme)
+  const dispatch = useDispatch();
+  const unfoldable = useSelector((state) => state.theme.sidebarUnfoldable);
+  const sidebarShow = useSelector((state) => state.theme.sidebarShow);
+  const theme = useSelector((state) => state.theme.theme);
   const navItems = navigation();
   const { i18n } = useTranslation();
 
@@ -56,4 +55,4 @@ const AppSidebar = (props) => {
   )
 }
 
-export default React.memo(AppSidebar)
+export default React.memo(AppSidebar);

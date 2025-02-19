@@ -49,5 +49,10 @@
   "fieldInvalid": "قيمة الحقل {0} غير صالحة",
   "fieldCannotBeNone": "قيمة الحقل {0} لايمكن أن تكون فارغة",
   "logout": "تسجيل الخروج",
-  "login": "تسجيل الدخول"
+  "login": "تسجيل الدخول",
+  "departments": "الأقسام",
+  "privileges": "الصلاحيات",
+  "positions": "المناصب",
+  "roles": "الأدوار",
+  "forgotPassword": "هل نسيت كلمة السر؟"
 }

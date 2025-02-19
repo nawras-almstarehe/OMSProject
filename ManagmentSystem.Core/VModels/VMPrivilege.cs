@@ -8,14 +8,15 @@ namespace ManagmentSystem.Core.VModels
 {
     public class VMPrivilege
     {
+        [Flags]
         public enum Enum_Privilege
         {
             None = 0,
-            SystemManager = 1,
-            Read = 2,
-            Write = 4,
-            Execute = 8,
-            Delete = 16
+            SystemManager = 1 << 0,
+            Read = 1 << 1,
+            Write = 1 << 2,
+            Execute = 1 << 3,
+            Delete = 1 << 4
         }
         public enum Enum_Privilege_Type
         {

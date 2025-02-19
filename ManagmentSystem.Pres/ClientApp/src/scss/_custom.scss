@@ -90,6 +90,16 @@ html[dir="ltr"] .ms-2 {
   margin-right: unset !important;
 }
 
+html[dir="rtl"] .nav-link-costum {
+  margin-right: 10% !important;
+  margin-left: unset !important;
+}
+
+/*html[dir="ltr"] .nav-link-costum {
+  margin-left: 10% !important;
+  margin-right: unset !important;
+}*/
+
 html[dir="rtl"] .sidebar-nav .nav-group-toggle:after {
   margin-right: auto !important;
   margin-left: unset !important;

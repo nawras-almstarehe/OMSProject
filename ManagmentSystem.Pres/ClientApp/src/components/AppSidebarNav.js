@@ -1,11 +1,18 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { CBadge, CNavLink, CSidebarNav } from '@coreui/react';
+import tokenService from '../shared/tokenService';
 
-import SimpleBar from 'simplebar-react'
-import 'simplebar-react/dist/simplebar.min.css'
-
-import { CBadge, CNavLink, CSidebarNav } from '@coreui/react'
+const hasPermission = (item) => {
+  const token = useSelector((state) => state.auth.token);
+  const userPrivileges = tokenService.decodeToken(token);
+  if (!item.permission) return true;
+  return (userPrivileges.privilegeCode & item.permission) === item.permission;
+};
 
 export const AppSidebarNav = ({ items }) => {
   const navLink = (name, icon, badge, indent = false) => {
@@ -29,12 +36,13 @@ export const AppSidebarNav = ({ items }) => {
   }
 
   const navItem = (item, index, indent = false) => {
-    const { component, name, badge, icon, ...rest } = item
-    const Component = component
+    if (!hasPermission(item)) return null;
+    const { component, name, badge, icon, classCustom, ...rest } = item;
+    const Component = component;
     return (
       <Component as="div" key={index}>
         {rest.to || rest.href ? (
-          <CNavLink {...(rest.to && { as: NavLink })} {...rest}>
+          <CNavLink className={classCustom} {...(rest.to && { as: NavLink })} {...rest}>
             {navLink(name, icon, badge, indent)}
           </CNavLink>
         ) : (
@@ -45,8 +53,9 @@ export const AppSidebarNav = ({ items }) => {
   }
 
   const navGroup = (item, index) => {
-    const { component, name, icon, items, to, ...rest } = item
-    const Component = component
+    if (!hasPermission(item)) return null;
+    const { component, name, icon, items, to, ...rest } = item;
+    const Component = component;
     return (
       <Component compact as="div" key={index} toggler={navLink(name, icon)} {...rest}>
         {item.items?.map((item, index) =>

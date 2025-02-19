@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Category = React.lazy(() => import('./views/menue/Category'))
-const Users = React.lazy(() => import('./views/configuration/Users'))
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
+const Category = React.lazy(() => import('./views/menue/Category'));
+const Users = React.lazy(() => import('./views/configuration/Users'));
 
 const routes = () => {
   const { t } = useTranslation();
@@ -17,4 +17,4 @@ const routes = () => {
   ]
 }
 
-export default routes
+export default routes;

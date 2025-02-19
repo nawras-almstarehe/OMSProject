@@ -49,5 +49,10 @@
   "fieldInvalid": "{0} field is invalid",
   "fieldCannotBeNone": "{0} field cannot be empty",
   "logout": "Logout",
-  "login": "Login"
+  "login": "Login",
+  "departments": "Departments",
+  "privileges": "Privileges",
+  "positions": "Positions",
+  "roles": "Roles",
+  "forgotPassword": "Forgot password?"
 }

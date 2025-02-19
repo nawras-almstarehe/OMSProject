@@ -1,10 +1,8 @@
-import React, { Suspense, useEffect, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { CContainer, CSpinner } from '@coreui/react'
+import React, { Suspense, useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { CContainer, CSpinner } from '@coreui/react';
 import { useTranslation } from 'react-i18next';
-
-// routes config
-import routes from '../routes'
+import routes from '../routes';
 
 const AppContent = () => {
   const routesItems = routes();
@@ -12,7 +10,7 @@ const AppContent = () => {
   const [isRTL, setIsRTL] = useState(false);
 
   useEffect(() => {
-    setIsRTL(i18n.dir() === 'rtl'); // ✅ Detect RTL mode
+    setIsRTL(i18n.dir() === 'rtl');
   }, [i18n.language]);
 
   return (
@@ -39,4 +37,4 @@ const AppContent = () => {
   )
 }
 
-export default React.memo(AppContent)
+export default React.memo(AppContent);
