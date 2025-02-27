@@ -4,7 +4,9 @@ using ManagmentSystem.Core.Resources;
 using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -17,11 +19,13 @@ namespace ManagmentSystem.EF.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        public DepartmentService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer)
+        private readonly IDistributedCache _cache;
+        public DepartmentService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer, IDistributedCache cache)
         {
             _unitOfWork = unitOfWork;
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _localizer = localizer;
+            _cache = cache;
         }
         public async Task<int> AddDepartment(Department department)
         {
@@ -141,6 +145,13 @@ namespace ManagmentSystem.EF.Services
         {
             try
             {
+                string cacheKey = string.IsNullOrEmpty(filter) ? "AllDepartments" : $"Departments_{filter}";
+                var cachedDepartments = await _cache.GetStringAsync(cacheKey);
+                if (!string.IsNullOrEmpty(cachedDepartments))
+                {
+                    return JsonConvert.DeserializeObject<IEnumerable<VMDepartmentsList>>(cachedDepartments);
+                }
+
                 Expression<Func<Department, bool>> match;
                 if (string.IsNullOrEmpty(filter))
                 {
@@ -151,6 +162,16 @@ namespace ManagmentSystem.EF.Services
                     match = u => (u.AName.Contains(filter) || u.EName.Contains(filter) || u.Code.Contains(filter));
                 }
                 var departments = await _unitOfWork.Departments.GetAllDepartmentsList(match);
+
+                var serializedDepartments = JsonConvert.SerializeObject(departments);
+                var cacheEntryOptions = new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                    SlidingExpiration = TimeSpan.FromMinutes(10)
+                };
+
+                await _cache.SetStringAsync(cacheKey, serializedDepartments, cacheEntryOptions);
+
                 return departments;
             }
             catch (Exception)
