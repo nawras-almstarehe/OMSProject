@@ -247,7 +247,6 @@ const Category = (props) => {
       </CModal>
       {visibleModalImages && <MultiImagesUploadModal show={visibleModalImages} handleClose={() => setVisibleModalImages(false)} itemId={selectedItemId} isRTL={props.isRTL} />}
       <CCard className="mb-4">
-        <CCardHeader>{t('category')}</CCardHeader>
         <CCardBody>
           <CRow>
             <CSmartTable

@@ -460,7 +460,6 @@ const Users = (props) => {
         </CModalBody>
       </CModal>
       <CCard className="mb-4">
-        <CCardHeader>{t('users')}</CCardHeader>
         <CCardBody>
           <CRow>
             <CSmartTable
@@ -556,7 +555,7 @@ const Users = (props) => {
                           const itemValue = await handleEdit(item);
                           setInitialValues(itemValue)
                           setVisibleModal(true)
-                          setTitleModal(t('editCategory'))
+                          setTitleModal(t('editUser'))
                         }}
                         className="me-2"
                       >

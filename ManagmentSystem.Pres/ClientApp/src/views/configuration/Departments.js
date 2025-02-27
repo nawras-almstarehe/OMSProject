@@ -120,8 +120,8 @@ const Departments = () => {
 
   const departmentSchema = useMemo(() =>
     Yup.object().shape({
-      aName: Yup.string().required(t('fieldRequired').replace("{0}", t('aName'))),
-      eName: Yup.string().required(t('fieldRequired').replace("{0}", t('eName'))),
+      aName: Yup.string().required(t('fieldRequired').replace("{0}", t('arabicName'))),
+      eName: Yup.string().required(t('fieldRequired').replace("{0}", t('englishName'))),
       code: Yup.string().required(t('fieldRequired').replace("{0}", t('code'))),
       departmentType: Yup.number().required(t('fieldRequired').replace("{0}", t('departmentType')))
         .notOneOf([Enum_Department_Type.None], t('fieldCannotBeNone').replace("{0}", t('departmentType'))),
@@ -160,7 +160,7 @@ const Departments = () => {
   }, [dispatch, state.filter]);
 
   const handleAdd = useCallback(() => {
-    dispatch({ type: "TOGGLE_MODAL", payload: { visible: true, title: t('addUser') } });
+    dispatch({ type: "TOGGLE_MODAL", payload: { visible: true, title: t('addDepartment') } });
   }, [t, dispatch]);
 
   const handleEdit = useCallback(async (item) => {
@@ -171,7 +171,7 @@ const Departments = () => {
         label: i18n.language === 'ar' ? response.departmentParent.aName : response.departmentParent.eName,
       };
 
-      dispatch({ type: "TOGGLE_MODAL", payload: { visible: true, title: t('editUser') } });
+      dispatch({ type: "TOGGLE_MODAL", payload: { visible: true, title: t('editDepartment') } });
       dispatch({
         type: "SET_INITIAL_VALUES", payload: {
           id: item.id,
@@ -254,13 +254,13 @@ const Departments = () => {
     },
     {
       key: 'aName',
-      label: t('aName'),
+      label: t('arabicName'),
       _style: { width: '10%' },
       _props: { className: 'columnHeader' }
     },
     {
       key: 'eName',
-      label: t('eName'),
+      label: t('englishName'),
       _props: { className: 'columnHeader' }
     },
     {
@@ -335,7 +335,7 @@ const Departments = () => {
                   <CFormInput
                     type="text"
                     id="aName"
-                    label={t('aName')}
+                    label={t('arabicName')}
                     value={values.aName}
                     onChange={handleChange}
                     required
@@ -351,7 +351,7 @@ const Departments = () => {
                   <CFormInput
                     type="text"
                     id="eName"
-                    label={t('eName')}
+                    label={t('englishName')}
                     value={values.eName}
                     onChange={handleChange}
                     required
@@ -442,7 +442,6 @@ const Departments = () => {
         </CModalBody>
       </CModal>
       <CCard className="mb-4">
-        <CCardHeader>{t('departments')}</CCardHeader>
         <CCardBody>
           <CRow>
             <CSmartTable

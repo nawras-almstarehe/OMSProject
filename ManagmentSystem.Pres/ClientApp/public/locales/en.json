@@ -54,5 +54,11 @@
   "privileges": "Privileges",
   "positions": "Positions",
   "roles": "Roles",
-  "forgotPassword": "Forgot password?"
+  "forgotPassword": "Forgot password?",
+  "code": "Code",
+  "departmentType": "Department type",
+  "addDepartment": "Add department",
+  "editDepartment": "Edit department",
+  "isActive": "Active",
+  "departmentParent": "Parent department"
 }

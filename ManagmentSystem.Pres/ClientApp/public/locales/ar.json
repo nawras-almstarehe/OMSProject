@@ -54,5 +54,11 @@
   "privileges": "الصلاحيات",
   "positions": "المناصب",
   "roles": "الأدوار",
-  "forgotPassword": "هل نسيت كلمة السر؟"
+  "forgotPassword": "هل نسيت كلمة السر؟",
+  "code": "الرمز",
+  "departmentType": "نوع القسم",
+  "addDepartment": "إضافة قسم",
+  "editDepartment": "تعديل قسم",
+  "isActive": "فعال",
+  "departmentParent": "القسم الأب"
 }
