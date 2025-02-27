@@ -10,8 +10,10 @@ namespace ManagmentSystem.Core.Models
     public class Department
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); public string DepartmentParentId { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString(); 
+        public string DepartmentParentId { get; set; }
         public int DepartmentType { get; set; }
+        public Department DepartmentParent { get; set; }
         public string Code { get; set; }
         public string DepCode { get; set; }
         public string AName { get; set; }

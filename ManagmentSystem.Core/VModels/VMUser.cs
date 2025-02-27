@@ -35,6 +35,7 @@ namespace ManagmentSystem.Core.VModels
         public bool isAdmin { get; set; }
         public int blockedType { get; set; }
         public int userType { get; set; }
+        public string userTypeName { get; set; }
         public List<Position> positions { get; set; }
         public List<UserPosition> userPositions { get; set; }
         public Customer customer { get; set; }
@@ -43,7 +44,7 @@ namespace ManagmentSystem.Core.VModels
 
         public VMUser(string Id, string UserName, string AFirstName, string EFirstName,
             string ALastName, string ELastName, string Email, string PhoneNumber,
-            bool IsBlocked, bool IsAdmin, int BlockedType, int UserType)
+            bool IsBlocked, bool IsAdmin, int BlockedType, int UserType, string UserTypeName)
         {
             id = Id;
             userName = UserName;
@@ -57,6 +58,7 @@ namespace ManagmentSystem.Core.VModels
             isAdmin = IsAdmin;
             blockedType = BlockedType;
             userType = UserType;
+            userTypeName = UserTypeName;
         }
     }
 }

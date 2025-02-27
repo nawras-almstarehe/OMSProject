@@ -211,6 +211,11 @@ namespace ManagmentSystem.EF.Repositories
 
             return await query.AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> match)
+        {
+            IQueryable<T> query = _context.Set<T>().Where(match);
+            return await query.AsNoTracking().ToListAsync();
+        }
 
         public IQueryable<T> GetQuery(Expression<Func<T, bool>> filter = null, List<string> sortFields = null)
         {

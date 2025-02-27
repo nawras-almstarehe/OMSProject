@@ -18,7 +18,8 @@ import {
   CFormSwitch,
   CToast,
   CToastBody,
-  CToastClose
+  CToastClose,
+  CFormLabel
 } from '@coreui/react-pro';
 import {
   cilPlus,
@@ -72,6 +73,7 @@ const Users = (props) => {
       password: '',
       blockedType: 0,
       userType: 0,
+      userTypeName: '',
       isBlocked: false,
       isAdmin: false
     }
@@ -151,6 +153,7 @@ const Users = (props) => {
         password: response.password,
         blockedType: response.blockedType,
         userType: response.userType,
+        userTypeName: response.userTypeName,
         isBlocked: response.isBlocked,
         isAdmin: response.isAdmin,
       };
@@ -208,6 +211,7 @@ const Users = (props) => {
       password: '',
       blockedType: 0,
       userType: 0,
+      userTypeName: '',
       isBlocked: false,
       isAdmin: false
     });
@@ -419,9 +423,9 @@ const Users = (props) => {
                 </CRow>
                 <CRow className="mb-3">
                   <CCol md={2}>
+                    <CFormLabel>{t('isAdmin')}</CFormLabel>
                     <CFormSwitch
                       id="isAdmin"
-                      label={t('isAdmin')}
                       checked={values.isAdmin}
                       onChange={handleChange}
                       className="custom-switch"
@@ -429,9 +433,9 @@ const Users = (props) => {
                     />
                   </CCol>
                   <CCol md={2}>
+                    <CFormLabel>{t('Block')}</CFormLabel>
                     <CFormSwitch
                       id="isBlocked"
-                      label={t('Block')}
                       checked={values.isBlocked}
                       onChange={handleChange}
                       className="custom-switch"
@@ -576,6 +580,11 @@ const Users = (props) => {
                 isAdmin: (item) => (
                   <td className="text-center">
                     <input type="checkbox" checked={Boolean(item.isAdmin)} disabled />
+                  </td>
+                ),
+                userType: (item) => (
+                  <td className="text-center">
+                    {item.userTypeName}
                   </td>
                 ),
               }}

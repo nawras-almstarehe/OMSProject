@@ -14,7 +14,9 @@ namespace ManagmentSystem.Core.UnitOfWorks
         IUsersRepository Users { get; }
         IUserPositionsRepository UserPositions { get; }
         IImagesRepository Images { get; }
+        IDepartmentsRepository Departments { get; }
         int Complete();
         Task<int> CompleteAsync();
+        bool HasChanges();
     }
 }

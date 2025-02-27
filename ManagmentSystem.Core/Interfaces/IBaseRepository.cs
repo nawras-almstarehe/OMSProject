@@ -26,6 +26,7 @@ namespace ManagmentSystem.Core.Interfaces
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip,
             Expression<Func<T, object>> orderBy = null, string orderByDirection = "ASC");
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> match, int? take, int? skip, ObjSort orderBy = null);
+        Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> match);
         IEnumerable<T> AddRange(IEnumerable<T> entities);
         void DeleteRange(IEnumerable<T> entities);
         void Attach(T entity);

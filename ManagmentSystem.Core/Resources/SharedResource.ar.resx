@@ -144,4 +144,16 @@
   <data name="UsernameOrPasswordIsIncorrect" xml:space="preserve">
     <value>اسم المستخدم أو كلمة السر خاطئة!</value>
   </data>
+  <data name="Consumer" xml:space="preserve">
+    <value>زبون</value>
+  </data>
+  <data name="Producer" xml:space="preserve">
+    <value>منتج</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>موظف</value>
+  </data>
+  <data name="GeneralDepartment" xml:space="preserve">
+    <value>الإدارة العامة</value>
+  </data>
 </root>

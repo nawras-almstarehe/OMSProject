@@ -144,4 +144,16 @@
   <data name="UsernameOrPasswordIsIncorrect" xml:space="preserve">
     <value>Username or Password is incorrect!</value>
   </data>
+  <data name="Consumer" xml:space="preserve">
+    <value>Consumer</value>
+  </data>
+  <data name="Producer" xml:space="preserve">
+    <value>Producer</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="GeneralDepartment" xml:space="preserve">
+    <value>GeneralDepartment</value>
+  </data>
 </root>

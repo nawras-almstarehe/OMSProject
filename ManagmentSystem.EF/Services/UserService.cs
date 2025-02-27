@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ManagmentSystem.EF.Services
 {
@@ -152,8 +153,16 @@ namespace ManagmentSystem.EF.Services
             try
             {
                 var User = await _unitOfWork.Users.GetByIdAsync(Id);
+                var UserTypeName = "";
+                UserTypeName = User.UserType switch
+                {
+                    (int)VMUser.Enum_User_Type.Employee => (string)_localizer["Employee"],
+                    (int)VMUser.Enum_User_Type.Producer => (string)_localizer["Producer"],
+                    (int)VMUser.Enum_User_Type.Consumer => (string)_localizer["Consumer"],
+                    _ => "",
+                };
                 return new VMUser(User.Id,User.UserName, User.AFirstName, User.EFirstName, User.ALastName, User.ELastName,
-                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType);
+                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType, UserTypeName);
             }
             catch (Exception)
             {
@@ -185,8 +194,16 @@ namespace ManagmentSystem.EF.Services
                 var UsersResult = new List<VMUser>();
                 foreach (var User in users)
                 {
+                    var UserTypeName = "";
+                    UserTypeName = User.UserType switch
+                    {
+                        (int)VMUser.Enum_User_Type.Employee => (string)_localizer["Employee"],
+                        (int)VMUser.Enum_User_Type.Producer => (string)_localizer["Producer"],
+                        (int)VMUser.Enum_User_Type.Consumer => (string)_localizer["Consumer"],
+                        _ => "",
+                    };
                     UsersResult.Add(new VMUser(User.Id, User.UserName, User.AFirstName, User.EFirstName, User.ALastName, User.ELastName,
-                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType));
+                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType, UserTypeName));
                 }
                 return (UsersResult, totalItems);
             }
