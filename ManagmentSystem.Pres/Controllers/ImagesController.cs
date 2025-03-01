@@ -15,9 +15,9 @@ namespace ManagmentSystem.Pres.Controllers
     public class ImagesController : ControllerBase
     {
         private readonly IImageService _imageService;
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<ImagesController> _logger;
 
-        public ImagesController(IImageService imageService, ILogger<UsersController> logger)
+        public ImagesController(IImageService imageService, ILogger<ImagesController> logger)
         {
             _imageService = imageService;
             _logger =logger;

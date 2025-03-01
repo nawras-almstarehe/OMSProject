@@ -448,6 +448,7 @@ namespace ManagmentSystem.EF
             var positionId = Guid.NewGuid().ToString();
             var userPositionId = Guid.NewGuid().ToString();
             var userPositionRoleId = Guid.NewGuid().ToString();
+
             modelBuilder.Entity<Role>()
                 .HasData(new Role
                 {
@@ -493,6 +494,7 @@ namespace ManagmentSystem.EF
                     BlockedType = (int)VMUser.Enum_User_Blocked_Type.None,
                     UserType = (int)VMUser.Enum_User_Type.Employee,
                 });
+
             modelBuilder.Entity<Department>()
                 .HasData(new Department
                 {
@@ -505,6 +507,7 @@ namespace ManagmentSystem.EF
                     IsActive = true,
                     DepartmentType = (int)VMDepartment.Enum_Department_Type.GeneralDepartment,
                 });
+
             modelBuilder.Entity<Position>()
                 .HasData(new Position
                 {
@@ -516,6 +519,7 @@ namespace ManagmentSystem.EF
                     IsLeader = true,
                     
                 });
+
             modelBuilder.Entity<UserPosition>()
                 .HasData(new UserPosition
                 {
@@ -529,6 +533,7 @@ namespace ManagmentSystem.EF
                     EndDate = DateTime.Now.AddMonths(12),
 
                 });
+
             modelBuilder.Entity<AccessListPrivilege>()
                 .HasData(new AccessListPrivilege
                 {
@@ -536,6 +541,7 @@ namespace ManagmentSystem.EF
                     UserPositionId = userPositionId,
                     Code = (double)(VMPrivilege.Enum_Privilege.None | VMPrivilege.Enum_Privilege.SystemManager)
                 });
+
             modelBuilder.Entity<UserPositionRole>()
                 .HasData(new UserPositionRole
                 {

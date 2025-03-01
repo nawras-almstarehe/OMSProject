@@ -113,6 +113,9 @@ namespace ManagmentSystem.Pres
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IPositionService, PositionService>();
+            services.AddScoped<IPrivilegeService, PrivilegeService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // ✅ Register Global Exception Middleware

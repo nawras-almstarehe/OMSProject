@@ -20,8 +20,8 @@ namespace ManagmentSystem.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        private readonly ILogger<UsersController> _logger;
-        public CategoriesController(ICategoryService categoryService, ILogger<UsersController> logger)
+        private readonly ILogger<CategoriesController> _logger;
+        public CategoriesController(ICategoryService categoryService, ILogger<CategoriesController> logger)
         {
             _categoryService = categoryService;
             _logger = logger;

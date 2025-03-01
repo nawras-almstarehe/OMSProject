@@ -11,6 +11,8 @@
   "arabicName": "الاسم العربي",
   "englishName": "الاسم الانكليزي",
   "description": "الوصف",
+  "aDescription": "الوصف العربي",
+  "eDescription": "الوصف الإنكليزي",
   "close": "إغلاق",
   "saveChanges": "حفظ",
   "addCategory": "إضافة تصنيف",
@@ -60,5 +62,11 @@
   "addDepartment": "إضافة قسم",
   "editDepartment": "تعديل قسم",
   "isActive": "فعال",
-  "departmentParent": "القسم الأب"
+  "isLeader": "مدير",
+  "departmentParent": "القسم الأب",
+  "department": "القسم",
+  "addPosition": "إضافة منصب",
+  "editPosition": "تعديل منصب",
+  "addRole": "إضافة دور",
+  "editRole": "تعديل دور"
 }

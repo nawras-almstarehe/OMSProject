@@ -20,7 +20,8 @@ namespace ManagmentSystem.Core.Interfaces
         T GetById(string id);
         T Find(Expression<Func<T, bool>> match);
         Task<T> FindAsync(Expression<Func<T, bool>> match);
-        T FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null);
+        Task<T> FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null);
+        Task<TDTO> FindByAnyDataProjected<T, TDTO>(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, TDTO>> projection = null) where T : class;
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int take, int skip);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip,

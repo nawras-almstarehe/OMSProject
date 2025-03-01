@@ -25,6 +25,9 @@ namespace ManagmentSystem.EF.UnitOfWorks
             UserPositions = new UserPositionsRepository(_context);
             Images = new ImagesRepository(_context);
             Departments = new DepartmentsRepository(_context);
+            Positions = new PositionsRepository(_context);
+            Roles = new RolesRepository(_context);
+            Privileges = new PrivilegesRepository(_context);
         }
 
         //public IBaseRepository<Category> Categories { get; private set; } Comment After add spicial method
@@ -33,6 +36,9 @@ namespace ManagmentSystem.EF.UnitOfWorks
         public IUserPositionsRepository UserPositions { get; private set; }
         public IImagesRepository Images { get; private set; }
         public IDepartmentsRepository Departments { get; private set; }
+        public IPositionsRepository Positions { get; private set; }
+        public IRolesRepository Roles { get; private set; }
+        public IPrivilegesRepository Privileges { get; private set; }
 
         public int Complete()
         {

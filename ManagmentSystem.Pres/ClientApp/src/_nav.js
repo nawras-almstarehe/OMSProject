@@ -5,11 +5,9 @@ import {
   cilTags,
   cilSettings,
   cilGroup,
-  cilBarChart,
   cilBriefcase,
-  cilUserPlus
 } from '@coreui/icons';
-import { cilShield } from '@coreui/icons-pro';
+import { cilShield, cilRecentActors, cilChalkboardTeacher } from '@coreui/icons-pro';
 import { CNavItem, CNavTitle, CNavGroup } from '@coreui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -59,14 +57,7 @@ const _nav = () => {
           component: CNavItem,
           name: t('departments'),
           to: '/configuration/departments',
-          icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
-          classCustom: "nav-link-costum",
-        },
-        {
-          component: CNavItem,
-          name: t('privileges'),
-          to: '/configuration/privileges',
-          icon: <CIcon icon={cilShield} customClassName="nav-icon" />,
+          icon: <CIcon icon={cilChalkboardTeacher} customClassName="nav-icon" />,
           classCustom: "nav-link-costum",
         },
         {
@@ -78,9 +69,16 @@ const _nav = () => {
         },
         {
           component: CNavItem,
+          name: t('privileges'),
+          to: '/configuration/privileges',
+          icon: <CIcon icon={cilShield} customClassName="nav-icon" />,
+          classCustom: "nav-link-costum",
+        },
+        {
+          component: CNavItem,
           name: t('roles'),
           to: '/configuration/roles',
-          icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+          icon: <CIcon icon={cilRecentActors} customClassName="nav-icon" />,
           classCustom: "nav-link-costum",
         },
       ],

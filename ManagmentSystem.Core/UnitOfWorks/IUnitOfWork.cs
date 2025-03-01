@@ -1,4 +1,5 @@
 ﻿using ManagmentSystem.Core.Interfaces;
+using ManagmentSystem.Core.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace ManagmentSystem.Core.UnitOfWorks
         IUserPositionsRepository UserPositions { get; }
         IImagesRepository Images { get; }
         IDepartmentsRepository Departments { get; }
+        IPositionsRepository Positions { get; }
+        IRolesRepository Roles { get; }
+        IPrivilegesRepository Privileges { get; }
         int Complete();
         Task<int> CompleteAsync();
         bool HasChanges();

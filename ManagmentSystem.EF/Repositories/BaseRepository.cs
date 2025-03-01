@@ -29,7 +29,7 @@ namespace ManagmentSystem.EF.Repositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
-
+        
         public async Task<T> Add(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
@@ -154,18 +154,46 @@ namespace ManagmentSystem.EF.Repositories
             return query.ToList();
         }
 
-        public T FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null)
+        public async Task<T> FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null)
         {
-            IQueryable<T> query = _context.Set<T>();
-            if (includes != null)
+            if (includes == null || !includes.Any())
             {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
+                return await _context.Set<T>().FirstOrDefaultAsync(match);
             }
 
-            return query.SingleOrDefault(match);
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(match);
+        }
+        public async Task<TDTO> FindByAnyDataProjected<T, TDTO>(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, TDTO>> projection = null) where T : class
+        {
+            if (projection == null)
+            {
+                throw new ArgumentNullException(nameof(projection), "Projection function is required.");
+            }
+
+            if (includes == null || !includes.Any())
+            {
+                return await _context.Set<T>()
+                    .Where(match)
+                    .Select(projection)
+                    .FirstOrDefaultAsync();
+            }
+
+            IQueryable<T> query = _context.Set<T>();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query
+                .Where(match)
+                .Select(projection)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<int> CountAsync(Expression<Func<T, bool>> match)

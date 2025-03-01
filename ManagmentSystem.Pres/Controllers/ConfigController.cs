@@ -21,8 +21,8 @@ namespace ManagmentSystem.Controllers
     [ApiController]
     public class ConfigController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
-        public ConfigController(ILogger<UsersController> logger)
+        private readonly ILogger<ConfigController> _logger;
+        public ConfigController(ILogger<ConfigController> logger)
         {
             _logger = logger;
         }

@@ -13,7 +13,6 @@ import {
   CRow,
   CCard,
   CCardBody,
-  CFormTextarea,
   CToast,
   CToastBody,
   CToastClose
@@ -21,18 +20,17 @@ import {
 import {
   cilPlus,
   cilPencil,
-  cilTrash,
-  cilImage
+  cilTrash
 } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
-import MultiImagesUploadModal from "../../components/MultiImagesUploadModal";
 import '../../costumStyle/stylesCostum.css';
 import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
-import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik components
-import * as Yup from 'yup'; // Import Yup
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import AsyncSelect from 'react-select/async';
 
-const Category = (props) => {
+const Roles = (props) => {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,15 +42,16 @@ const Category = (props) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [titleModal, setTitleModal] = useState('');
   const [visibleToast, setVisibleToast] = useState({ visible: false, message: '' });
-  const [visibleModalImages, setVisibleModalImages] = useState(false);
-  const [initialValues, setInitialValues] = useState({ id: '', eName: '', aName: '', description: '' }); // Managed by Formik
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [initialValues, setInitialValues] = useState({
+    id: '',
+    eName: '',
+    aName: ''
+  });
 
   // Yup Schema
-  const categorySchema = Yup.object().shape({
+  const roleSchema = Yup.object().shape({
     eName: Yup.string().required(t('fieldRequired').replace("{0}", t('englishName'))),
-    aName: Yup.string().required(t('fieldRequired').replace("{0}", t('arabicName'))),
-    description: Yup.string().required(t('fieldRequired').replace("{0}", t('description'))),
+    aName: Yup.string().required(t('fieldRequired').replace("{0}", t('arabicName')))
   });
 
   const fetchData = async () => {
@@ -64,7 +63,7 @@ const Category = (props) => {
         page: activePage,
         pageSize: itemsPerPage
       };
-      const response = await apiService.post('api/Categories/GetCategories', queryParams);
+      const response = await apiService.post('api/Roles/GetRoles', queryParams);
       const { data: tableData, totalItems } = response;
       setData(tableData);
       setRecords(totalItems);
@@ -89,44 +88,37 @@ const Category = (props) => {
 
   const handleAdd = () => {
     setVisibleModal(true);
-    setTitleModal(t('addCategory'));
+    setTitleModal(t('addRole'));
   };
 
   const handleEdit = async (item) => {
     try {
-      const response = await apiService.get(`api/Categories/GetCategory?Id=${item.id}`);
+      const response = await apiService.get(`api/Roles/GetRole?Id=${item.id}`);
       const dataRow = {
         id: item.id,
         eName: response.eName,
-        aName: response.aName,
-        description: response.description
+        aName: response.aName
       };
-      //setDataRow(dataRow); // No need to set DataRow
-      setTitleModal(t('editCategory'));
+      setTitleModal(t('editRole'));
       setVisibleModal(true);
-
       return dataRow;
-
     } catch (error) {
       setVisibleToast({ visible: true, message: t('fieldToFetchData') + error });
     }
   };
 
-  const handleSaveChanges = async (values, { resetForm }) => { // Receive values and resetForm
+  const handleSaveChanges = async (values, { resetForm }) => {
     try {
-      const newCategory = {
+      const newRole = {
         id: values.id,
         ename: values.eName,
-        aname: values.aName,
-        description: values.description
+        aname: values.aName
       };
-
       if (values.id == null || values.id === '') {
-        await apiService.post('api/Categories/AddCategory', newCategory);
+        await apiService.post('api/Roles/AddRole', newRole);
       } else {
-        await apiService.put('api/Categories/UpdateCategory', newCategory);
+        await apiService.put('api/Roles/UpdateRole', newRole);
       }
-
       setVisibleModal(false);
       resetForm();
       fetchData();
@@ -137,24 +129,19 @@ const Category = (props) => {
 
   const closeModalCU = () => {
     setVisibleModal(false);
-    setInitialValues({ id: '', eName: '', aName: '', description: '' });
+    setInitialValues({ id: '', eName: '', aName: '' });
   };
 
   const handleConfirmDelete = async (item) => {
     try {
       const confirmDelete = window.confirm(t('deleteConfirmation'));
       if (confirmDelete) {
-        await apiService.delete(`api/Categories/DeleteCategory?id=${item.id}`);
+        await apiService.delete(`api/Roles/DeleteRole?id=${item.id}`);
         fetchData();
       }
     } catch (error) {
       setVisibleToast({ visible: true, message: t('failedDeleteData') + error });
     }
-  };
-
-  const handleShowModalImages = (item) => {
-    setSelectedItemId(item.id);
-    setVisibleModalImages(true);
   };
 
   return (
@@ -168,16 +155,16 @@ const Category = (props) => {
       <CModal
         visible={visibleModal}
         onClose={closeModalCU}
-        aria-labelledby="AddCategoryModalLabel"
+        aria-labelledby="AddRoleModalLabel"
         backdrop="static"
       >
         <CModalHeader className={props.isRTL ? 'modal-header-rtl' : ''}>
-          <CModalTitle id="AddCategoryModalLabel">{titleModal}</CModalTitle>
+          <CModalTitle id="AddRoleModalLabel">{titleModal}</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <Formik
             initialValues={initialValues}
-            validationSchema={categorySchema}
+            validationSchema={roleSchema}
             onSubmit={handleSaveChanges}
             enableReinitialize={true} //Very Important
           >
@@ -216,20 +203,6 @@ const Category = (props) => {
                     <div className="invalid-feedback">{errors.aName}</div>
                   )}
                 </CCol>
-                <CCol xs={12}>
-                  <CFormTextarea
-                    id="description"
-                    label={t('description')}
-                    rows={3}
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={touched.description && errors.description}
-                  />
-                  {touched.description && errors.description && (
-                    <div className="invalid-feedback">{errors.description}</div>
-                  )}
-                </CCol>
                 <CModalFooter>
                   <CButton color="secondary" variant="outline" onClick={closeModalCU}>
                     {t('close')}
@@ -244,7 +217,6 @@ const Category = (props) => {
         </CModalBody>
 
       </CModal>
-      {visibleModalImages && <MultiImagesUploadModal show={visibleModalImages} handleClose={() => setVisibleModalImages(false)} itemId={selectedItemId} isRTL={props.isRTL} />}
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -260,11 +232,7 @@ const Category = (props) => {
                   ), _style: { width: '6%' }, filter: false, sorter: false,
                 },
                 { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
-                { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, },
-                { key: 'description', label: t('description'), _props: { className: 'columnHeader' }, },
-                {
-                  key: 'actionsAdditional', label: (<></>), _style: { width: '10%' }, filter: false, sorter: false,
-                },
+                { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, }
               ]}
               items={data}
               columnFilter={{ external: true }}
@@ -304,7 +272,7 @@ const Category = (props) => {
                           const itemValue = await handleEdit(item);
                           setInitialValues(itemValue)
                           setVisibleModal(true)
-                          setTitleModal(t('editCategory'))
+                          setTitleModal(t('editRole'))
                         }}
                         className="me-2"
                       >
@@ -319,20 +287,7 @@ const Category = (props) => {
                       </CButton>
                     </td>
                   )
-                },
-                actionsAdditional: (item) => {
-                  return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
-                      <CButton
-                        size="sm"
-                        onClick={() => handleShowModalImages(item)}
-                        className="me-2"
-                      >
-                        <CIcon icon={cilImage} ClassName="nav-icon" />
-                      </CButton>
-                    </td>
-                  )
-                },
+                }
               }}
             />
           </CRow>
@@ -342,5 +297,5 @@ const Category = (props) => {
   );
 };
 
-export default Category;
+export default Roles;
 

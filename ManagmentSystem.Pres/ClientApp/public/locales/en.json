@@ -11,6 +11,8 @@
   "arabicName": "Arabic name",
   "englishName": "English name",
   "description": "Description",
+  "aDescription": "Arabic description",
+  "eDescription": "English description",
   "close": "Close",
   "saveChanges": "Save changes",
   "addCategory": "Add category",
@@ -60,5 +62,11 @@
   "addDepartment": "Add department",
   "editDepartment": "Edit department",
   "isActive": "Active",
-  "departmentParent": "Parent department"
+  "isLeader": "Leader",
+  "departmentParent": "Parent department",
+  "department": "Department",
+  "addPosition": "Add Position",
+  "editPosition": "Edit Position",
+  "addRole": "Add role",
+  "editRole": "Edit role"
 }

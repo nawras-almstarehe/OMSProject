@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -13,26 +13,27 @@ import {
   CRow,
   CCard,
   CCardBody,
-  CFormTextarea,
   CToast,
   CToastBody,
-  CToastClose
+  CToastClose,
+  CFormLabel,
+  CFormSelect,
+  CFormSwitch
 } from '@coreui/react-pro';
 import {
   cilPlus,
   cilPencil,
-  cilTrash,
-  cilImage
+  cilTrash
 } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
-import MultiImagesUploadModal from "../../components/MultiImagesUploadModal";
 import '../../costumStyle/stylesCostum.css';
 import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
-import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik components
-import * as Yup from 'yup'; // Import Yup
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import AsyncSelect from 'react-select/async';
 
-const Category = (props) => {
+const Positions = (props) => {
   const { t, i18n } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,15 +45,21 @@ const Category = (props) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [titleModal, setTitleModal] = useState('');
   const [visibleToast, setVisibleToast] = useState({ visible: false, message: '' });
-  const [visibleModalImages, setVisibleModalImages] = useState(false);
-  const [initialValues, setInitialValues] = useState({ id: '', eName: '', aName: '', description: '' }); // Managed by Formik
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [initialValues, setInitialValues] = useState({
+    id: '',
+    eName: '',
+    aName: '',
+    departmentId: '',
+    department: {},
+    isActive: false,
+    isLeader: false
+  });
 
   // Yup Schema
-  const categorySchema = Yup.object().shape({
+  const positionSchema = Yup.object().shape({
     eName: Yup.string().required(t('fieldRequired').replace("{0}", t('englishName'))),
     aName: Yup.string().required(t('fieldRequired').replace("{0}", t('arabicName'))),
-    description: Yup.string().required(t('fieldRequired').replace("{0}", t('description'))),
+    departmentId: Yup.string().required(t('fieldRequired').replace("{0}", t('department'))),
   });
 
   const fetchData = async () => {
@@ -64,7 +71,7 @@ const Category = (props) => {
         page: activePage,
         pageSize: itemsPerPage
       };
-      const response = await apiService.post('api/Categories/GetCategories', queryParams);
+      const response = await apiService.post('api/Positions/GetPositions', queryParams);
       const { data: tableData, totalItems } = response;
       setData(tableData);
       setRecords(totalItems);
@@ -89,20 +96,27 @@ const Category = (props) => {
 
   const handleAdd = () => {
     setVisibleModal(true);
-    setTitleModal(t('addCategory'));
+    setTitleModal(t('addPosition'));
   };
 
   const handleEdit = async (item) => {
     try {
-      const response = await apiService.get(`api/Categories/GetCategory?Id=${item.id}`);
+      const response = await apiService.get(`api/Positions/GetPosition?Id=${item.id}`);
+      const department = {
+        value: response.departmentId,
+        label: i18n.language === 'ar' ? response.departmentAName : response.departmentEName,
+      };
       const dataRow = {
         id: item.id,
         eName: response.eName,
         aName: response.aName,
-        description: response.description
+        isActive: response.isActive,
+        isLeader: response.isLeader,
+        departmentId: response.departmentId,
+        department: department
       };
-      //setDataRow(dataRow); // No need to set DataRow
-      setTitleModal(t('editCategory'));
+
+      setTitleModal(t('editPosition'));
       setVisibleModal(true);
 
       return dataRow;
@@ -114,17 +128,17 @@ const Category = (props) => {
 
   const handleSaveChanges = async (values, { resetForm }) => { // Receive values and resetForm
     try {
-      const newCategory = {
+      const newPosition = {
         id: values.id,
         ename: values.eName,
         aname: values.aName,
-        description: values.description
+        departmentId: values.departmentId
       };
 
       if (values.id == null || values.id === '') {
-        await apiService.post('api/Categories/AddCategory', newCategory);
+        await apiService.post('api/Positions/AddPosition', newPosition);
       } else {
-        await apiService.put('api/Categories/UpdateCategory', newCategory);
+        await apiService.put('api/Positions/UpdatePosition', newPosition);
       }
 
       setVisibleModal(false);
@@ -137,14 +151,14 @@ const Category = (props) => {
 
   const closeModalCU = () => {
     setVisibleModal(false);
-    setInitialValues({ id: '', eName: '', aName: '', description: '' });
+    setInitialValues({ id: '', eName: '', aName: '', departmentId: '' });
   };
 
   const handleConfirmDelete = async (item) => {
     try {
       const confirmDelete = window.confirm(t('deleteConfirmation'));
       if (confirmDelete) {
-        await apiService.delete(`api/Categories/DeleteCategory?id=${item.id}`);
+        await apiService.delete(`api/Positions/DeletePosition?id=${item.id}`);
         fetchData();
       }
     } catch (error) {
@@ -152,10 +166,21 @@ const Category = (props) => {
     }
   };
 
-  const handleShowModalImages = (item) => {
-    setSelectedItemId(item.id);
-    setVisibleModalImages(true);
-  };
+  const loadOptions = useCallback(async (inputValue) => {
+    try {
+      const response = await apiService.get(`api/Departments/GetDepartmentsList?filter=${inputValue}`);
+      const mappedResponse = response.map(item => ({
+        label: i18n.language === 'ar' ? item.aName : item.eName,
+        value: item.id,
+      }));
+
+      const newOption = { label: '', value: '' };
+      return mappedResponse.concat([newOption]);
+    } catch (error) {
+      console.error('Error loading options:', error);
+      return [];
+    }
+  }, []);
 
   return (
     <>
@@ -168,16 +193,16 @@ const Category = (props) => {
       <CModal
         visible={visibleModal}
         onClose={closeModalCU}
-        aria-labelledby="AddCategoryModalLabel"
+        aria-labelledby="AddPositionModalLabel"
         backdrop="static"
       >
         <CModalHeader className={props.isRTL ? 'modal-header-rtl' : ''}>
-          <CModalTitle id="AddCategoryModalLabel">{titleModal}</CModalTitle>
+          <CModalTitle id="AddPositionModalLabel">{titleModal}</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <Formik
             initialValues={initialValues}
-            validationSchema={categorySchema}
+            validationSchema={positionSchema}
             onSubmit={handleSaveChanges}
             enableReinitialize={true} //Very Important
           >
@@ -217,18 +242,40 @@ const Category = (props) => {
                   )}
                 </CCol>
                 <CCol xs={12}>
-                  <CFormTextarea
-                    id="description"
-                    label={t('description')}
-                    rows={3}
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={touched.description && errors.description}
+                  <CFormLabel>{t('department')}</CFormLabel>
+                  <AsyncSelect
+                    cacheOptions
+                    loadOptions={loadOptions}
+                    placeholder="Search and select..."
+                    noOptionsMessage={() => 'No options available'}
+                    defaultOptions
+                    value={initialValues.department}
+                    onChange={(selectedOption) => setInitialValues({
+                      ...values,
+                      departmentId: selectedOption ? selectedOption.value : '',
+                      department: selectedOption
+                    })}
                   />
-                  {touched.description && errors.description && (
-                    <div className="invalid-feedback">{errors.description}</div>
-                  )}
+                </CCol>
+                <CCol md={6}>
+                  <CFormLabel>{t('isActive')}</CFormLabel>
+                  <CFormSwitch
+                    id="isActive"
+                    checked={values.isActive}
+                    onChange={handleChange}
+                    className="custom-switch"
+                    onBlur={handleBlur}
+                  />
+                </CCol>
+                <CCol md={6}>
+                  <CFormLabel>{t('isLeader')}</CFormLabel>
+                  <CFormSwitch
+                    id="isLeader"
+                    checked={values.isLeader}
+                    onChange={handleChange}
+                    className="custom-switch"
+                    onBlur={handleBlur}
+                  />
                 </CCol>
                 <CModalFooter>
                   <CButton color="secondary" variant="outline" onClick={closeModalCU}>
@@ -244,7 +291,6 @@ const Category = (props) => {
         </CModalBody>
 
       </CModal>
-      {visibleModalImages && <MultiImagesUploadModal show={visibleModalImages} handleClose={() => setVisibleModalImages(false)} itemId={selectedItemId} isRTL={props.isRTL} />}
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -261,10 +307,40 @@ const Category = (props) => {
                 },
                 { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
                 { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, },
-                { key: 'description', label: t('description'), _props: { className: 'columnHeader' }, },
                 {
-                  key: 'actionsAdditional', label: (<></>), _style: { width: '10%' }, filter: false, sorter: false,
+                  key: 'isActive', label: t('isActive'), filter: (_, onChange) => {
+                    return (
+                      <CFormSelect
+                        size="sm"
+                        onChange={(e) => {
+                          const selectedValue = e.target.value
+                          handleFilterChangeBoolCol('isActive', selectedValue)
+                        }}
+                      >
+                        <option value=""></option>
+                        <option value={true}>{t('yes')}</option>
+                        <option value={false}>{t('no')}</option>
+                      </CFormSelect>
+                    )
+                  },
                 },
+                {
+                  key: 'isLeader', label: t('isLeader'), filter: (_, onChange) => {
+                    return (
+                      <CFormSelect
+                        size="sm"
+                        onChange={(e) => {
+                          const selectedValue = e.target.value
+                          handleFilterChangeBoolCol('isLeader', selectedValue)
+                        }}
+                      >
+                        <option value=""></option>
+                        <option value={true}>{t('yes')}</option>
+                        <option value={false}>{t('no')}</option>
+                      </CFormSelect>
+                    )
+                  },
+                }
               ]}
               items={data}
               columnFilter={{ external: true }}
@@ -304,7 +380,7 @@ const Category = (props) => {
                           const itemValue = await handleEdit(item);
                           setInitialValues(itemValue)
                           setVisibleModal(true)
-                          setTitleModal(t('editCategory'))
+                          setTitleModal(t('editPosition'))
                         }}
                         className="me-2"
                       >
@@ -320,19 +396,16 @@ const Category = (props) => {
                     </td>
                   )
                 },
-                actionsAdditional: (item) => {
-                  return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
-                      <CButton
-                        size="sm"
-                        onClick={() => handleShowModalImages(item)}
-                        className="me-2"
-                      >
-                        <CIcon icon={cilImage} ClassName="nav-icon" />
-                      </CButton>
-                    </td>
-                  )
-                },
+                isActive: (item) => (
+                  <td className="text-center">
+                    <input type="checkbox" checked={Boolean(item.isActive)} disabled />
+                  </td>
+                ),
+                isLeader: (item) => (
+                  <td className="text-center">
+                    <input type="checkbox" checked={Boolean(item.isLeader)} disabled />
+                  </td>
+                ),
               }}
             />
           </CRow>
@@ -342,5 +415,5 @@ const Category = (props) => {
   );
 };
 
-export default Category;
+export default Positions;
 
