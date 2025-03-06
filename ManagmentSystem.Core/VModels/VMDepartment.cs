@@ -49,5 +49,6 @@ namespace ManagmentSystem.Core.VModels
         public string id { get; set; }
         public string AName { get; set; }
         public string EName { get; set; }
+        public string Code { get; set; }
     }
 }

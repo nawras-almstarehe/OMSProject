@@ -9,6 +9,7 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -46,6 +47,7 @@ namespace ManagmentSystem.EF.Services
                 if (Department != null)
                 {
                     await _unitOfWork.CompleteAsync();
+                    await _cache.RemoveAsync("AllDepartments");
                     return 1;
                 }
                 else
@@ -68,6 +70,7 @@ namespace ManagmentSystem.EF.Services
                 if (Department != 0)
                 {
                     await _unitOfWork.CompleteAsync();
+                    await _cache.RemoveAsync("AllDepartments");
                     return 1;
                 }
                 else
@@ -145,37 +148,40 @@ namespace ManagmentSystem.EF.Services
         {
             try
             {
-                string cacheKey = string.IsNullOrEmpty(filter) ? "AllDepartments" : $"Departments_{filter}";
+                string cacheKey = "AllDepartments";
                 var cachedDepartments = await _cache.GetStringAsync(cacheKey);
+
+                IEnumerable<VMDepartmentsList> allDepartments;
+
                 if (!string.IsNullOrEmpty(cachedDepartments))
                 {
-                    return JsonConvert.DeserializeObject<IEnumerable<VMDepartmentsList>>(cachedDepartments);
-                }
-
-                Expression<Func<Department, bool>> match;
-                if (string.IsNullOrEmpty(filter))
-                {
-                    match = u => true;
+                    // Deserialize cached data
+                    allDepartments = JsonConvert.DeserializeObject<IEnumerable<VMDepartmentsList>>(cachedDepartments);
                 }
                 else
                 {
-                    match = u => (u.AName.Contains(filter) || u.EName.Contains(filter) || u.Code.Contains(filter));
+                    // Fetch from database and cache it
+                    allDepartments = await _unitOfWork.Departments.GetAllDepartmentsList(u => true);
+                    var serializedDepartments = JsonConvert.SerializeObject(allDepartments);
+                    await _cache.SetStringAsync(cacheKey, serializedDepartments, new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                        SlidingExpiration = TimeSpan.FromMinutes(10)
+                    });
                 }
-                var departments = await _unitOfWork.Departments.GetAllDepartmentsList(match);
 
-                var serializedDepartments = JsonConvert.SerializeObject(departments);
-                var cacheEntryOptions = new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
-                    SlidingExpiration = TimeSpan.FromMinutes(10)
-                };
-
-                await _cache.SetStringAsync(cacheKey, serializedDepartments, cacheEntryOptions);
-
-                return departments;
+                // Apply filtering logic
+                return string.IsNullOrEmpty(filter)
+                    ? allDepartments
+                    : allDepartments.Where(d =>
+                        d.AName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                        d.EName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                        d.Code.Contains(filter, StringComparison.OrdinalIgnoreCase));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Log the exception for debugging purposes
+                Console.WriteLine($"An error occurred: {ex.Message}");
                 throw;
             }
         }
@@ -211,7 +217,7 @@ namespace ManagmentSystem.EF.Services
                 {
                     await UpdateChildDepartmentsDepCodes(department.Id);
                 }
-
+                await _cache.RemoveAsync("AllDepartments");
                 return 1;
             }
             catch (Exception)

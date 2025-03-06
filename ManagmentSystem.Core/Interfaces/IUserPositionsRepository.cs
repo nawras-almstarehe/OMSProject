@@ -10,7 +10,6 @@ namespace ManagmentSystem.Core.Interfaces
 {
     public interface IUserPositionsRepository : IBaseRepository<UserPosition>
     {
-        public Task<UserPosition> GetUserPositionByUserId(string UserId);
         public Task<double> GetUserPrivilegesAsync(string UserId);
     }
 }

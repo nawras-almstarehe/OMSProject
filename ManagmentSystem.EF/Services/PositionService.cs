@@ -5,7 +5,9 @@ using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,10 +22,12 @@ namespace ManagmentSystem.EF.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
-        public PositionService(IUnitOfWork unitOfWork, IWebHostEnvironment env)
+        private readonly IDistributedCache _cache;
+        public PositionService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IDistributedCache cache)
         {
             _unitOfWork = unitOfWork;
             _env = env ?? throw new ArgumentNullException(nameof(env));
+            _cache = cache; 
         }
 
         public async Task<int> AddPosition(Position position)
@@ -35,6 +39,7 @@ namespace ManagmentSystem.EF.Services
                 if (Position != null)
                 {
                     await _unitOfWork.CompleteAsync();
+                    await _cache.RemoveAsync("AllPositions");
                     return 1;
                 }
                 else
@@ -57,6 +62,7 @@ namespace ManagmentSystem.EF.Services
                 if (Position != 0)
                 {
                     await _unitOfWork.CompleteAsync();
+                    await _cache.RemoveAsync("AllPositions");
                     return 1;
                 }
                 else
@@ -97,6 +103,47 @@ namespace ManagmentSystem.EF.Services
             }
         }
 
+        public async Task<IEnumerable<Position>> GetPositionsList(string departmentId, string filter)
+        {
+            try
+            {
+                string cacheKey = "AllPositions";
+                var cachedData = await _cache.GetStringAsync(cacheKey);
+
+                IEnumerable<Position> allPositions;
+
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    // Deserialize cached data
+                    allPositions = JsonConvert.DeserializeObject<IEnumerable<Position>>(cachedData);
+                }
+                else
+                {
+                    // Fetch from database and cache it
+                    allPositions = await _unitOfWork.Positions.GetAllAsync();
+                    var serializedData = JsonConvert.SerializeObject(allPositions);
+                    await _cache.SetStringAsync(cacheKey, serializedData, new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                        SlidingExpiration = TimeSpan.FromMinutes(10)
+                    });
+                }
+
+                // Apply filtering logic
+                return string.IsNullOrEmpty(filter)
+                    ? allPositions.Where(p => p.DepartmentId.Equals(departmentId, StringComparison.OrdinalIgnoreCase))
+                    : allPositions.Where(p =>
+                        p.DepartmentId.Equals(departmentId, StringComparison.OrdinalIgnoreCase) &&
+                        (p.AName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                         p.EName.Contains(filter, StringComparison.OrdinalIgnoreCase)));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
+        }
+
         public async Task<PositionDTO> GetPosition(string Id)
         {
             try
@@ -131,6 +178,7 @@ namespace ManagmentSystem.EF.Services
                 var positionObj = new Position { Id = position.Id, EName = position.EName, AName = position.AName, DepartmentId = position.DepartmentId };
                 _unitOfWork.Positions.Update(positionObj);
                 await _unitOfWork.CompleteAsync();
+                await _cache.RemoveAsync("AllPositions");
                 return 1;
             }
             catch (Exception)

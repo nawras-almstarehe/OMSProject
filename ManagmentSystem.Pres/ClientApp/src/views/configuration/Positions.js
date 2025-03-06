@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -256,6 +256,9 @@ const Positions = (props) => {
                       department: selectedOption
                     })}
                   />
+                  {touched.departmentId && errors.departmentId && (
+                    <div className="invalid-feedback">{errors.departmentId}</div>
+                  )}
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel>{t('isActive')}</CFormLabel>

@@ -1,6 +1,7 @@
 ﻿using ManagmentSystem.Core.IServices;
 using ManagmentSystem.Core.Models;
 using ManagmentSystem.Core.VModels;
+using ManagmentSystem.EF.Services;
 using ManagmentSystem.Pres.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -48,6 +49,22 @@ namespace ManagmentSystem.Controllers
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpGet("GetPositionsList")]
+        public async Task<IActionResult> GetPositionsList(string departmentId, string filter)
+        {
+            try
+            {
+                var positions = await _positionService.GetPositionsList(departmentId, filter);
+                _logger.LogInformation("Test log", positions);
+                return Ok(positions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching positions");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
         }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,11 +31,10 @@ namespace ManagmentSystem.EF.Services
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _localizer = localizer;
         }
-        public async Task<AuthModel> AddUser(User user)
+        public async Task<AuthModel> AddUser(VMUserPost user)
         {
             try
             {
-
                 if (await _unitOfWork.Users.FindByEmailAsync(user.Email) is not null)
                     return new AuthModel { Result = 0, Message = _localizer["EmailIsAlreadyRegistered"] };
 
@@ -57,7 +57,7 @@ namespace ManagmentSystem.EF.Services
                     {
                         return new AuthModel { Result = 3, Message = _localizer["PasswordTooShort"] };
                     }
-                    var hasher = new PasswordHasher<User>();
+                    var hasher = new PasswordHasher<VMUserPost>();
                     PasswordHashed = hasher.HashPassword(user, user.Password);
                 }
                 else
@@ -65,7 +65,8 @@ namespace ManagmentSystem.EF.Services
                     PasswordHashed = "Sys_Pass_Temp";
                 }
 
-                var userObj = new User { 
+                var userObj = new User
+                {
                     UserName = user.UserName,
                     Email = user.Email,
                     AFirstName = user.AFirstName,
@@ -79,20 +80,36 @@ namespace ManagmentSystem.EF.Services
                     Password = PasswordHashed,
                     UserType = user.UserType
                 };
-                var User = await _unitOfWork.Users.Add(userObj);
-                if (User != null)
+
+                var addedUser = await _unitOfWork.Users.Add(userObj);
+
+                var userPositionObj = new UserPosition
                 {
-                    await _unitOfWork.CompleteAsync();
-                    return new AuthModel { Result = 1};
+                    UserName = addedUser.UserName,
+                    UserId = addedUser.Id,
+                    PositionId = user.PositionId,
+                    IsActive = true,
+                    Type = (int)VMUserPosition.Enum_UserPosition_Type.HR,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddMonths(12)
+                };
+
+                var UserPosition = await _unitOfWork.UserPositions.Add(userPositionObj);
+
+                await _unitOfWork.CompleteAsync();
+
+                if (UserPosition != null)
+                {
+                    return new AuthModel { Result = 1 };
                 }
                 else
                 {
                     return new AuthModel { Result = 0, Message = _localizer["Failed"] };
                 }
-
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Exception: {ex.Message}");
                 throw;
             }
         }
@@ -161,8 +178,18 @@ namespace ManagmentSystem.EF.Services
                     (int)VMUser.Enum_User_Type.Consumer => (string)_localizer["Consumer"],
                     _ => "",
                 };
-                return new VMUser(User.Id,User.UserName, User.AFirstName, User.EFirstName, User.ALastName, User.ELastName,
-                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType, UserTypeName);
+
+                Expression<Func<UserPosition, bool>> match2 = u => (u.UserId == Id && u.Type == (int)VMUserPosition.Enum_UserPosition_Type.HR);
+                var UserPosition = await _unitOfWork.UserPositions.FindAsync(match2);
+
+                var Position = await _unitOfWork.Positions.GetByIdAsync(UserPosition.PositionId);
+
+                var Department = await _unitOfWork.Departments.GetByIdAsync(Position.DepartmentId);
+
+
+                return new VMUser(User.Id, User.UserName, User.AFirstName, User.EFirstName, User.ALastName, User.ELastName,
+                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType, UserTypeName,
+                    Department.Id, Department.Code, Department.EName, Department.AName, Position.Id, Position.AName, Position.EName);
             }
             catch (Exception)
             {
@@ -203,7 +230,7 @@ namespace ManagmentSystem.EF.Services
                         _ => "",
                     };
                     UsersResult.Add(new VMUser(User.Id, User.UserName, User.AFirstName, User.EFirstName, User.ALastName, User.ELastName,
-                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType, UserTypeName));
+                    User.Email, User.PhoneNumber, User.IsBlocked, User.IsAdmin, User.BlockedType, User.UserType, UserTypeName, "", "", "", "", "", "", ""));
                 }
                 return (UsersResult, totalItems);
             }
@@ -212,11 +239,14 @@ namespace ManagmentSystem.EF.Services
                 throw;
             }
         }
-        public async Task<AuthModel> UpdateUser(User user)
+        public async Task<AuthModel> UpdateUser(VMUserPost user)
         {
             try
             {
                 var UserCurr = await _unitOfWork.Users.GetByIdAsync(user.Id);
+                Expression<Func<UserPosition, bool>> match2 = u => (u.UserId == user.Id && u.Type == (int)VMUserPosition.Enum_UserPosition_Type.HR);
+                var UserPositionCurr = await _unitOfWork.UserPositions.FindAsync(match2);
+
                 if (UserCurr == null)
                     return new AuthModel { Result = 0, Message = _localizer["UserNotFound"] };
 
@@ -245,7 +275,7 @@ namespace ManagmentSystem.EF.Services
                         return new AuthModel { Result = 0, Message = _localizer["PasswordTooShort"] };
                     }
 
-                    var hasher = new PasswordHasher<User>();
+                    var hasher = new PasswordHasher<VMUserPost>();
                     UserCurr.Password = hasher.HashPassword(user, user.Password);
                 }
 
@@ -260,6 +290,14 @@ namespace ManagmentSystem.EF.Services
                 UserCurr.IsAdmin = user.IsAdmin;
                 UserCurr.IsBlocked = user.IsBlocked;
                 UserCurr.UserType = user.UserType;
+
+                if (!UserPositionCurr.PositionId.Equals(user.PositionId))
+                {
+                    UserPositionCurr.PositionId = user.PositionId;
+                    UserPositionCurr.StartDate = DateTime.Now;
+                    UserPositionCurr.EndDate = DateTime.Now.AddMonths(12);
+                    _unitOfWork.UserPositions.Update(UserPositionCurr);
+                }
 
                 _unitOfWork.Users.Update(UserCurr);
                 await _unitOfWork.CompleteAsync();

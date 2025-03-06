@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -32,6 +32,7 @@ import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
 import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik components
 import * as Yup from 'yup'; // Import Yup
+import AsyncSelect from 'react-select/async';
 
 const Enum_User_Type = {
   None: 0,
@@ -60,6 +61,7 @@ const Users = (props) => {
   const [titleModal, setTitleModal] = useState('');
   const [validatePassword, setValidatePassword] = useState('');
   const [errorPost, setErrorPost] = useState('');
+  const [refreshPositions, setRefreshPositions] = useState(false);
   const [initialValues, setInitialValues] = useState(
     {
       id: '',
@@ -75,7 +77,11 @@ const Users = (props) => {
       userType: 0,
       userTypeName: '',
       isBlocked: false,
-      isAdmin: false
+      isAdmin: false,
+      departmentId: '',
+      department: {},
+      positionId: '',
+      position: {}
     }
   );
 
@@ -94,7 +100,9 @@ const Users = (props) => {
     userType: Yup.number().required(t('fieldRequired').replace("{0}", t('userType')))
       .notOneOf([Enum_User_Type.None], t('fieldCannotBeNone').replace("{0}", t('userType'))),
     isBlocked: Yup.boolean(),
-    isAdmin: Yup.boolean()
+    isAdmin: Yup.boolean(),
+    departmentId: Yup.string().required(t('fieldRequired').replace("{0}", t('department'))),
+    positionId: Yup.string().required(t('fieldRequired').replace("{0}", t('position'))),
   });
 
   const fetchData = async () => {
@@ -141,6 +149,14 @@ const Users = (props) => {
   const handleEdit = async (item) => {
     try {
       const response = await apiService.get(`api/Users/GetUser?Id=${item.id}`);
+      const department = {
+        value: response.departmentId,
+        label: i18n.language === 'ar' ? response.departmentAName : response.departmentEName,
+      };
+      const position = {
+        value: response.positionId,
+        label: i18n.language === 'ar' ? response.positionAName : response.positionEName,
+      };
       const dataRow = {
         id: item.id,
         userName: response.userName,
@@ -156,6 +172,10 @@ const Users = (props) => {
         userTypeName: response.userTypeName,
         isBlocked: response.isBlocked,
         isAdmin: response.isAdmin,
+        departmentId: response.departmentId,
+        department: department,
+        positionId: response.positionId,
+        position: position
       };
       setTitleModal(t('editUser'));
       setVisibleModal(true);
@@ -183,6 +203,8 @@ const Users = (props) => {
         userType: values.userType,
         isBlocked: values.isBlocked,
         isAdmin: values.isAdmin,
+        departmentId: values.departmentId,
+        positionId: values.positionId
       };
       var res = {};
       if (values.id == null || values.id == '') {
@@ -213,7 +235,11 @@ const Users = (props) => {
       userType: 0,
       userTypeName: '',
       isBlocked: false,
-      isAdmin: false
+      isAdmin: false,
+      departmentId: '',
+      department: {},
+      positionId: '',
+      position: {}
     });
     setValidatePassword('');
     setErrorPost('');
@@ -228,6 +254,38 @@ const Users = (props) => {
       }
     } catch (error) {
       setVisibleToast({ visible: true, message: t('failedDeleteData') + error });
+    }
+  };
+
+  const loadOptionDepartments = async (inputValue) => {
+    try {
+      const response = await apiService.get(`api/Departments/GetDepartmentsList?filter=${inputValue}`);
+      const mappedResponse = response.map(item => ({
+        label: i18n.language === 'ar' ? item.aName : item.eName,
+        value: item.id,
+      }));
+
+      const newOption = { label: '', value: '' };
+      return mappedResponse.concat([newOption]);
+    } catch (error) {
+      console.error('Error loading options:', error);
+      return [];
+    }
+  };
+
+  const loadOptionPositions = async (inputValue) => {
+    try {
+      const response = await apiService.get(`api/Positions/GetPositionsList?departmentId=${initialValues.departmentId}&filter=${inputValue}`);
+      const mappedResponse = response.map(item => ({
+        label: i18n.language === 'ar' ? item.aName : item.eName,
+        value: item.id,
+      }));
+
+      const newOption = { label: '', value: '' };
+      return mappedResponse.concat([newOption]);
+    } catch (error) {
+      console.error('Error loading options:', error);
+      return [];
     }
   };
 
@@ -419,6 +477,54 @@ const Users = (props) => {
                     {touched.userType && errors.userType && (
                       <div className="invalid-feedback">{errors.userType}</div>
                     )}
+                  </CCol>
+                </CRow>
+                <CRow className="mb-3">
+                  <CCol md={4}>
+                    <CFormLabel>{t('department')}</CFormLabel>
+                    <AsyncSelect
+                      cacheOptions
+                      loadOptions={loadOptionDepartments}
+                      placeholder="Search and select..."
+                      noOptionsMessage={() => 'No options available'}
+                      defaultOptions
+                      value={initialValues.department}
+                      onChange={(selectedOption) => {
+                        setInitialValues({
+                          ...values,
+                          departmentId: selectedOption ? selectedOption.value : '',
+                          department: selectedOption,
+                          position: null, // Reset position
+                          positionId: ''
+                        });
+                        setRefreshPositions(!refreshPositions);
+                      }}
+                    />
+                    {touched.departmentId && errors.departmentId && (
+                      <div className="invalid-feedback">{errors.departmentId}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormLabel>{t('position')}</CFormLabel>
+                    <AsyncSelect
+                      key={refreshPositions}
+                      cacheOptions
+                      loadOptions={loadOptionPositions}
+                      placeholder="Search and select..."
+                      noOptionsMessage={() => 'No options available'}
+                      defaultOptions
+                      value={initialValues.position}
+                      onChange={(selectedOption) => setInitialValues({
+                        ...values,
+                        positionId: selectedOption ? selectedOption.value : '',
+                        position: selectedOption
+                      })}
+                    />
+                    {touched.positionId && errors.positionId && (
+                      <div className="invalid-feedback">{errors.positionId}</div>
+                    )}
+                  </CCol>
+                  <CCol md={4}>
                   </CCol>
                 </CRow>
                 <CRow className="mb-3">

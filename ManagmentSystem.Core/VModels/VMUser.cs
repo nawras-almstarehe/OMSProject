@@ -23,42 +23,77 @@ namespace ManagmentSystem.Core.VModels
             Consumer = 3
         }
 
-        public string id { get; set; }
-        public string userName { get; set; }
-        public string aFirstName { get; set; }
-        public string eFirstName { get; set; }
-        public string aLastName { get; set; }
-        public string eLastName { get; set; }
-        public string email { get; set; }
-        public string phoneNumber { get; set; }
-        public bool isBlocked { get; set; }
-        public bool isAdmin { get; set; }
-        public int blockedType { get; set; }
-        public int userType { get; set; }
-        public string userTypeName { get; set; }
-        public List<Position> positions { get; set; }
-        public List<UserPosition> userPositions { get; set; }
-        public Customer customer { get; set; }
-        public Producer producer { get; set; }
-        public UserProfile userProfile { get; set; }
+        public string Id { get; set; }
+        public string UserName { get; set; }
+        public string AFirstName { get; set; }
+        public string EFirstName { get; set; }
+        public string ALastName { get; set; }
+        public string ELastName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool IsBlocked { get; set; }
+        public bool IsAdmin { get; set; }
+        public int BlockedType { get; set; }
+        public int UserType { get; set; }
+        public string UserTypeName { get; set; }
+        public string DepartmentId { get; set; }
+        public string DepartmentCode { get; set; }
+        public string DepartmentEName { get; set; }
+        public string DepartmentAName { get; set; }
+        public string PositionId { get; set; }
+        public string PositionAName { get; set; }
+        public string PositionEName { get; set; }
 
         public VMUser(string Id, string UserName, string AFirstName, string EFirstName,
             string ALastName, string ELastName, string Email, string PhoneNumber,
-            bool IsBlocked, bool IsAdmin, int BlockedType, int UserType, string UserTypeName)
+            bool IsBlocked, bool IsAdmin, int BlockedType, int UserType, string UserTypeName, string DepartmentId
+            , string DepartmentCode, string DepartmentEName, string DepartmentAName, string PositionId, string PositionAName, string PositionEName)
         {
-            id = Id;
-            userName = UserName;
-            aFirstName = AFirstName;
-            eFirstName = EFirstName;
-            aLastName = ALastName;
-            eLastName = ELastName;
-            email = Email;
-            phoneNumber = PhoneNumber;
-            isBlocked = IsBlocked;
-            isAdmin = IsAdmin;
-            blockedType = BlockedType;
-            userType = UserType;
-            userTypeName = UserTypeName;
+            this.Id = Id;
+            this.UserName = UserName;
+            this.AFirstName = AFirstName;
+            this.EFirstName = EFirstName;
+            this.ALastName = ALastName;
+            this.ELastName = ELastName;
+            this.Email = Email;
+            this.PhoneNumber = PhoneNumber;
+            this.IsBlocked = IsBlocked;
+            this.IsAdmin = IsAdmin;
+            this.BlockedType = BlockedType;
+            this.UserType = UserType;
+            this.UserTypeName = UserTypeName;
+            this.DepartmentId = DepartmentId;
+            this.DepartmentCode = DepartmentCode;
+            this.DepartmentEName = DepartmentEName;
+            this.DepartmentAName = DepartmentAName;
+            this.PositionId = PositionId;
+            this.PositionAName = PositionAName;
+            this.PositionEName = PositionEName;
         }
+    }
+
+    public class VMUserPost
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+        public string AFirstName { get; set; }
+        public string EFirstName { get; set; }
+        public string ALastName { get; set; }
+        public string ELastName { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool IsBlocked { get; set; }
+        public bool IsAdmin { get; set; }
+        public int BlockedType { get; set; }
+        public int UserType { get; set; }
+        public string UserTypeName { get; set; }
+        public string DepartmentId { get; set; }
+        public string DepartmentCode { get; set; }
+        public string DepartmentEName { get; set; }
+        public string DepartmentAName { get; set; }
+        public string PositionId { get; set; }
+        public string PositionAName { get; set; }
+        public string PositionEName { get; set; }
     }
 }

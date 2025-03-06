@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,34 +15,11 @@ namespace ManagmentSystem.EF.Repositories
     public class UserPositionsRepository : BaseRepository<UserPosition>, IUserPositionsRepository
     {
         private new readonly ApplicationDBContext _context;
-        private readonly IUnitOfWork _unitOfWork;
         public UserPositionsRepository(ApplicationDBContext context) : base(context)
         {
             _context = context;
         }
-        public UserPositionsRepository(ApplicationDBContext context, IUnitOfWork unitOfWork) : base(context)
-        {
-            _context = context;
-            _unitOfWork = unitOfWork;
-        }
-        public async Task<UserPosition> GetUserPositionByUserId(string UserId)
-        {
-            try
-            {
-                var userPosition = new UserPosition();
-                if (string.IsNullOrEmpty(UserId))
-                {
-                    return null;
-                }
-                userPosition = await _unitOfWork.UserPositions.FindAsync(x => x.UserId == UserId);
-                return userPosition;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
+        
         public async Task<double> GetUserPrivilegesAsync(string UserId)
         {
             try

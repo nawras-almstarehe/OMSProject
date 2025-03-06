@@ -12,8 +12,8 @@ namespace ManagmentSystem.Core.IServices
     {
         Task<(IEnumerable<VMUser> users, int totalItems)> GetUsersAll(int page, int pageSize, Dictionary<string, string> search = null, ObjSort sort = null);
         Task<VMUser> GetUser(string Id);
-        Task<AuthModel> AddUser(User user);
-        Task<AuthModel> UpdateUser(User user);
+        Task<AuthModel> AddUser(VMUserPost user);
+        Task<AuthModel> UpdateUser(VMUserPost user);
         Task<int> DeleteUser(string Id);
         Task<bool> CheckExistEmailForUpdate(string Email, string id);
         Task<bool> CheckExistUserNameForUpdate(string UserName, string id);

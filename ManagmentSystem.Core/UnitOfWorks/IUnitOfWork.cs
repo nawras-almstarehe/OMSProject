@@ -22,5 +22,8 @@ namespace ManagmentSystem.Core.UnitOfWorks
         int Complete();
         Task<int> CompleteAsync();
         bool HasChanges();
+        //void BeginTransaction();
+        //void CommitTransaction();
+        //void RollbackTransaction();
     }
 }

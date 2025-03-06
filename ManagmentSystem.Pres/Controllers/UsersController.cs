@@ -90,7 +90,7 @@ namespace ManagmentSystem.Pres.Controllers
         }
 
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser([FromBody] User user)
+        public async Task<IActionResult> AddUser([FromBody] VMUserPost user)
         {
             if (user == null)
             {
@@ -113,7 +113,7 @@ namespace ManagmentSystem.Pres.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser([FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromBody] VMUserPost user)
         {
             if (user == null)
             {

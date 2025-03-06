@@ -11,7 +11,7 @@ namespace ManagmentSystem.Core.Interfaces
     public interface IBaseRepository<T> where T : class
     {
         //T GetById(int id);
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(string id);
         Task<T> Add(T entity);
         void Update(T entity);

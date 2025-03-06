@@ -33,6 +33,7 @@ namespace ManagmentSystem.EF.Repositories
                             id = d.Id.ToString(),
                             EName = d.EName,
                             AName = d.AName,
+                            Code = d.Code,
                         })
                         .ToListAsync();
                 return result;

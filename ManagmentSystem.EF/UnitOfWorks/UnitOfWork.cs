@@ -15,7 +15,7 @@ namespace ManagmentSystem.EF.UnitOfWorks
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDBContext _context;
-        //private IDbTransaction _transaction;   للمراجعة
+        private IDbTransaction _transaction;
         public UnitOfWork(ApplicationDBContext context)
         {
             _context = context;
@@ -56,6 +56,30 @@ namespace ManagmentSystem.EF.UnitOfWorks
             return _context.ChangeTracker.HasChanges();
         }
 
+        //public void BeginTransaction()
+        //{
+        //    _transaction = (IDbTransaction)_context.Database.BeginTransaction();
+        //}
+
+        //public void CommitTransaction()
+        //{
+        //    if (_transaction != null)
+        //    {
+        //        _transaction.Commit();
+        //        _transaction.Dispose();
+        //        _transaction = null;
+        //    }
+        //}
+
+        //public void RollbackTransaction()
+        //{
+        //    if (_transaction != null)
+        //    {
+        //        _transaction.Rollback();
+        //        _transaction.Dispose();
+        //        _transaction = null;
+        //    }
+        //}
 
         /// <summary>
         /// للمراجعة
