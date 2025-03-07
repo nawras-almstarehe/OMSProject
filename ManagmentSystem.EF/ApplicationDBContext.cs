@@ -5,6 +5,7 @@ using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
+
 namespace ManagmentSystem.EF
 {
     public partial class ApplicationDBContext : DbContext

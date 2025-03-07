@@ -36,11 +36,11 @@ namespace ManagmentSystem.Pres
 {
     public class Startup
     {
-        private readonly ConnectionMultiplexer _redis;
+        //private readonly ConnectionMultiplexer _redis;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
+            //_redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnection"));
         }
 
         public IConfiguration Configuration { get; }
@@ -90,7 +90,12 @@ namespace ManagmentSystem.Pres
             //services.AddSingleton<IStringLocalizer<SharedResource>, StringLocalizer<SharedResource>>();
 
             services.AddLocalization();
-            services.AddSingleton<IConnectionMultiplexer>(_redis);
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("RedisConnection");
+                //options.InstanceName = "YourAppInstance"; // Optional
+            });
+            //services.AddSingleton<IConnectionMultiplexer>(_redis);
             
             services.AddControllersWithViews()
                 .AddViewLocalization()
