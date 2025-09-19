@@ -22,6 +22,7 @@ namespace ManagmentSystem.Core.Interfaces
         Task<T> FindAsync(Expression<Func<T, bool>> match);
         Task<T> FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null);
         Task<TDTO> FindByAnyDataProjected<T, TDTO>(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, TDTO>> projection = null) where T : class;
+        Task<List<TDTO>> FindByAnyDataProjectedList<T, TDTO>(Expression < Func<T, TDTO>> projection, Expression<Func<T, bool>> match = null, string[] includes = null) where T : class;
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int take, int skip);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip,
@@ -35,5 +36,6 @@ namespace ManagmentSystem.Core.Interfaces
         int Count(Expression<Func<T, bool>> match);
         Task<int> CountAsync(Expression<Func<T, bool>> match);
         Task<int> CountAllAsync();
+        Task<TDTO> ExecuteQueryProjected<TDTO>(IQueryable<TDTO> query);
     }
 }

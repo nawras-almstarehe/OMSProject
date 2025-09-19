@@ -96,4 +96,12 @@ namespace ManagmentSystem.Core.VModels
         public string PositionAName { get; set; }
         public string PositionEName { get; set; }
     }
+
+    public class VMUsersList
+    {
+        public string Id { get; set; }
+        public string userFullAName { get; set; }
+        public string userFullEName { get; set; }
+        public string userName { get; set; }
+    }
 }

@@ -52,12 +52,12 @@ namespace ManagmentSystem.Controllers
             }
         }
 
-        [HttpGet("GetPositionsList")]
-        public async Task<IActionResult> GetPositionsList(string departmentId, string filter)
+        [HttpGet("GetPositionsByDepList")]
+        public async Task<IActionResult> GetPositionsByDepList(string departmentId, string filter)
         {
             try
             {
-                var positions = await _positionService.GetPositionsList(departmentId, filter);
+                var positions = await _positionService.GetPositionsByDepList(departmentId, filter);
                 _logger.LogInformation("Test log", positions);
                 return Ok(positions);
             }

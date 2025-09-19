@@ -19,7 +19,41 @@ namespace ManagmentSystem.EF.Repositories
         {
             _context = context;
         }
-        
+
+        public async Task<VMUserPositionDepartment> GetUserPositionDepartment(string Id)
+        {
+            var query = from up in _context.UsersPositions
+                        join p in _context.Positiones on up.PositionId equals p.Id
+                        join d in _context.Departmentes on p.DepartmentId equals d.Id
+                        join u in _context.Users on up.UserId equals u.Id
+                        where up.Id == Id
+                        select new VMUserPositionDepartment
+                        (
+                            up.Id,
+                            u.UserName,
+                            up.IsActive,
+                            p.EName,
+                            p.AName,
+                            "", // دالة ترجمة النوع هنا
+                            u.EFirstName + " " + u.ELastName,
+                            u.AFirstName + " " + u.ALastName,
+                            up.AddedOn.ToString("yyyy-MM-dd"),
+                            up.StartDate.ToString("yyyy-MM-dd"),
+                            up.EndDate.ToString("yyyy-MM-dd"),
+                            p.Id,
+                            up.UserId,
+                            d.Id,
+                            d.AName,
+                            d.EName,
+                            d.Code,
+                            up.Type
+                        );
+
+            var result = await ExecuteQueryProjected(query);
+
+            return result;
+        }
+
         public async Task<double> GetUserPrivilegesAsync(string UserId)
         {
             try

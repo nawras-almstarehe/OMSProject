@@ -11,6 +11,7 @@ namespace ManagmentSystem.Core.IServices
     public interface IUserService
     {
         Task<(IEnumerable<VMUser> users, int totalItems)> GetUsersAll(int page, int pageSize, Dictionary<string, string> search = null, ObjSort sort = null);
+        Task<IEnumerable<VMUsersList>> GetUsersList(string filter);
         Task<VMUser> GetUser(string Id);
         Task<AuthModel> AddUser(VMUserPost user);
         Task<AuthModel> UpdateUser(VMUserPost user);

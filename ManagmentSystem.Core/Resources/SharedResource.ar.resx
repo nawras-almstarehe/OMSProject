@@ -156,4 +156,10 @@
   <data name="GeneralDepartment" xml:space="preserve">
     <value>الإدارة العامة</value>
   </data>
+  <data name="ResHR" xml:space="preserve">
+    <value>تعيين</value>
+  </data>
+  <data name="ResAssign" xml:space="preserve">
+    <value>تكليف</value>
+  </data>
 </root>

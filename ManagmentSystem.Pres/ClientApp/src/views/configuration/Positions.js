@@ -132,6 +132,8 @@ const Positions = (props) => {
         id: values.id,
         ename: values.eName,
         aname: values.aName,
+        isActive: values.isActive,
+        isLeader: values.isLeader,
         departmentId: values.departmentId
       };
 

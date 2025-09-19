@@ -7,6 +7,7 @@
   "menu": "Menu",
   "settings": "Settings",
   "users": "Users",
+  "user": "User",
   "home": "Home",
   "arabicName": "Arabic name",
   "englishName": "English name",
@@ -69,5 +70,16 @@
   "addPosition": "Add Position",
   "editPosition": "Edit Position",
   "addRole": "Add role",
-  "editRole": "Edit role"
+  "editRole": "Edit role",
+  "assignments": "Assignments",
+  "addAssignment": "Add assignment",
+  "editAssignment": "Edit assignment",
+  "userFullEName": "English user full name",
+  "userFullAName": "Arabic user full name",
+  "positionEName": "English position name",
+  "positionAName": "Arabic position name",
+  "assignmentType": "Assignment type",
+  "startDateAssignment": "Start date",
+  "endDateAssignment": "End date",
+  "endDateMustBeAfterStartDate": "End date must be after start date"
 }

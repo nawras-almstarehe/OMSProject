@@ -12,7 +12,7 @@ namespace ManagmentSystem.Core.IServices
     public interface IPositionService
     {
         Task<(IEnumerable<Position> positions, int totalItems)> GetPositionsAll(int page, int pageSize, Dictionary<string, string> search = null, ObjSort sort = null);
-        Task<IEnumerable<Position>> GetPositionsList(string departmentId, string filter);
+        Task<IEnumerable<Position>> GetPositionsByDepList(string departmentId, string filter);
         Task<PositionDTO> GetPosition(string Id);
         Task<int> AddPosition(Position position);
         Task<int> UpdatePosition(Position position);

@@ -8,6 +8,7 @@ const Departments = React.lazy(() => import('./views/configuration/Departments')
 const Positions = React.lazy(() => import('./views/configuration/Positions'));
 const Roles = React.lazy(() => import('./views/configuration/Roles'));
 const Privileges = React.lazy(() => import('./views/configuration/Privileges'));
+const Assignments = React.lazy(() => import('./views/configuration/Assignments'));
 
 const routes = () => {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ const routes = () => {
     { path: '/configuration/positions', name: t('positions'), element: Positions },
     { path: '/configuration/roles', name: t('roles'), element: Roles },
     { path: '/configuration/privileges', name: t('privileges'), element: Privileges },
+    { path: '/configuration/assignments', name: t('assignments'), element: Assignments },
   ]
 }
 

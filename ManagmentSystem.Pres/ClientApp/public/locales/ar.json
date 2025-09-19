@@ -7,6 +7,7 @@
   "menu": "القائمة",
   "settings": "الاعدادات",
   "users": "المستخدمون",
+  "user": "المستخدم",
   "home": "الرئيسية",
   "arabicName": "الاسم العربي",
   "englishName": "الاسم الانكليزي",
@@ -69,5 +70,16 @@
   "addPosition": "إضافة منصب",
   "editPosition": "تعديل منصب",
   "addRole": "إضافة دور",
-  "editRole": "تعديل دور"
+  "editRole": "تعديل دور",
+  "assignments": "التكليفات",
+  "addAssignment": "إضافة تكليف",
+  "editAssignment": "تعديل تكليف",
+  "userFullEName": "الاسم الإنكليزي الكامل للمستخدم",
+  "userFullAName": "الاسم العربي الكامل للمستخدم",
+  "positionEName": "اسم المنصب الانكليزي",
+  "positionAName": "اسم المنصب العربي",
+  "assignmentType": "نوع التكليف",
+  "startDateAssignment": "بداية التكليف",
+  "endDateAssignment": "نهاية التكليف",
+  "endDateMustBeAfterStartDate": "تاريخ نهاية التكليف يجب أن يكون بعد تاريخ بدايته"
 }

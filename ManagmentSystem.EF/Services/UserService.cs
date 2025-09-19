@@ -6,8 +6,10 @@ using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Localization;
 using MySqlConnector;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,12 +26,14 @@ namespace ManagmentSystem.EF.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
+        private readonly IDistributedCache _cache;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        public UserService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer)
+        public UserService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IStringLocalizer<SharedResource> localizer, IDistributedCache cache)
         {
             _unitOfWork = unitOfWork;
             _env = env ?? throw new ArgumentNullException(nameof(env));
             _localizer = localizer;
+            _cache = cache;
         }
         public async Task<AuthModel> AddUser(VMUserPost user)
         {
@@ -236,6 +240,47 @@ namespace ManagmentSystem.EF.Services
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<VMUsersList>> GetUsersList(string filter)
+        {
+            try
+            {
+                string cacheKey = "AllUsers";
+                var cachedUsers = await _cache.GetStringAsync(cacheKey);
+
+                IEnumerable<VMUsersList> allUsers;
+
+                if (!string.IsNullOrEmpty(cachedUsers))
+                {
+                    // Deserialize cached data
+                    allUsers = JsonConvert.DeserializeObject<IEnumerable<VMUsersList>>(cachedUsers);
+                }
+                else
+                {
+                    // Fetch from database and cache it
+                    allUsers = await _unitOfWork.Users.GetAllUsersList(u => true);
+                    var serializedDepartments = JsonConvert.SerializeObject(allUsers);
+                    await _cache.SetStringAsync(cacheKey, serializedDepartments, new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                        SlidingExpiration = TimeSpan.FromMinutes(10)
+                    });
+                }
+
+                // Apply filtering logic
+                return string.IsNullOrEmpty(filter)
+                    ? allUsers
+                    : allUsers.Where(d =>
+                        d.userFullAName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                        d.userFullEName.Contains(filter, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                Console.WriteLine($"An error occurred: {ex.Message}");
                 throw;
             }
         }

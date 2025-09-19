@@ -13,23 +13,17 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using ManagmentSystem.Core.IServices;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ManagmentSystem.EF.Repositories
 {
     public class UsersRepository : BaseRepository<User>, IUsersRepository
     {
         private new readonly ApplicationDBContext _context;
-        private readonly IUnitOfWork _unitOfWork;
         
         public UsersRepository(ApplicationDBContext context) : base(context)
         {
-            
-        }
-        
-        public UsersRepository(ApplicationDBContext context, IUnitOfWork unitOfWork) : base(context)
-        {
             _context = context;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<VMResult> RegisterLocalAsync(VMRegister model)
@@ -131,6 +125,31 @@ namespace ManagmentSystem.EF.Repositories
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public async Task<IEnumerable<VMUsersList>> GetAllUsersList(Expression<Func<User, bool>> filter)
+        {
+            try
+            {
+                IQueryable<User> query = _context.Set<User>().Where(filter);
+                var result = await query
+                        .AsNoTracking()
+                        .Select(d => new VMUsersList
+                        {
+                            Id = d.Id.ToString(),
+                            userFullAName = d.AFirstName + "" + d.ALastName,
+                            userFullEName = d.EFirstName + "" + d.ELastName,
+                            userName = d.UserName,
+                        })
+                        .ToListAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (consider using a logging framework)
+                Console.WriteLine($"Error fetching users: {ex.Message}");
+                return Enumerable.Empty<VMUsersList>(); // Return an empty list on error
             }
         }
 

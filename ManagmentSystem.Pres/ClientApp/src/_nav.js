@@ -7,7 +7,7 @@ import {
   cilGroup,
   cilBriefcase,
 } from '@coreui/icons';
-import { cilShield, cilRecentActors, cilChalkboardTeacher } from '@coreui/icons-pro';
+import { cilShield, cilRecentActors, cilChalkboardTeacher, cilBriefcaseArrowLeft } from '@coreui/icons-pro';
 import { CNavItem, CNavTitle, CNavGroup } from '@coreui/react';
 import { useTranslation } from 'react-i18next';
 
@@ -79,6 +79,13 @@ const _nav = () => {
           name: t('roles'),
           to: '/configuration/roles',
           icon: <CIcon icon={cilRecentActors} customClassName="nav-icon" />,
+          classCustom: "nav-link-costum",
+        },
+        {
+          component: CNavItem,
+          name: t('assignments'),
+          to: '/configuration/assignments',
+          icon: <CIcon icon={cilBriefcaseArrowLeft} customClassName="nav-icon" />,
           classCustom: "nav-link-costum",
         },
       ],

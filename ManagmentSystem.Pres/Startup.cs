@@ -120,6 +120,7 @@ namespace ManagmentSystem.Pres
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IPositionService, PositionService>();
+            services.AddScoped<IUserPositionService, UserPositionService>();
             services.AddScoped<IPrivilegeService, PrivilegeService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

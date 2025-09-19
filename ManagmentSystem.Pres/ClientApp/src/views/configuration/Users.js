@@ -12,7 +12,6 @@ import {
   CFormInput,
   CRow,
   CCard,
-  CCardHeader,
   CCardBody,
   CFormSelect,
   CFormSwitch,
@@ -275,7 +274,7 @@ const Users = (props) => {
 
   const loadOptionPositions = async (inputValue) => {
     try {
-      const response = await apiService.get(`api/Positions/GetPositionsList?departmentId=${initialValues.departmentId}&filter=${inputValue}`);
+      const response = await apiService.get(`api/Positions/GetPositionsByDepList?departmentId=${initialValues.departmentId}&filter=${inputValue}`);
       const mappedResponse = response.map(item => ({
         label: i18n.language === 'ar' ? item.aName : item.eName,
         value: item.id,

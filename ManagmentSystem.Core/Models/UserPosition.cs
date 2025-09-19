@@ -10,7 +10,8 @@ namespace ManagmentSystem.Core.Models
     public class UserPosition
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString(); public bool IsActive { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public bool IsActive { get; set; }
         public int Type { get; set; }
         public DateTime LastAccessed { get; set; }
         public DateTime AddedOn { get; set; }

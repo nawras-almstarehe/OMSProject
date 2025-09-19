@@ -65,6 +65,22 @@ namespace ManagmentSystem.Pres.Controllers
             }
         }
 
+        [HttpGet("GetUsersList")]
+        public async Task<IActionResult> GetUsersList(string filter)
+        {
+            try
+            {
+                var users = await _userService.GetUsersList(filter);
+                _logger.LogInformation("Test log", users);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching departments");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
+            }
+        }
+
         [HttpGet("GetUser")]
         public async Task<IActionResult> GetUser(string Id)
         {

@@ -34,7 +34,13 @@ namespace ManagmentSystem.EF.Services
         {
             try
             {
-                var positionObj = new Position { EName = position.EName, AName = position.AName, DepartmentId = position.DepartmentId };
+                var positionObj = new Position { 
+                    EName = position.EName,
+                    AName = position.AName,
+                    DepartmentId = position.DepartmentId,
+                    IsActive = position.IsActive,
+                    IsLeader = position.IsLeader
+                };
                 var Position = await _unitOfWork.Positions.Add(positionObj);
                 if (Position != null)
                 {
@@ -103,11 +109,11 @@ namespace ManagmentSystem.EF.Services
             }
         }
 
-        public async Task<IEnumerable<Position>> GetPositionsList(string departmentId, string filter)
+        public async Task<IEnumerable<Position>> GetPositionsByDepList(string departmentId, string filter)
         {
             try
             {
-                string cacheKey = "AllPositions";
+                string cacheKey = "PositionsByDepartment";
                 var cachedData = await _cache.GetStringAsync(cacheKey);
 
                 IEnumerable<Position> allPositions;

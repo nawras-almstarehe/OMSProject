@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ManagmentSystem.Core.VModels
 {
-    public class VMUserPosition
+    public class VMUserPositionDepartment
     {
         public enum Enum_UserPosition_Type
         {
@@ -29,15 +29,19 @@ namespace ManagmentSystem.Core.VModels
         public string PositionId { get; set; }
         public string EPositionName { get; set; }
         public string APositionName { get; set; }
+        public string DepartmentEName { get; set; }
+        public string DepartmentAName { get; set; }
+        public string DepartmentCode { get; set; }
+        public string DepartmentId { get; set; }
 
-        public VMUserPosition(string Id, string UserName, bool IsActive, string EPositionName, string APositionName, string TypeName, string EFullNameUser, string AFullNameUser, string AddedOn,
-            string StartDate, string EndDate)
+        public VMUserPositionDepartment(string Id, string UserName, bool IsActive, string EPositionName, string APositionName, string TypeName, string EFullNameUser, string AFullNameUser, string AddedOn,
+            string StartDate, string EndDate, string PositionId, string UserId, string DepartmentId, string DepartmentAName, string DepartmentEName, string DepartmentCode, int Type)
         {
             this.Id = Id;
             this.UserName = UserName;
-            this.UserName = UserName;
-            this.UserName = UserName;
             this.IsActive = IsActive;
+            this.PositionId = PositionId;
+            this.UserId = UserId;
             this.EPositionName = EPositionName;
             this.APositionName = APositionName;
             this.TypeName = TypeName;
@@ -46,6 +50,11 @@ namespace ManagmentSystem.Core.VModels
             this.AddedOn = AddedOn;
             this.StartDate = StartDate;
             this.EndDate = EndDate;
+            this.Type = Type;
+            this.DepartmentId = DepartmentId;
+            this.DepartmentCode = DepartmentCode;
+            this.DepartmentAName = DepartmentAName;
+            this.DepartmentEName = DepartmentEName;
         }
     }
 }
