@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -35,6 +35,7 @@ import AsyncSelect from 'react-select/async';
 
 const Positions = (props) => {
   const { t, i18n } = useTranslation();
+  const [colWidths, setColWidths] = useState({});
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
@@ -50,7 +51,7 @@ const Positions = (props) => {
     eName: '',
     aName: '',
     departmentId: '',
-    department: {},
+    department: null,
     isActive: false,
     isLeader: false
   });
@@ -83,6 +84,14 @@ const Positions = (props) => {
   };
 
   useEffect(() => {
+    const widths = {};
+    Object.keys(headersRefs).forEach(key => {
+      const header = headersRefs[key].current;
+      if (header) {
+        widths[key] = header.offsetWidth;
+      }
+    });
+    setColWidths(widths);
     fetchData();
   }, [sort, filter, itemsPerPage, activePage]);
 
@@ -128,24 +137,24 @@ const Positions = (props) => {
 
   const handleSaveChanges = async (values, { resetForm }) => { // Receive values and resetForm
     try {
-      const newPosition = {
-        id: values.id,
-        ename: values.eName,
-        aname: values.aName,
-        isActive: values.isActive,
-        isLeader: values.isLeader,
-        departmentId: values.departmentId
-      };
+        const newPosition = {
+          id: values.id,
+          ename: values.eName,
+          aname: values.aName,
+          isActive: values.isActive,
+          isLeader: values.isLeader,
+          departmentId: values.departmentId
+        };
 
-      if (values.id == null || values.id === '') {
-        await apiService.post('api/Positions/AddPosition', newPosition);
-      } else {
-        await apiService.put('api/Positions/UpdatePosition', newPosition);
-      }
+        if (values.id == null || values.id === '') {
+          await apiService.post('api/Positions/AddPosition', newPosition);
+        } else {
+          await apiService.put('api/Positions/UpdatePosition', newPosition);
+        }
 
-      setVisibleModal(false);
-      resetForm();
-      fetchData();
+        setVisibleModal(false);
+        resetForm();
+        fetchData();
     } catch (error) {
       setVisibleToast({ visible: true, message: t('failedPostData') + error });
     }
@@ -153,7 +162,7 @@ const Positions = (props) => {
 
   const closeModalCU = () => {
     setVisibleModal(false);
-    setInitialValues({ id: '', eName: '', aName: '', departmentId: '' });
+    setInitialValues({ id: '', eName: '', aName: '', departmentId: '', department: null });
   };
 
   const handleConfirmDelete = async (item) => {
@@ -184,6 +193,24 @@ const Positions = (props) => {
     }
   }, []);
 
+  const headersRefs = {
+    aName: useRef(null),
+    eName: useRef(null),
+    isActive: useRef(null),
+    isLeader: useRef(null)
+  };
+
+  const customStylesDepValidateError = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor:  "red" ,
+      boxShadow:  "0 0 0 0,5px red" ,
+      "&:hover": {
+        borderColor: "red",
+      },
+    }),
+  };
+
   return (
     <>
       <CToast autohide={true} visible={visibleToast.visible} color="danger" className="text-white align-items-center">
@@ -208,7 +235,7 @@ const Positions = (props) => {
             onSubmit={handleSaveChanges}
             enableReinitialize={true} //Very Important
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+            {({ values, errors, touched, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
               <CForm
                 className="row g-3"
                 onSubmit={handleSubmit}
@@ -220,7 +247,6 @@ const Positions = (props) => {
                     label={t('englishName')}
                     value={values.eName}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.eName && errors.eName}
                   />
@@ -235,7 +261,6 @@ const Positions = (props) => {
                     label={t('arabicName')}
                     value={values.aName}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.aName && errors.aName}
                   />
@@ -246,20 +271,22 @@ const Positions = (props) => {
                 <CCol xs={12}>
                   <CFormLabel>{t('department')}</CFormLabel>
                   <AsyncSelect
+                    name="departmentId"
                     cacheOptions
                     loadOptions={loadOptions}
                     placeholder="Search and select..."
                     noOptionsMessage={() => 'No options available'}
                     defaultOptions
-                    value={initialValues.department}
-                    onChange={(selectedOption) => setInitialValues({
-                      ...values,
-                      departmentId: selectedOption ? selectedOption.value : '',
-                      department: selectedOption
-                    })}
+                    value={values.department}
+                    onChange={(selectedOption) => {
+                      setFieldValue('departmentId', selectedOption ? selectedOption.value : '');
+                      setFieldValue('department', selectedOption);
+                    }}
+                    onBlur={() => setFieldTouched('departmentId', true)}
+                    styles={touched.departmentId && errors.departmentId && customStylesDepValidateError}
                   />
                   {touched.departmentId && errors.departmentId && (
-                    <div className="invalid-feedback">{errors.departmentId}</div>
+                    <div className="invalid-feedback d-block">{errors.departmentId}</div>
                   )}
                 </CCol>
                 <CCol md={6}>
@@ -267,9 +294,8 @@ const Positions = (props) => {
                   <CFormSwitch
                     id="isActive"
                     checked={values.isActive}
-                    onChange={handleChange}
+                    onChange={(e) => setFieldValue('isActive', e.target.checked)}
                     className="custom-switch"
-                    onBlur={handleBlur}
                   />
                 </CCol>
                 <CCol md={6}>
@@ -277,9 +303,8 @@ const Positions = (props) => {
                   <CFormSwitch
                     id="isLeader"
                     checked={values.isLeader}
-                    onChange={handleChange}
+                    onChange={(e) => setFieldValue('isLeader', e.target.checked)}
                     className="custom-switch"
-                    onBlur={handleBlur}
                   />
                 </CCol>
                 <CModalFooter>
@@ -310,10 +335,22 @@ const Positions = (props) => {
                     </div>
                   ), _style: { width: '6%' }, filter: false, sorter: false,
                 },
-                { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
-                { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, },
                 {
-                  key: 'isActive', label: t('isActive'), filter: (_, onChange) => {
+                  key: 'aName',
+                  label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
+                  _style: { width: colWidths.aName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eName',
+                  label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
+                  _style: { width: colWidths.eName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'isActive',
+                  label: (<div ref={headersRefs.isActive} style={{ whiteSpace: 'nowrap' }} title={t('isActive')} > {t('isActive')} </div>),
+                  filter: (_, onChange) => {
                     return (
                       <CFormSelect
                         size="sm"
@@ -328,9 +365,13 @@ const Positions = (props) => {
                       </CFormSelect>
                     )
                   },
+                  _style: { width: colWidths.isActive },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
                 },
                 {
-                  key: 'isLeader', label: t('isLeader'), filter: (_, onChange) => {
+                  key: 'isLeader',
+                  label: (<div ref={headersRefs.isActive} style={{ whiteSpace: 'nowrap' }} title={t('isLeader')} > {t('isLeader')} </div>),
+                  filter: (_, onChange) => {
                     return (
                       <CFormSelect
                         size="sm"
@@ -345,6 +386,8 @@ const Positions = (props) => {
                       </CFormSelect>
                     )
                   },
+                  _style: { width: colWidths.isLeader },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
                 }
               ]}
               items={data}

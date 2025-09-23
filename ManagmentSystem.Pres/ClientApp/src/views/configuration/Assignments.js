@@ -9,7 +9,6 @@ import {
   CModalTitle,
   CCol,
   CForm,
-  CFormInput,
   CRow,
   CCard,
   CCardBody,
@@ -17,7 +16,6 @@ import {
   CToastBody,
   CToastClose,
   CFormSelect,
-  CDatePicker,
   CFormLabel,
   CFormSwitch
 } from '@coreui/react-pro';
@@ -50,8 +48,6 @@ const Assignments = (props) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [titleModal, setTitleModal] = useState('');
   const [visibleToast, setVisibleToast] = useState({ visible: false, message: '' });
-  const [startDateFilter, setStartDateFilter] = useState('');
-  const [endDateFilter, setEndDateFilter] = useState('');
   const [refreshPositions, setRefreshPositions] = useState(false);
   const [initialValues, setInitialValues] = useState({
     id: '',
@@ -59,18 +55,18 @@ const Assignments = (props) => {
     userName: '',
     eFullNameUser: '',
     aFullNameUser: '',
-    user: {},
+    user: null,
     positionId: '',
     ePositionName: '',
     aPositionName: '',
-    position: {},
+    position: null,
     isActive: false,
     type: 0,
     typeName: '',
     startDate: null,
     endDate: null,
     departmentId: '',
-    department: {},
+    department: null,
   });
 
   // Yup Schema
@@ -123,11 +119,6 @@ const Assignments = (props) => {
   const handleFilterChange = (value) => {
     setFilter(value);
   };
-
-  const handleDateChange = (columnKey, date) => {
-    const dateFormetted = sharedFunctions.convertDateToString(date);
-    setInitialValues({ ...initialValues, [columnKey]: dateFormetted });
-  }
 
   const handleAdd = () => {
     setVisibleModal(true);
@@ -213,15 +204,15 @@ const Assignments = (props) => {
     setVisibleModal(false);
     setInitialValues({
       id: '',
-      user: {},
+      user: null,
       userId: '',
       userName: '',
       eFullNameUser: '',
       aFullNameUser: '',
       departmentId: '',
-      department: {},
+      department: null,
       positionId: '',
-      position: {},
+      position: null,
       ePositionName: '',
       aPositionName: '',
       isActive: false,
@@ -281,9 +272,9 @@ const Assignments = (props) => {
     }
   };
 
-  const loadOptionPositions = async (inputValue) => {
+  const loadOptionPositions = (departmentId) => async (inputValue) => {
     try {
-      const response = await apiService.get(`api/Positions/GetPositionsByDepList?departmentId=${initialValues.departmentId}&filter=${inputValue}`);
+      const response = await apiService.get(`api/Positions/GetPositionsByDepList?departmentId=${departmentId}&filter=${inputValue}`);
       const mappedResponse = response.map(item => ({
         label: i18n.language === 'ar' ? item.aName : item.eName,
         value: item.id,
@@ -307,6 +298,40 @@ const Assignments = (props) => {
     isActive: useRef(null),
     startDate: useRef(null),
     endDate: useRef(null),
+    actions: useRef(null),
+  };
+
+  const customStylesDepValidateError = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: "red",
+      boxShadow: "0 0 0 0,5px red",
+      "&:hover": {
+        borderColor: "red",
+      },
+    }),
+  };
+
+  const customStylesPosValidateError = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: "red",
+      boxShadow: "0 0 0 0,5px red",
+      "&:hover": {
+        borderColor: "red",
+      },
+    }),
+  };
+  
+  const customStylesUserValidateError = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: "red",
+      boxShadow: "0 0 0 0,5px red",
+      "&:hover": {
+        borderColor: "red",
+      },
+    }),
   };
 
   return (
@@ -332,7 +357,7 @@ const Assignments = (props) => {
             onSubmit={handleSaveChanges}
             enableReinitialize={true} //Very Important
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+            {({ values, errors, touched, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
               <CForm
                 className="row g-3"
                 onSubmit={handleSubmit}
@@ -340,68 +365,68 @@ const Assignments = (props) => {
                 <CCol md={6}>
                   <CFormLabel>{t('user')}</CFormLabel>
                   <AsyncSelect
+                    name="userId"
                     cacheOptions
                     loadOptions={loadOptionUsers}
                     placeholder="Search and select..."
                     noOptionsMessage={() => 'No options available'}
                     defaultOptions
-                    value={initialValues.user}
+                    value={values.user}
                     onChange={(selectedOption) => {
-                      setInitialValues({
-                        ...values,
-                        userId: selectedOption ? selectedOption.value : '',
-                        user: selectedOption
-                      });
+                      setFieldValue('userId', selectedOption ? selectedOption.value : '');
+                      setFieldValue('user', selectedOption);
                     }}
+                    onBlur={() => setFieldTouched('userId', true)}
+                    styles={touched.userId && errors.userId && customStylesUserValidateError}
                   />
                   {touched.userId && errors.userId && (
-                    <div className="invalid-feedback">{errors.userId}</div>
+                    <div className="invalid-feedback d-block">{errors.userId}</div>
                   )}
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel>{t('department')}</CFormLabel>
                   <AsyncSelect
+                    name="departmentId"
                     cacheOptions
                     loadOptions={loadOptionDepartments}
                     placeholder="Search and select..."
                     noOptionsMessage={() => 'No options available'}
                     defaultOptions
-                    value={initialValues.department}
+                    value={values.department}
                     onChange={(selectedOption) => {
-                      setInitialValues({
-                        ...values,
-                        departmentId: selectedOption ? selectedOption.value : '',
-                        department: selectedOption,
-                        position: null, // Reset position
-                        positionId: ''
-                      });
+                      setFieldValue('departmentId', selectedOption ? selectedOption.value : '');
+                      setFieldValue('department', selectedOption);
+                      setFieldValue('positionId', '');
+                      setFieldValue('position', null);
                       setRefreshPositions(!refreshPositions);
                     }}
+                    onBlur={() => setFieldTouched('departmentId', true)}
+                    styles={touched.departmentId && errors.departmentId && customStylesDepValidateError}
                   />
                   {touched.departmentId && errors.departmentId && (
-                    <div className="invalid-feedback">{errors.departmentId}</div>
+                    <div className="invalid-feedback d-block">{errors.departmentId}</div>
                   )}
                 </CCol>
                 <CCol md={6}>
                   <CFormLabel>{t('position')}</CFormLabel>
                   <AsyncSelect
+                    name="positionId"
                     key={refreshPositions}
                     cacheOptions
-                    loadOptions={loadOptionPositions}
+                    loadOptions={loadOptionPositions(values.departmentId)}
                     placeholder="Search and select..."
                     noOptionsMessage={() => 'No options available'}
                     defaultOptions
-                    value={initialValues.position}
+                    value={values.position}
                     onChange={(selectedOption) => {
-                      setInitialValues({
-                        ...values,
-                        positionId: selectedOption ? selectedOption.value : '',
-                        position: selectedOption
-                      });
+                      setFieldValue('positionId', selectedOption ? selectedOption.value : '');
+                      setFieldValue('position', selectedOption);
                     }}
+                    onBlur={() => setFieldTouched('positionId', true)}
+                    styles={touched.positionId && errors.positionId && customStylesPosValidateError}
                   />
                   {touched.positionId && errors.positionId && (
-                    <div className="invalid-feedback">{errors.positionId}</div>
+                    <div className="invalid-feedback d-block">{errors.positionId}</div>
                   )}
                 </CCol>
                 <CCol md={6}>
@@ -428,9 +453,8 @@ const Assignments = (props) => {
                   <CFormSwitch
                     id="isActive"
                     checked={values.isActive}
-                    onChange={handleChange}
+                    onChange={(e) => setFieldValue('isActive', e.target.checked)}
                     className="custom-switch"
-                    onBlur={handleBlur}
                   />
                 </CCol>
                 <CModalFooter>
@@ -454,12 +478,12 @@ const Assignments = (props) => {
               columns={[
                 {
                   key: 'actions', label: (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div ref={headersRefs.actions} style={{ display: 'flex', justifyContent: 'center', whiteSpace: 'nowrap' }}>
                       <CButton onClick={handleAdd} size="sm">
                         <CIcon icon={cilPlus} className="nav-icon" />
                       </CButton>
                     </div>
-                  ), _style: { width: '6%' }, filter: false, sorter: false,
+                  ), _style: { width: colWidths.userName }, _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, filter: false, sorter: false,
                 },
                 {
                   key: 'userName',

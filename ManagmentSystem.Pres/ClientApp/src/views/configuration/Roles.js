@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -28,10 +28,10 @@ import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import AsyncSelect from 'react-select/async';
 
 const Roles = (props) => {
   const { t, i18n } = useTranslation();
+  const [colWidths, setColWidths] = useState({});
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
@@ -75,6 +75,14 @@ const Roles = (props) => {
   };
 
   useEffect(() => {
+    const widths = {};
+    Object.keys(headersRefs).forEach(key => {
+      const header = headersRefs[key].current;
+      if (header) {
+        widths[key] = header.offsetWidth;
+      }
+    });
+    setColWidths(widths);
     fetchData();
   }, [sort, filter, itemsPerPage, activePage]);
 
@@ -144,6 +152,11 @@ const Roles = (props) => {
     }
   };
 
+  const headersRefs = {
+    aName: useRef(null),
+    eName: useRef(null),
+  };
+
   return (
     <>
       <CToast autohide={true} visible={visibleToast.visible} color="danger" className="text-white align-items-center">
@@ -168,7 +181,7 @@ const Roles = (props) => {
             onSubmit={handleSaveChanges}
             enableReinitialize={true} //Very Important
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+            {({ values, errors, touched, handleChange, handleSubmit }) => (
               <CForm
                 className="row g-3"
                 onSubmit={handleSubmit}
@@ -180,7 +193,6 @@ const Roles = (props) => {
                     label={t('englishName')}
                     value={values.eName}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.eName && errors.eName}
                   />
@@ -195,7 +207,6 @@ const Roles = (props) => {
                     label={t('arabicName')}
                     value={values.aName}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.aName && errors.aName}
                   />
@@ -231,8 +242,18 @@ const Roles = (props) => {
                     </div>
                   ), _style: { width: '6%' }, filter: false, sorter: false,
                 },
-                { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
-                { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, }
+                {
+                  key: 'aName',
+                  label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
+                  _style: { width: colWidths.aName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eName',
+                  label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
+                  _style: { width: colWidths.eName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                }
               ]}
               items={data}
               columnFilter={{ external: true }}

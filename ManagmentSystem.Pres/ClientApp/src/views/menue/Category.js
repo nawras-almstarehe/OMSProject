@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -29,11 +29,12 @@ import MultiImagesUploadModal from "../../components/MultiImagesUploadModal";
 import '../../costumStyle/stylesCostum.css';
 import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
-import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik components
+import { Formik } from 'formik'; // Import Formik components
 import * as Yup from 'yup'; // Import Yup
 
 const Category = (props) => {
   const { t, i18n } = useTranslation();
+  const [colWidths, setColWidths] = useState({});
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
@@ -76,6 +77,14 @@ const Category = (props) => {
   };
 
   useEffect(() => {
+    const widths = {};
+    Object.keys(headersRefs).forEach(key => {
+      const header = headersRefs[key].current;
+      if (header) {
+        widths[key] = header.offsetWidth;
+      }
+    });
+    setColWidths(widths);
     fetchData();
   }, [sort, filter, itemsPerPage, activePage]);
 
@@ -157,6 +166,12 @@ const Category = (props) => {
     setVisibleModalImages(true);
   };
 
+  const headersRefs = {
+    aName: useRef(null),
+    eName: useRef(null),
+    description: useRef(null)
+  };
+
   return (
     <>
       <CToast autohide={true} visible={visibleToast.visible} color="danger" className="text-white align-items-center">
@@ -181,7 +196,7 @@ const Category = (props) => {
             onSubmit={handleSaveChanges}
             enableReinitialize={true} //Very Important
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+            {({ values, errors, touched, handleChange, handleSubmit }) => (
               <CForm
                 className="row g-3"
                 onSubmit={handleSubmit}
@@ -193,7 +208,6 @@ const Category = (props) => {
                     label={t('englishName')}
                     value={values.eName}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.eName && errors.eName}
                   />
@@ -208,7 +222,6 @@ const Category = (props) => {
                     label={t('arabicName')}
                     value={values.aName}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.aName && errors.aName}
                   />
@@ -223,7 +236,6 @@ const Category = (props) => {
                     rows={3}
                     value={values.description}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     invalid={touched.description && errors.description}
                   />
                   {touched.description && errors.description && (
@@ -259,9 +271,24 @@ const Category = (props) => {
                     </div>
                   ), _style: { width: '6%' }, filter: false, sorter: false,
                 },
-                { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
-                { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, },
-                { key: 'description', label: t('description'), _props: { className: 'columnHeader' }, },
+                {
+                  key: 'aName',
+                  label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
+                  _style: { width: colWidths.aName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eName',
+                  label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
+                  _style: { width: colWidths.eName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'description',
+                  label: (<div ref={headersRefs.description} style={{ whiteSpace: 'nowrap' }} title={t('description')} > {t('description')} </div>),
+                  _style: { width: colWidths.description },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
                 {
                   key: 'actionsAdditional', label: (<></>), _style: { width: '10%' }, filter: false, sorter: false,
                 },

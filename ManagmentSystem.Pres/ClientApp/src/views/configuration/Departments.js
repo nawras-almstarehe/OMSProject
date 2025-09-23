@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useCallback, useMemo } from 'react';
+import React, { useEffect, useReducer, useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -22,7 +22,6 @@ import {
   CFormInput,
   CRow,
   CCard,
-  CCardHeader,
   CCardBody,
   CFormSelect,
   CFormSwitch,
@@ -110,6 +109,7 @@ const Enum_Department_Type = {
 const Departments = () => {
   const { t, i18n } = useTranslation();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [colWidths, setColWidths] = useState({});
 
   const queryParams = useMemo(() => ({
     filter: state.filter,
@@ -142,6 +142,14 @@ const Departments = () => {
   }, [queryParams, apiService, dispatch, t]);
 
   useEffect(() => {
+    const widths = {};
+    Object.keys(headersRefs).forEach(key => {
+      const header = headersRefs[key].current;
+      if (header) {
+        widths[key] = header.offsetWidth;
+      }
+    });
+    setColWidths(widths);
     void fetchData();
   }, [fetchData]);
 
@@ -242,6 +250,14 @@ const Departments = () => {
     }
   }, []);
 
+  const headersRefs = {
+    aName: useRef(null),
+    eName: useRef(null),
+    code: useRef(null),
+    departmentType: useRef(null),
+    isActive: useRef(null)
+  };
+
   const columns = useMemo(() => [
     {
       key: 'actions', label: (
@@ -254,27 +270,32 @@ const Departments = () => {
     },
     {
       key: 'aName',
-      label: t('arabicName'),
-      _style: { width: '10%' },
-      _props: { className: 'columnHeader' }
+      label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
+      _style: { width: colWidths.aName },
+      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
     },
     {
       key: 'eName',
-      label: t('englishName'),
-      _props: { className: 'columnHeader' }
+      label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
+      _style: { width: colWidths.eName },
+      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
     },
     {
       key: 'code',
-      label: t('code'),
-      _props: { className: 'columnHeader' }
+      label: (<div ref={headersRefs.code} style={{ whiteSpace: 'nowrap' }} title={t('code')} > {t('code')} </div>),
+      _style: { width: colWidths.code },
+      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
     },
     {
       key: 'departmentType',
-      label: t('departmentType'),
-      _props: { className: 'columnHeader' }
+      label: (<div ref={headersRefs.departmentType} style={{ whiteSpace: 'nowrap' }} title={t('departmentType')} > {t('departmentType')} </div>),
+      _style: { width: colWidths.departmentType },
+      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
     },
     {
-      key: 'isActive', label: t('isActive'), filter: (_, onChange) => {
+      key: 'isActive',
+      label: (<div ref={headersRefs.isActive} style={{ whiteSpace: 'nowrap' }} title={t('isActive')} > {t('isActive')} </div>),
+      filter: (_, onChange) => {
         return (
           <CFormSelect
             size="sm"
@@ -289,6 +310,8 @@ const Departments = () => {
           </CFormSelect>
         )
       },
+      _style: { width: colWidths.isActive },
+      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
     }
   ], [t, handleFilterChangeBoolCol, handleAdd]);
 
@@ -326,7 +349,7 @@ const Departments = () => {
             }}
             enableReinitialize={true}
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+            {({ values, errors, touched, handleChange, handleSubmit, setFieldValue }) => (
               <CForm
                 className="row g-2"
                 onSubmit={handleSubmit}
@@ -339,7 +362,6 @@ const Departments = () => {
                     value={values.aName}
                     onChange={handleChange}
                     required
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.aName &&  errors.aName}
                   />
@@ -355,7 +377,6 @@ const Departments = () => {
                     value={values.eName}
                     onChange={handleChange}
                     required
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.eName && errors.eName}
                   />
@@ -371,7 +392,6 @@ const Departments = () => {
                     value={values.code}
                     onChange={handleChange}
                     required
-                    onBlur={handleBlur}
                     autoComplete="off"
                     invalid={touched.code && errors.code}
                   />
@@ -386,7 +406,6 @@ const Departments = () => {
                     value={values.departmentType}
                     onChange={(e) => setFieldValue('departmentType', parseInt(e.target.value, 10))}
                     required
-                    onBlur={handleBlur}
                     invalid={touched.departmentType && errors.departmentType}
                   >
                     <option value={Enum_Department_Type.None}></option>
@@ -420,9 +439,8 @@ const Departments = () => {
                   <CFormSwitch
                     id="isActive"
                     checked={values.isActive}
-                    onChange={handleChange}
+                    onChange={(e) => setFieldValue('isActive', e.target.checked)}
                     className="custom-switch"
-                    onBlur={handleBlur}
                   />
                 </CCol>
                 {state.errorPost && (

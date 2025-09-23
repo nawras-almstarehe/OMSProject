@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   CButton,
   CSmartTable,
@@ -29,7 +29,7 @@ import CIcon from '@coreui/icons-react';
 import '../../costumStyle/stylesCostum.css';
 import apiService from '../../shared/apiService';
 import { useTranslation } from 'react-i18next';
-import { Formik, Field, ErrorMessage } from 'formik'; // Import Formik components
+import { Formik } from 'formik'; // Import Formik components
 import * as Yup from 'yup'; // Import Yup
 import AsyncSelect from 'react-select/async';
 
@@ -48,6 +48,7 @@ const Enum_User_Blocked_Type = {
 
 const Users = (props) => {
   const { t, i18n } = useTranslation();
+  const [colWidths, setColWidths] = useState({});
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
@@ -125,6 +126,14 @@ const Users = (props) => {
   };
 
   useEffect(() => {
+    const widths = {};
+    Object.keys(headersRefs).forEach(key => {
+      const header = headersRefs[key].current;
+      if (header) {
+        widths[key] = header.offsetWidth;
+      }
+    });
+    setColWidths(widths);
     fetchData();
   }, [sort, filter, itemsPerPage, activePage]);
 
@@ -236,9 +245,9 @@ const Users = (props) => {
       isBlocked: false,
       isAdmin: false,
       departmentId: '',
-      department: {},
+      department: null,
       positionId: '',
-      position: {}
+      position: null
     });
     setValidatePassword('');
     setErrorPost('');
@@ -272,9 +281,9 @@ const Users = (props) => {
     }
   };
 
-  const loadOptionPositions = async (inputValue) => {
+  const loadOptionPositions = (departmentId) => async (inputValue) => {
     try {
-      const response = await apiService.get(`api/Positions/GetPositionsByDepList?departmentId=${initialValues.departmentId}&filter=${inputValue}`);
+      const response = await apiService.get(`api/Positions/GetPositionsByDepList?departmentId=${departmentId}&filter=${inputValue}`);
       const mappedResponse = response.map(item => ({
         label: i18n.language === 'ar' ? item.aName : item.eName,
         value: item.id,
@@ -286,6 +295,39 @@ const Users = (props) => {
       console.error('Error loading options:', error);
       return [];
     }
+  };
+
+  const headersRefs = {
+    userName: useRef(null),
+    aFirstName: useRef(null),
+    eFirstName: useRef(null),
+    aLastName: useRef(null),
+    eLastName: useRef(null),
+    userType: useRef(null),
+    isBlocked: useRef(null),
+    isAdmin: useRef(null)
+  };
+
+  const customStylesDepValidateError = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: "red",
+      boxShadow: "0 0 0 0,5px red",
+      "&:hover": {
+        borderColor: "red",
+      },
+    }),
+  };
+
+  const customStylesPosValidateError = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: "red",
+      boxShadow: "0 0 0 0,5px red",
+      "&:hover": {
+        borderColor: "red",
+      },
+    }),
   };
 
   return (
@@ -324,7 +366,7 @@ const Users = (props) => {
             }}
             enableReinitialize={true} //Very Important
           >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
+            {({ values, errors, touched, handleChange, handleSubmit, setFieldValue, setFieldTouched }) => (
               <CForm onSubmit={handleSubmit}>
                 <CRow className="mb-3">
                   <CCol md={4}>
@@ -335,7 +377,6 @@ const Users = (props) => {
                       value={values.userName}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.userName && errors.userName}
                     />
@@ -351,7 +392,6 @@ const Users = (props) => {
                       value={values.aFirstName}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.aFirstName && errors.aFirstName}
                     />
@@ -367,7 +407,6 @@ const Users = (props) => {
                       value={values.eFirstName}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.eFirstName && errors.eFirstName}
                     />
@@ -384,7 +423,6 @@ const Users = (props) => {
                       label={t('password')}
                       value={values.password}
                       onChange={handleChange}
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={validatePassword}
                     />
@@ -400,7 +438,6 @@ const Users = (props) => {
                       value={values.aLastName}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.aLastName && errors.aLastName}
                     />
@@ -416,7 +453,6 @@ const Users = (props) => {
                       value={values.eLastName}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.eLastName && errors.eLastName}
                     />
@@ -434,7 +470,6 @@ const Users = (props) => {
                       value={values.phoneNumber}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.phoneNumber && errors.phoneNumber}
                     />
@@ -450,7 +485,6 @@ const Users = (props) => {
                       value={values.email}
                       onChange={handleChange}
                       required
-                      onBlur={handleBlur}
                       autoComplete="off"
                       invalid={touched.email && errors.email}
                     />
@@ -465,7 +499,6 @@ const Users = (props) => {
                       value={values.userType}
                       onChange={(e) => setFieldValue('userType', parseInt(e.target.value, 10))}
                       required
-                      onBlur={handleBlur}
                       invalid={touched.userType && errors.userType}
                     >
                       <option value={Enum_User_Type.None}></option>
@@ -482,45 +515,47 @@ const Users = (props) => {
                   <CCol md={4}>
                     <CFormLabel>{t('department')}</CFormLabel>
                     <AsyncSelect
+                      name="departmentId"
                       cacheOptions
                       loadOptions={loadOptionDepartments}
                       placeholder="Search and select..."
                       noOptionsMessage={() => 'No options available'}
                       defaultOptions
-                      value={initialValues.department}
+                      value={values.department}
                       onChange={(selectedOption) => {
-                        setInitialValues({
-                          ...values,
-                          departmentId: selectedOption ? selectedOption.value : '',
-                          department: selectedOption,
-                          position: null, // Reset position
-                          positionId: ''
-                        });
+                        setFieldValue('departmentId', selectedOption ? selectedOption.value : '');
+                        setFieldValue('department', selectedOption);
+                        setFieldValue('positionId', '');
+                        setFieldValue('position', null);
                         setRefreshPositions(!refreshPositions);
                       }}
+                      onBlur={() => setFieldTouched('departmentId', true)}
+                      styles={touched.departmentId && errors.departmentId && customStylesDepValidateError}
                     />
                     {touched.departmentId && errors.departmentId && (
-                      <div className="invalid-feedback">{errors.departmentId}</div>
+                      <div className="invalid-feedback d-block">{errors.departmentId}</div>
                     )}
                   </CCol>
                   <CCol md={4}>
                     <CFormLabel>{t('position')}</CFormLabel>
                     <AsyncSelect
+                      name="positionId"
                       key={refreshPositions}
                       cacheOptions
-                      loadOptions={loadOptionPositions}
+                      loadOptions={loadOptionPositions(values.departmentId)}
                       placeholder="Search and select..."
                       noOptionsMessage={() => 'No options available'}
                       defaultOptions
-                      value={initialValues.position}
-                      onChange={(selectedOption) => setInitialValues({
-                        ...values,
-                        positionId: selectedOption ? selectedOption.value : '',
-                        position: selectedOption
-                      })}
+                      value={values.position}
+                      onChange={(selectedOption) => {
+                        setFieldValue('positionId', selectedOption ? selectedOption.value : '');
+                        setFieldValue('position', selectedOption);
+                      }}
+                      onBlur={() => setFieldTouched('positionId', true)}
+                      styles={touched.positionId && errors.positionId && customStylesPosValidateError}
                     />
                     {touched.positionId && errors.positionId && (
-                      <div className="invalid-feedback">{errors.positionId}</div>
+                      <div className="invalid-feedback d-block">{errors.positionId}</div>
                     )}
                   </CCol>
                   <CCol md={4}>
@@ -532,9 +567,8 @@ const Users = (props) => {
                     <CFormSwitch
                       id="isAdmin"
                       checked={values.isAdmin}
-                      onChange={handleChange}
+                      onChange={(e) => setFieldValue('isAdmin', e.target.checked)}
                       className="custom-switch"
-                      onBlur={handleBlur}
                     />
                   </CCol>
                   <CCol md={2}>
@@ -542,9 +576,8 @@ const Users = (props) => {
                     <CFormSwitch
                       id="isBlocked"
                       checked={values.isBlocked}
-                      onChange={handleChange}
+                      onChange={(e) => setFieldValue('isBlocked', e.target.checked)}
                       className="custom-switch"
-                      onBlur={handleBlur}
                     />
                   </CCol>
                 </CRow>
@@ -578,14 +611,46 @@ const Users = (props) => {
                     </div>
                   ), _style: { width: '6%' }, filter: false, sorter: false,
                 },
-                { key: 'userName', label: t('userName'), _props: { className: 'columnHeader' }, },
-                { key: 'aFirstName', label: t('aFirstName'), _props: { className: 'columnHeader' }, },
-                { key: 'eFirstName', label: t('eFirstName'), _props: { className: 'columnHeader' }, },
-                { key: 'aLastName', label: t('aLastName'), _props: { className: 'columnHeader' }, },
-                { key: 'eLastName', label: t('eLastName'), _props: { className: 'columnHeader' }, },
-                { key: 'userType', label: t('userType'), _props: { className: 'columnHeader' }, },
                 {
-                  key: 'isBlocked', label: t('isBlocked'), filter: (_, onChange) => {
+                  key: 'userName',
+                  label: (<div ref={headersRefs.userName} style={{ whiteSpace: 'nowrap' }} title={t('userName')} > {t('userName')} </div>),
+                  _style: { width: colWidths.userName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'aFirstName',
+                  label: (<div ref={headersRefs.aFirstName} style={{ whiteSpace: 'nowrap' }} title={t('aFirstName')} > {t('aFirstName')} </div>),
+                  _style: { width: colWidths.aFirstName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eFirstName',
+                  label: (<div ref={headersRefs.eFirstName} style={{ whiteSpace: 'nowrap' }} title={t('eFirstName')} > {t('eFirstName')} </div>),
+                  _style: { width: colWidths.eFirstName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'aLastName',
+                  label: (<div ref={headersRefs.aLastName} style={{ whiteSpace: 'nowrap' }} title={t('aLastName')} > {t('aLastName')} </div>),
+                  _style: { width: colWidths.aLastName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eLastName',
+                  label: (<div ref={headersRefs.eLastName} style={{ whiteSpace: 'nowrap' }} title={t('eLastName')} > {t('eLastName')} </div>),
+                  _style: { width: colWidths.eLastName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'userType',
+                  label: (<div ref={headersRefs.userType} style={{ whiteSpace: 'nowrap' }} title={t('userType')} > {t('userType')} </div>),
+                  _style: { width: colWidths.userType },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'isBlocked',
+                  label: (<div ref={headersRefs.isBlocked} style={{ whiteSpace: 'nowrap' }} title={t('isBlocked')} > {t('isBlocked')} </div>),
+                  filter: (_, onChange) => {
                     return (
                       <CFormSelect
                         size="sm"
@@ -600,11 +665,12 @@ const Users = (props) => {
                       </CFormSelect>
                     )
                   },
+                  _style: { width: colWidths.userType },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
                 },
                 {
                   key: 'isAdmin',
-                  label: t('isAdmin'),
-                  _props: { className: 'columnHeader' },
+                  label: (<div ref={headersRefs.isAdmin} style={{ whiteSpace: 'nowrap' }} title={t('isAdmin')} > {t('isAdmin')} </div>),
                   filter: (_, onChange) => {
                     return (
                       <CFormSelect
@@ -620,6 +686,8 @@ const Users = (props) => {
                       </CFormSelect>
                     )
                   },
+                  _style: { width: colWidths.userType },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
                 },
               ]}
               items={data}

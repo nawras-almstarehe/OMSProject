@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   CSmartTable,
   CRow,
@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 const Privileges = (props) => {
   const { t, i18n } = useTranslation();
+  const [colWidths, setColWidths] = useState({});
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sort, setSort] = useState({ column: 'id', state: 'asc' });
@@ -44,6 +45,14 @@ const Privileges = (props) => {
   };
 
   useEffect(() => {
+    const widths = {};
+    Object.keys(headersRefs).forEach(key => {
+      const header = headersRefs[key].current;
+      if (header) {
+        widths[key] = header.offsetWidth;
+      }
+    });
+    setColWidths(widths);
     fetchData();
   }, [sort, filter, itemsPerPage, activePage]);
 
@@ -53,6 +62,13 @@ const Privileges = (props) => {
 
   const handleFilterChange = (value) => {
     setFilter(value);
+  };
+
+  const headersRefs = {
+    aName: useRef(null),
+    eName: useRef(null),
+    aDescription: useRef(null),
+    eDescription: useRef(null)
   };
 
   return (
@@ -68,10 +84,30 @@ const Privileges = (props) => {
           <CRow>
             <CSmartTable
               columns={[
-                { key: 'aName', label: t('arabicName'), _props: { className: 'columnHeader' }, },
-                { key: 'eName', label: t('englishName'), _props: { className: 'columnHeader' }, },
-                { key: 'aDescription', label: t('aDescription'), _props: { className: 'columnHeader' }, },
-                { key: 'eDescription', label: t('eDescription'), _props: { className: 'columnHeader' }, },
+                {
+                  key: 'aName',
+                  label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
+                  _style: { width: colWidths.aName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eName',
+                  label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
+                  _style: { width: colWidths.eName },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'aDescription',
+                  label: (<div ref={headersRefs.aDescription} style={{ whiteSpace: 'nowrap' }} title={t('aDescription')} > {t('aDescription')} </div>),
+                  _style: { width: colWidths.aDescription },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
+                {
+                  key: 'eDescription',
+                  label: (<div ref={headersRefs.eDescription} style={{ whiteSpace: 'nowrap' }} title={t('eDescription')} > {t('eDescription')} </div>),
+                  _style: { width: colWidths.eDescription },
+                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                },
               ]}
               items={data}
               columnFilter={{ external: true }}
