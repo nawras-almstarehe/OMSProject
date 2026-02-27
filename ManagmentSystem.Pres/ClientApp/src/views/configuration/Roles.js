@@ -155,6 +155,7 @@ const Roles = (props) => {
   const headersRefs = {
     aName: useRef(null),
     eName: useRef(null),
+    actions: useRef(null)
   };
 
   return (
@@ -235,24 +236,31 @@ const Roles = (props) => {
               columns={[
                 {
                   key: 'actions', label: (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div ref={headersRefs.actions} style={{ display: 'flex', justifyContent: 'center' }}>
                       <CButton onClick={handleAdd} size="sm">
                         <CIcon icon={cilPlus} ClassName="nav-icon" />
                       </CButton>
                     </div>
-                  ), _style: { width: '6%' }, filter: false, sorter: false,
+                  ),
+                  _style: { width: colWidths.actions },
+                  
+                  _props: { className: 'column-header-table' },
+                  filter: false,
+                  sorter: false
                 },
                 {
                   key: 'aName',
                   label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
                   _style: { width: colWidths.aName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'eName',
                   label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
                   _style: { width: colWidths.eName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 }
               ]}
               items={data}
@@ -286,7 +294,7 @@ const Roles = (props) => {
               scopedColumns={{
                 actions: (item) => {
                   return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
+                    <td>
                       <CButton
                         size="sm"
                         onClick={async () => {

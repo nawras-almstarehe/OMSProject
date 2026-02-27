@@ -255,42 +255,52 @@ const Departments = () => {
     eName: useRef(null),
     code: useRef(null),
     departmentType: useRef(null),
-    isActive: useRef(null)
+    isActive: useRef(null),
+    actions: useRef(null)
   };
 
   const columns = useMemo(() => [
     {
       key: 'actions', label: (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div ref={headersRefs.actions} style={{ display: 'flex', justifyContent: 'center' }}>
           <CButton onClick={handleAdd} size="sm">
             <CIcon icon={cilPlus} ClassName="nav-icon" />
           </CButton>
         </div>
-      ), _style: { width: '6%' }, filter: false, sorter: false,
+      ),
+      _style: { width: colWidths.actions },
+      
+      _props: { className: 'column-header-table' },
+      filter: false,
+      sorter: false
     },
     {
       key: 'aName',
       label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
       _style: { width: colWidths.aName },
-      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+      
+      _props: { className: 'column-header-table' },
     },
     {
       key: 'eName',
       label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
       _style: { width: colWidths.eName },
-      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+      
+      _props: { className: 'column-header-table' },
     },
     {
       key: 'code',
       label: (<div ref={headersRefs.code} style={{ whiteSpace: 'nowrap' }} title={t('code')} > {t('code')} </div>),
       _style: { width: colWidths.code },
-      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+      
+      _props: { className: 'column-header-table' },
     },
     {
       key: 'departmentType',
       label: (<div ref={headersRefs.departmentType} style={{ whiteSpace: 'nowrap' }} title={t('departmentType')} > {t('departmentType')} </div>),
       _style: { width: colWidths.departmentType },
-      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+      
+      _props: { className: 'column-header-table' },
     },
     {
       key: 'isActive',
@@ -311,7 +321,8 @@ const Departments = () => {
         )
       },
       _style: { width: colWidths.isActive },
-      _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+      
+      _props: { className: 'column-header-table' },
     }
   ], [t, handleFilterChangeBoolCol, handleAdd]);
 
@@ -492,7 +503,7 @@ const Departments = () => {
               scopedColumns={{
                 actions: (item) => {
                   return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
+                    <td>
                       <CButton
                         size="sm"
                         onClick={() => handleEdit(item)}

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "er58nDuH7R4=",
+  "dgSpecHash": "ZigDllejtyY=",
   "success": true,
   "projectFilePath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
   "expectedPackageFiles": [
@@ -158,8 +158,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "Package 'System.IdentityModel.Tokens.Jwt' 6.7.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "projectPath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\New folder\\OMSProject\\ManagmentSystem.Core\\ManagmentSystem.Core.csproj",
       "libraryId": "System.IdentityModel.Tokens.Jwt",
       "targetGraphs": [
         "net5.0"

@@ -88,25 +88,29 @@ const Privileges = (props) => {
                   key: 'aName',
                   label: (<div ref={headersRefs.aName} style={{ whiteSpace: 'nowrap' }} title={t('arabicName')} > {t('arabicName')} </div>),
                   _style: { width: colWidths.aName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'eName',
                   label: (<div ref={headersRefs.eName} style={{ whiteSpace: 'nowrap' }} title={t('englishName')} > {t('englishName')} </div>),
                   _style: { width: colWidths.eName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'aDescription',
                   label: (<div ref={headersRefs.aDescription} style={{ whiteSpace: 'nowrap' }} title={t('aDescription')} > {t('aDescription')} </div>),
                   _style: { width: colWidths.aDescription },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'eDescription',
                   label: (<div ref={headersRefs.eDescription} style={{ whiteSpace: 'nowrap' }} title={t('eDescription')} > {t('eDescription')} </div>),
                   _style: { width: colWidths.eDescription },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
               ]}
               items={data}

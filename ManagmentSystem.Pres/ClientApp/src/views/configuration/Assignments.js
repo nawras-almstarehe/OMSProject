@@ -483,43 +483,53 @@ const Assignments = (props) => {
                         <CIcon icon={cilPlus} className="nav-icon" />
                       </CButton>
                     </div>
-                  ), _style: { width: colWidths.userName }, _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, filter: false, sorter: false,
+                  ),
+                  _style: { width: colWidths.actions },
+                  _props: { className: 'column-header-table' },
+                  filter: false,
+                  sorter: false,
                 },
                 {
                   key: 'userName',
                   label: (<div ref={headersRefs.userName} style={{ whiteSpace: 'nowrap' }} title={t('userName')} > {t('userName')} </div>),
                   _style: { width: colWidths.userName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'eFullNameUser',
                   label: (<div ref={headersRefs.eFullNameUser} style={{ whiteSpace: 'nowrap' }} title={t('userFullEName')} > {t('userFullEName')} </div>),
                   _style: { width: colWidths.eFullNameUser },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'aFullNameUser',
                   label: (<div ref={headersRefs.aFullNameUser} style={{ whiteSpace: 'nowrap' }} title={t('userFullAName')} > {t('userFullAName')} </div>),
                   _style: { width: colWidths.aFullNameUser },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'ePositionName',
                   label: (<div ref={headersRefs.ePositionName} style={{ whiteSpace: 'nowrap' }} title={t('positionEName')} > {t('positionEName')} </div>),
                   _style: { width: colWidths.ePositionName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'aPositionName',
                   label: (<div ref={headersRefs.aPositionName} style={{ whiteSpace: 'nowrap' }} title={t('positionAName')} > {t('positionAName')} </div>),
                   _style: { width: colWidths.aPositionName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'typeName',
                   label: (<div ref={headersRefs.typeName} style={{ whiteSpace: 'nowrap' }} title={t('assignmentType')} > {t('assignmentType')} </div>),
                   _style: { width: colWidths.typeName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'isActive',
@@ -540,7 +550,8 @@ const Assignments = (props) => {
                     )
                   },
                   _style: { width: colWidths.isActive },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'startDate',
@@ -558,7 +569,8 @@ const Assignments = (props) => {
                     )
                   },
                   _style: { width: colWidths.startDate },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'endDate',
@@ -576,7 +588,8 @@ const Assignments = (props) => {
                     )
                   },
                   _style: { width: colWidths.endDate },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 }
               ]}
               items={data}
@@ -610,7 +623,7 @@ const Assignments = (props) => {
               scopedColumns={{
                 actions: (item) => {
                   return (
-                    <td style={{ justifyContent: 'center' }}>
+                    <td>
                       <CButton
                         size="sm"
                         onClick={async () => {

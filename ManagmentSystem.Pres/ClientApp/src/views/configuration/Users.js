@@ -305,7 +305,8 @@ const Users = (props) => {
     eLastName: useRef(null),
     userType: useRef(null),
     isBlocked: useRef(null),
-    isAdmin: useRef(null)
+    isAdmin: useRef(null),
+    actions: useRef(null)
   };
 
   const customStylesDepValidateError = {
@@ -604,48 +605,59 @@ const Users = (props) => {
               columns={[
                 {
                   key: 'actions', label: (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div ref={headersRefs.actions} style={{ display: 'flex', justifyContent: 'center' }}>
                       <CButton onClick={handleAdd} size="sm">
                         <CIcon icon={cilPlus} ClassName="nav-icon" />
                       </CButton>
                     </div>
-                  ), _style: { width: '6%' }, filter: false, sorter: false,
+                  ),
+                  _style: { width: colWidths.actions },
+                  
+                  _props: { className: 'column-header-table' },
+                  filter: false,
+                  sorter: false
                 },
                 {
                   key: 'userName',
                   label: (<div ref={headersRefs.userName} style={{ whiteSpace: 'nowrap' }} title={t('userName')} > {t('userName')} </div>),
                   _style: { width: colWidths.userName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'aFirstName',
                   label: (<div ref={headersRefs.aFirstName} style={{ whiteSpace: 'nowrap' }} title={t('aFirstName')} > {t('aFirstName')} </div>),
                   _style: { width: colWidths.aFirstName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'eFirstName',
                   label: (<div ref={headersRefs.eFirstName} style={{ whiteSpace: 'nowrap' }} title={t('eFirstName')} > {t('eFirstName')} </div>),
                   _style: { width: colWidths.eFirstName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'aLastName',
                   label: (<div ref={headersRefs.aLastName} style={{ whiteSpace: 'nowrap' }} title={t('aLastName')} > {t('aLastName')} </div>),
                   _style: { width: colWidths.aLastName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'eLastName',
                   label: (<div ref={headersRefs.eLastName} style={{ whiteSpace: 'nowrap' }} title={t('eLastName')} > {t('eLastName')} </div>),
                   _style: { width: colWidths.eLastName },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'userType',
                   label: (<div ref={headersRefs.userType} style={{ whiteSpace: 'nowrap' }} title={t('userType')} > {t('userType')} </div>),
                   _style: { width: colWidths.userType },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'isBlocked',
@@ -666,7 +678,8 @@ const Users = (props) => {
                     )
                   },
                   _style: { width: colWidths.userType },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
                 {
                   key: 'isAdmin',
@@ -687,7 +700,8 @@ const Users = (props) => {
                     )
                   },
                   _style: { width: colWidths.userType },
-                  _props: { style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } },
+                  
+                  _props: { className: 'column-header-table' },
                 },
               ]}
               items={data}
@@ -721,7 +735,7 @@ const Users = (props) => {
               scopedColumns={{
                 actions: (item) => {
                   return (
-                    <td style={{ display: 'flex', justifyContent: 'center' }}>
+                    <td>
                       <CButton
                         size="sm"
                         onClick={async () => {

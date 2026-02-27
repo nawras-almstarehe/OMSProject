@@ -18,6 +18,38 @@ html[dir="rtl"] .table th:last-child, .table td:last-child {
   background-color: #f8f9fa; /* Optional: background color for header */
 }
 
-.columnHeader {
-  text-align: center;
+.column-header-table {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: #d2d2d2 !important;
 }
+
+.custom-table-row {
+  display: flex;
+  align-items: stretch; /* يجعل كل خلايا الصف تساوي في الارتفاع */
+}
+
+.custom-icon-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* يتمركز الأيقونات عمودياً */
+  padding: 0 8px;
+  width: 50px; /* أو حسب الحاجة */
+  min-height: 100%; /* يأخذ نفس ارتفاع الصف */
+}
+
+
+/*.column-header-table2 {*/
+  /*background-color: #bfbfbf !important;*/
+  /*background: #d3d3d3 !important;
+  color: #272727 !important;
+  border-bottom: 2px solid #bfbfbf !important;
+}
+
+.column-header-table2.alt {*/
+  /*background-color: #bfbfbf !important;*/
+  /*background: #eaf0fc !important;
+  color: #2d3a4a !important;
+  border-bottom: 2px solid #bfbfbf !important;
+}*/

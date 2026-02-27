@@ -33,7 +33,7 @@ const OMSTable = ({ columns, items, loading, onSorterChange, onColumnFilterChang
       label: (
         <div
           ref={headersRefs.current[col.key]}
-          style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'default' }}
+          style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', backgroundColor: '#bfbfbf', cursor: 'default' }}
           title={typeof col.label === 'string' ? col.label : undefined} // Show tooltip only if label is string
         >
           {col.label}
@@ -42,7 +42,7 @@ const OMSTable = ({ columns, items, loading, onSorterChange, onColumnFilterChang
       _style: { ...col._style, width: colWidths[col.key] || 'auto' },
       _props: {
         ...(col._props || {}),
-        style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', ...(col._props?.style || {}) }
+        style: { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', backgroundColor: '#bfbfbf', ...(col._props?.style || {}) }
       },
     };
   });
