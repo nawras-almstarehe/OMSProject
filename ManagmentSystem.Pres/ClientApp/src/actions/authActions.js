@@ -26,7 +26,7 @@ export const login = (credentials) => {
       Email: ''
     }
 
-    const response = await fetch('https://localhost:44329/api/Users/Login', {
+    const response = await fetch('https://localhost:5001/api/Users/Login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export const login = (credentials) => {
 export const userLogout = () => {
   return async (dispatch) => {
     try {
-      await fetch('https://localhost:44329/api/Users/Logout', {
+      await fetch('https://localhost:5001/api/Users/Logout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -65,3 +65,4 @@ D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\en\ManagmentSyste
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.resources
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.ar.resources
 D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.en.resources
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\Managmen.DBE75D90.Up2Date
