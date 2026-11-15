@@ -1,29 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.4" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.23" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\ManagmentSystem.Core\ManagmentSystem.Core.csproj" />
-  </ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.23">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+		<PackageReference Include="MySqlConnector" Version="2.6.2" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ManagmentSystem.Core\ManagmentSystem.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Helpers\" />
+	</ItemGroup>
 
 </Project>

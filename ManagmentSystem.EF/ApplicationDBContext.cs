@@ -15,13 +15,13 @@ namespace ManagmentSystem.EF
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // In case options are not already configured (unlikely, but just in case)
-                optionsBuilder.UseSqlServer("DefaultConnection");
-            }
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    // In case options are not already configured (unlikely, but just in case)
+            //    optionsBuilder.UseSqlServer("DefaultConnection");
+            //}
 
-            // Enable sensitive data logging and log to the console
+            // Enable sensitive data logging and log to the console هذا قد يسجل بيانات حساسة مثل قيم المعاملات في SQL. لا تفعّله في بيئة الإنتاج.
             optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
         }
