@@ -1,4 +1,139 @@
-html[dir="ltr"] .table th, .table td {
+/* =========================================================
+   1. حدود الجدول المتوافقة مع الاتجاهين (RTL / LTR) والثيمين
+   ========================================================= */
+.table {
+  border-color: var(--cui-border-color) !important;
+  vertical-align: middle;
+}
+
+html[dir="ltr"] .table th,
+html[dir="ltr"] .table td {
+  border-right: 1px solid var(--cui-border-color);
+  text-align: left;
+}
+
+  html[dir="ltr"] .table th:last-child,
+  html[dir="ltr"] .table td:last-child {
+    border-right: none;
+  }
+
+html[dir="rtl"] .table th,
+html[dir="rtl"] .table td {
+  border-left: 1px solid var(--cui-border-color);
+  text-align: right;
+}
+
+  html[dir="rtl"] .table th:last-child,
+  html[dir="rtl"] .table td:last-child {
+    border-left: none;
+  }
+
+/* =========================================================
+   2. ترويسة الأعمدة وصف الفلاتر (Light & Dark تلقائياً)
+   ========================================================= */
+.table thead th,
+.column-header-table {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: var(--cui-tertiary-bg) !important;
+  color: var(--cui-body-color) !important;
+  border-bottom: 1px solid var(--cui-border-color) !important;
+  vertical-align: middle !important;
+  padding: 0.65rem 0.75rem !important;
+}
+
+/* تحسين التباين في الوضع الداكن والوضع الفاتح */
+html[data-coreui-theme="light"] .table thead tr:first-child th,
+html[data-coreui-theme="light"] .column-header-table {
+  background-color: #e9ecef !important;
+  color: #212529 !important;
+}
+
+html[data-coreui-theme="dark"] .table thead tr:first-child th,
+html[data-coreui-theme="dark"] .column-header-table {
+  background-color: #2a303d !important;
+  color: #f3f4f6 !important;
+}
+
+/* صف الفلاتر (الصف الثاني في thead) */
+html[data-coreui-theme="light"] .table thead tr:nth-child(2) th {
+  background-color: #f8f9fa !important;
+}
+
+html[data-coreui-theme="dark"] .table thead tr:nth-child(2) th {
+  background-color: #1e222b !important;
+}
+
+/* حقول الإدخال داخل صف الفلاتر */
+.table thead input.form-control,
+.table thead select.form-select {
+  background-color: var(--cui-body-bg) !important;
+  color: var(--cui-body-color) !important;
+  border-color: var(--cui-border-color) !important;
+  min-width: 90px;
+}
+
+/* =========================================================
+   3. إصلاح موضع أيقونة الفرز في CSmartTable مع RTL و LTR
+   ========================================================= */
+.table thead th > div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px;
+}
+
+html[dir="rtl"] .table thead th svg,
+html[dir="rtl"] .table thead th .position-absolute {
+  position: static !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  flex-shrink: 0;
+}
+
+html[dir="ltr"] .table thead th svg,
+html[dir="ltr"] .table thead th .position-absolute {
+  position: static !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   4. منع تكدّس أزرار الإجراءات (تعديل / حذف) عمودياً
+   ========================================================= */
+.table tbody td:first-child,
+.table tbody td:last-child {
+  white-space: nowrap !important;
+}
+
+.table tbody td .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================================================
+   5. كلاساتك المخصصة الموجودة مسبقاً
+   ========================================================= */
+.custom-table-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.custom-icon-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8px;
+  width: 50px;
+  min-height: 100%;
+}
+
+
+
+/*html[dir="ltr"] .table th, .table td {
   border-right: 1px solid #dee2e6;
 }
 
@@ -15,8 +150,8 @@ html[dir="rtl"] .table th:last-child, .table td:last-child {
 }
 
 .table th {
-  background-color: #f8f9fa; /* Optional: background color for header */
-}
+  background-color: #f8f9fa;*/ /* Optional: background color for header */
+/*}
 
 .column-header-table {
   white-space: nowrap;
@@ -27,17 +162,17 @@ html[dir="rtl"] .table th:last-child, .table td:last-child {
 
 .custom-table-row {
   display: flex;
-  align-items: stretch; /* يجعل كل خلايا الصف تساوي في الارتفاع */
-}
+  align-items: stretch;*/ /* يجعل كل خلايا الصف تساوي في الارتفاع */
+/*}
 
 .custom-icon-cell {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* يتمركز الأيقونات عمودياً */
-  padding: 0 8px;
-  width: 50px; /* أو حسب الحاجة */
-  min-height: 100%; /* يأخذ نفس ارتفاع الصف */
-}
+  justify-content: center;*/ /* يتمركز الأيقونات عمودياً */
+  /*padding: 0 8px;
+  width: 50px;*/ /* أو حسب الحاجة */
+  /*min-height: 100%;*/ /* يأخذ نفس ارتفاع الصف */
+/*}*/
 
 
 /*.column-header-table2 {*/

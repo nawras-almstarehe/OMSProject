@@ -9,13 +9,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ManagmentSystem.EF.UnitOfWorks
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDBContext _context;
-        private IDbTransaction _transaction;
+        private IDbContextTransaction _transaction;
         public UnitOfWork(ApplicationDBContext context)
         {
             _context = context;
@@ -56,30 +57,55 @@ namespace ManagmentSystem.EF.UnitOfWorks
             return _context.ChangeTracker.HasChanges();
         }
 
-        //public void BeginTransaction()
-        //{
-        //    _transaction = (IDbTransaction)_context.Database.BeginTransaction();
-        //}
+        public void BeginTransaction()
+        {
+            _transaction = _context.Database.BeginTransaction();
+        }
 
-        //public void CommitTransaction()
-        //{
-        //    if (_transaction != null)
-        //    {
-        //        _transaction.Commit();
-        //        _transaction.Dispose();
-        //        _transaction = null;
-        //    }
-        //}
 
-        //public void RollbackTransaction()
-        //{
-        //    if (_transaction != null)
-        //    {
-        //        _transaction.Rollback();
-        //        _transaction.Dispose();
-        //        _transaction = null;
-        //    }
-        //}
+        public void CommitTransaction()
+        {
+            if (_transaction != null)
+            {
+                _transaction.Commit();
+                _transaction.Dispose();
+                _transaction = null;
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            if (_transaction != null)
+            {
+                _transaction.Rollback();
+                _transaction.Dispose();
+                _transaction = null;
+            }
+        }
+        public async Task BeginTransactionAsync()
+        {
+            _transaction ??= await _context.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.CommitAsync();
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.RollbackAsync();
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+        }
 
         /// <summary>
         /// للمراجعة

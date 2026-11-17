@@ -407,7 +407,7 @@ namespace ManagmentSystem.EF
             modelBuilder.Entity<Customer>()
                 .HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<Department>()
-                .HasIndex(x => new { x.Id, x.Code }).IsUnique();
+                .HasIndex(x => new { x.Id, x.Code, x.DepCode }).IsUnique();
             modelBuilder.Entity<Invoice>()
                 .HasIndex(x => x.Id).IsUnique();
             modelBuilder.Entity<Position>()

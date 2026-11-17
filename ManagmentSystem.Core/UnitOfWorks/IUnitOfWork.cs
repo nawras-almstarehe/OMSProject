@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ManagmentSystem.Core.UnitOfWorks
 {
@@ -22,8 +23,14 @@ namespace ManagmentSystem.Core.UnitOfWorks
         int Complete();
         Task<int> CompleteAsync();
         bool HasChanges();
-        //void BeginTransaction();
-        //void CommitTransaction();
-        //void RollbackTransaction();
+        void BeginTransaction();
+        void CommitTransaction();
+        void RollbackTransaction();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
+        //Task<IDbContextTransaction> BeginTransactionAsync();
+        //Task<IDbContextTransaction> CommitTransactionAsync();
+        //Task<IDbContextTransaction> RollbackTransactionAsync();
     }
 }

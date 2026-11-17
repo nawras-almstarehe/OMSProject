@@ -28,11 +28,47 @@ namespace ManagmentSystem.EF.Services
             _localizer = localizer;
             _cache = cache;
         }
+        //public async Task<int> AddDepartment(Department department)
+        //{
+        //    try
+        //    {
+        //        var DepCodeNew = await GenerateDepCode(department.DepartmentParentId) ?? throw new Exception("Error");
+        //        var departmentObj = new Department
+        //        {
+        //            EName = department.EName,
+        //            AName = department.AName,
+        //            Code = department.Code,
+        //            DepartmentParentId = department.DepartmentParentId,
+        //            DepartmentType = department.DepartmentType,
+        //            DepCode = DepCodeNew,
+        //            IsActive = department.IsActive,
+        //        };
+        //        var Department = await _unitOfWork.Departments.Add(departmentObj);
+        //        if (Department != null)
+        //        {
+        //            await _unitOfWork.CompleteAsync();
+        //            await _cache.RemoveAsync("AllDepartments");
+        //            return 1;
+        //        }
+        //        else
+        //        {
+        //            return 0;
+        //        }
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
         public async Task<int> AddDepartment(Department department)
         {
+            // 1. بدء المعاملة عبر الـ UnitOfWork
+            await _unitOfWork.BeginTransactionAsync();
             try
             {
                 var DepCodeNew = await GenerateDepCode(department.DepartmentParentId) ?? throw new Exception("Error");
+
                 var departmentObj = new Department
                 {
                     EName = department.EName,
@@ -43,25 +79,32 @@ namespace ManagmentSystem.EF.Services
                     DepCode = DepCodeNew,
                     IsActive = department.IsActive,
                 };
+
                 var Department = await _unitOfWork.Departments.Add(departmentObj);
                 if (Department != null)
                 {
                     await _unitOfWork.CompleteAsync();
+
+                    // 2. تثبيت المعاملة عبر تابع الـ UnitOfWork
+                    await _unitOfWork.CommitTransactionAsync();
+
                     await _cache.RemoveAsync("AllDepartments");
                     return 1;
                 }
                 else
                 {
+                    // 3. التراجع في حال لم تتم الإضافة بنجاح
+                    await _unitOfWork.RollbackTransactionAsync();
                     return 0;
                 }
-
             }
             catch (Exception)
             {
+                // 4. التراجع التلقائي في حال حدوث استثناء (Exception)
+                await _unitOfWork.RollbackTransactionAsync();
                 throw;
             }
         }
-
         public async Task<int> DeleteDepartment(string Id)
         {
             try
