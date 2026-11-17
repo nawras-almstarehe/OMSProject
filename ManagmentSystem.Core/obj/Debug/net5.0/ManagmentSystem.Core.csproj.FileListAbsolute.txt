@@ -1,0 +1,68 @@
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.deps.json
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ref\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.AssemblyReference.cache
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfoInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfo.cs
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.CoreCompileInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ref\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.json
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.dev.json
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.genruntimeconfig.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.deps.json
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.json
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.dev.json
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\bin\Debug\net5.0\ref\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfoInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfo.cs
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.CoreCompileInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ref\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.genruntimeconfig.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.deps.json
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.json
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.dev.json
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ref\ManagmentSystem.Core.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfoInputs.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfo.cs
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.CoreCompileInputs.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ref\ManagmentSystem.Core.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.pdb
+D:\OMS\ManagmentSystem\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.genruntimeconfig.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.deps.json
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.json
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.runtimeconfig.dev.json
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.AssemblyReference.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfoInputs.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.AssemblyInfo.cs
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.CoreCompileInputs.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.sourcelink.json
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\refint\ManagmentSystem.Core.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.pdb
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.genruntimeconfig.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ref\ManagmentSystem.Core.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\ar\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\bin\Debug\net5.0\en\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.csproj.GenerateResource.cache
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ar\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\en\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.resources
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.ar.resources
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\ManagmentSystem.Core.Resources.SharedResource.en.resources
+D:\New folder\OMSProject\ManagmentSystem.Core\obj\Debug\net5.0\Managmen.DBE75D90.Up2Date

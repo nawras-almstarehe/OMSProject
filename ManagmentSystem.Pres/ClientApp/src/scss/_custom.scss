@@ -1,0 +1,125 @@
+.ruby-display {
+  display: ruby !important;
+}
+
+html[dir="rtl"] .ms-auto {
+  margin-right: auto !important;
+  margin-left: unset !important;
+}
+
+html[dir="rtl"] .me-auto {
+  margin-left: auto !important;
+  margin-right: unset !important;
+}
+
+html[dir="ltr"] .ms-auto {
+  margin-left: auto !important;
+  margin-right: unset !important;
+}
+
+html[dir="ltr"] .me-auto {
+  margin-right: auto !important;
+  margin-left: unset !important;
+}
+
+html[dir="rtl"] .header-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  padding-right: 0 !important;
+  margin-bottom: 0 !important;
+  list-style: none !important;
+  justify-content: flex-end !important; /* Ensure items align properly */
+}
+
+html[dir="ltr"] .header-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  padding-left: 0 !important;
+  margin-bottom: 0 !important;
+  list-style: none !important;
+  justify-content: flex-start !important;
+}
+
+html[dir="rtl"] .sidebar-nav .nav-icon {
+  margin-left: var(--cui-sidebar-nav-link-icon-margin) !important;
+  margin-right: unset !important;
+}
+
+html[dir="ltr"] .sidebar-nav .nav-icon {
+  margin-right: var(--cui-sidebar-nav-link-icon-margin) !important;
+  margin-left: unset !important;
+}
+
+html[dir="rtl"] .sidebar-toggler {
+  margin-right: auto;
+  margin-left: unset !important;
+}
+
+html[dir="ltr"] .sidebar-toggler {
+  margin-right: unset !important;
+  margin-left: auto;
+}
+
+html[dir="rtl"] .modal-header .btn-close {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+html[dir="ltr"] .modal-header .btn-close {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+html[dir="rtl"] .me-2 {
+  margin-left: .5rem !important;
+  margin-right: unset !important;
+}
+
+html[dir="ltr"] .me-2 {
+  margin-right: .5rem !important;
+  margin-left: unset !important;
+}
+
+html[dir="rtl"] .ms-2 {
+  margin-right: .5rem !important;
+  margin-left: unset !important;
+}
+
+html[dir="ltr"] .ms-2 {
+  margin-left: .5rem !important;
+  margin-right: unset !important;
+}
+
+html[dir="rtl"] .nav-link-costum {
+  margin-right: 10% !important;
+  margin-left: unset !important;
+}
+
+/*html[dir="ltr"] .nav-link-costum {
+  margin-left: 10% !important;
+  margin-right: unset !important;
+}*/
+
+html[dir="rtl"] .sidebar-nav .nav-group-toggle:after {
+  margin-right: auto !important;
+  margin-left: unset !important;
+}
+
+html[dir="ltr"] .sidebar-nav .nav-group-toggle:after {
+  margin-right: unset !important;
+  margin-left: auto !important;
+}
+
+.custom-switch .form-check-input {
+  width: 4em !important;
+  height: 1.6em !important;
+  cursor: pointer;
+}
+
+.invalid-modal {
+  display: block;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: .875em;
+  color: var(--cui-form-invalid-color);
+}

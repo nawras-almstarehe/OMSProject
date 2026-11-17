@@ -1,0 +1,75 @@
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.AssemblyReference.cache
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfoInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfo.cs
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CoreCompileInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.deps.json
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.json
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.dev.json
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ref\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CopyComplete
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ref\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.genruntimeconfig.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.deps.json
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.json
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.dev.json
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ref\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.AssemblyReference.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfoInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfo.cs
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CoreCompileInputs.cache
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CopyComplete
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ref\ManagmentSystem.EF.dll
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.pdb
+C:\Users\KIIT\source\repos\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.genruntimeconfig.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.deps.json
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.json
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.dev.json
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ref\ManagmentSystem.EF.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.pdb
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.AssemblyReference.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.GeneratedMSBuildEditorConfig.editorconfig
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfoInputs.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfo.cs
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CoreCompileInputs.cache
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CopyComplete
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ref\ManagmentSystem.EF.dll
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.pdb
+D:\OMS\ManagmentSystem\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.genruntimeconfig.cache
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.deps.json
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.json
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.runtimeconfig.dev.json
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.EF.pdb
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ManagmentSystem.Core.pdb
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.AssemblyReference.cache
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.GeneratedMSBuildEditorConfig.editorconfig
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfoInputs.cache
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.AssemblyInfo.cs
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.csproj.CoreCompileInputs.cache
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.sourcelink.json
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\Managmen.8C16187A.Up2Date
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\refint\ManagmentSystem.EF.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.pdb
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ManagmentSystem.EF.genruntimeconfig.cache
+D:\New folder\OMSProject\ManagmentSystem.EF\obj\Debug\net5.0\ref\ManagmentSystem.EF.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\ar\ManagmentSystem.Core.resources.dll
+D:\New folder\OMSProject\ManagmentSystem.EF\bin\Debug\net5.0\en\ManagmentSystem.Core.resources.dll
