@@ -85,7 +85,7 @@ namespace ManagmentSystem.EF.Services
                     UserType = user.UserType
                 };
 
-                var addedUser = await _unitOfWork.Users.Add(userObj);
+                var addedUser = await _unitOfWork.Users.AddAsync(userObj);
 
                 var userPositionObj = new UserPosition
                 {
@@ -98,7 +98,7 @@ namespace ManagmentSystem.EF.Services
                     EndDate = DateTime.Now.AddMonths(12)
                 };
 
-                var UserPosition = await _unitOfWork.UserPositions.Add(userPositionObj);
+                var UserPosition = await _unitOfWork.UserPositions.AddAsync(userPositionObj);
 
                 await _unitOfWork.CompleteAsync();
 

@@ -56,8 +56,20 @@ namespace ManagmentSystem.EF.Services
                 throw;
             }
         }
+        public async Task<IEnumerable<ImageFolder>> GetImagesByProductId(string productId)
+        {
+            try
+            {
+                var Images = await _unitOfWork.Images.GetImagesByProductId(productId);
+                return Images;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-        public async Task<IEnumerable<ImageFolder>> UploadFiles(string itemId, List<IFormFile> files)
+        public async Task<IEnumerable<ImageFolder>> UploadFiles(string itemId, List<IFormFile> files, bool fromProduct)
         {
             var imageList = new List<ImageFolder>();
             var uploadPath = Path.Combine(_env.WebRootPath, "uploads");
@@ -76,19 +88,29 @@ namespace ManagmentSystem.EF.Services
                 }
 
                 var imageUrl = $"/uploads/{fileName}";
-                var image = new ImageFolder { CategoryId = itemId, ImagePath = imageUrl };
-
+                ImageFolder image = null;
+                if (fromProduct)
+                {
+                    image = new ImageFolder { ProductId = itemId, ImagePath = imageUrl };
+                } else
+                {
+                    image = new ImageFolder { CategoryId = itemId, ImagePath = imageUrl };
+                }
+                
                 try
                 {
-                    await _unitOfWork.Images.Add(image);
-                    var result = await _unitOfWork.CompleteAsync(); // Ensure commit works
-
-                    if (result == 0)
+                    if (image != null)
                     {
-                        throw new Exception("Database save failed! No records were affected.");
-                    }
+                        await _unitOfWork.Images.AddAsync(image);
+                        var result = await _unitOfWork.CompleteAsync(); // Ensure commit works
 
-                    imageList.Add(image);
+                        if (result == 0)
+                        {
+                            throw new Exception("Database save failed! No records were affected.");
+                        }
+
+                        imageList.Add(image);
+                    }
                 }
                 catch (Exception ex)
                 {

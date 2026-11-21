@@ -13,6 +13,8 @@ namespace ManagmentSystem.Core.UnitOfWorks
     {
         //IBaseRepository<Category> Categories { get; } After add spicial method
         ICategoriesRepository Categories { get; } // After add spicial method
+        IProductesRepository Productes { get; }
+        ICategoryProductesRepository CategoryProductes { get; } 
         IUsersRepository Users { get; }
         IUserPositionsRepository UserPositions { get; }
         IImagesRepository Images { get; }

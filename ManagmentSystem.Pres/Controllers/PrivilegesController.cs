@@ -41,7 +41,7 @@ namespace ManagmentSystem.Controllers
 
             try
             {
-                var (privileges, totalItems) = await _privilegeService.GetPrivilegesAll(PrivilegePost.page, PrivilegePost.pageSize, PrivilegePost.filter, PrivilegePost.sort);
+                var (privileges, totalItems) = await _privilegeService.GetPrivilegesAll(PrivilegePost.Page, PrivilegePost.PageSize, PrivilegePost.Filter, PrivilegePost.Sort);
                 _logger.LogInformation("Test log", privileges);
                 return Ok(new VMResaultDataList<Privilege>(totalItems, privileges));
             }

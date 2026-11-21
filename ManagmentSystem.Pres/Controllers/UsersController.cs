@@ -55,7 +55,7 @@ namespace ManagmentSystem.Pres.Controllers
 
             try
             {
-                var (users, totalItems) = await _userService.GetUsersAll(UserPost.page, UserPost.pageSize, UserPost.filter, UserPost.sort);
+                var (users, totalItems) = await _userService.GetUsersAll(UserPost.Page, UserPost.PageSize, UserPost.Filter, UserPost.Sort);
                 _logger.LogInformation("Test log", users);
                 return Ok(new VMResaultDataList<VMUser>(totalItems, users));
             }

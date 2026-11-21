@@ -30,7 +30,7 @@ namespace ManagmentSystem.EF.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
         
-        public async Task<T> Add(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
             //_context.SaveChanges(); For added UnitOfWork
@@ -76,7 +76,34 @@ namespace ManagmentSystem.EF.Repositories
             return _context.Set<T>().Find(id);
         }
 
+        public async Task<TDTO> FindByAnyDataProjectedFirstOrDefault<TDTO>(
+                Expression<Func<T, TDTO>> projection,
+                Expression<Func<T, bool>> match = null,
+                string[] includes = null)
+        {
+            if (projection == null)
+                throw new ArgumentNullException(nameof(projection), "Projection function is required.");
 
+            IQueryable<T> query = _context.Set<T>().AsNoTracking();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (!string.IsNullOrWhiteSpace(include))
+                        query = query.Include(include);
+                }
+            }
+
+            if (match != null)
+            {
+                query = query.Where(match);
+            }
+
+            return await query
+                .Select(projection)
+                .FirstOrDefaultAsync();
+        }
         public IEnumerable<T> AddRange(IEnumerable<T> entities)
         {
             _context.Set<T>().AddRange(entities);
@@ -169,7 +196,11 @@ namespace ManagmentSystem.EF.Repositories
 
             return await query.FirstOrDefaultAsync(match);
         }
-        public async Task<List<TDTO>> FindByAnyDataProjectedList<T, TDTO>(Expression<Func<T, TDTO>> projection = null, Expression<Func<T, bool>> match = null, string[] includes = null) where T : class
+        public async Task<List<TDTO>> FindByAnyDataProjectedList<T, TDTO>(
+            Expression<Func<T, TDTO>> projection = null,
+            Expression<Func<T, bool>> match = null,
+            string[] includes = null
+        ) where T : class
         {
             if (projection == null)
                 throw new ArgumentNullException(nameof(projection), "Projection function is required.");
@@ -192,6 +223,59 @@ namespace ManagmentSystem.EF.Repositories
             return await query
                 .Select(projection)
                 .ToListAsync();
+        }
+        public async Task<(List<TDTO> items, int totalCount)> FindByAnyDataProjectedPagedList<T, TDTO, TOrderKey>(
+            Expression<Func<T, TDTO>> projection,
+            Expression<Func<T, bool>> match = null,
+            Expression<Func<T, TOrderKey>> orderBy = null,
+            bool orderByDescending = false,
+            int? skip = null,
+            int? take = null,
+            string[] includes = null) where T : class
+        {
+            if (projection == null)
+                throw new ArgumentNullException(nameof(projection), "Projection function is required.");
+
+            IQueryable<T> query = _context.Set<T>().AsNoTracking();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    if (!string.IsNullOrWhiteSpace(include))
+                        query = query.Include(include);
+                }
+            }
+
+            if (match != null)
+            {
+                query = query.Where(match);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            if (orderBy != null)
+            {
+                query = orderByDescending
+                    ? query.OrderByDescending(orderBy)
+                    : query.OrderBy(orderBy);
+            }
+
+            if (skip.HasValue && skip.Value > 0)
+            {
+                query = query.Skip(skip.Value);
+            }
+
+            if (take.HasValue && take.Value > 0)
+            {
+                query = query.Take(take.Value);
+            }
+
+            var items = await query
+                .Select(projection)
+                .ToListAsync();
+
+            return (items, totalCount);
         }
         public async Task<TDTO> FindByAnyDataProjected<T, TDTO>(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, TDTO>> projection = null) where T : class
         {

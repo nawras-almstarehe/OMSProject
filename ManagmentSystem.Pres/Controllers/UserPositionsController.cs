@@ -44,7 +44,7 @@ namespace ManagmentSystem.Pres.Controllers
 
             try
             {
-                var (userPositions, totalItems) = await _userPositionService.GetUserPositionsAll(UserPositionPost.page, UserPositionPost.pageSize, UserPositionPost.filter, UserPositionPost.sort);
+                var (userPositions, totalItems) = await _userPositionService.GetUserPositionsAll(UserPositionPost.Page, UserPositionPost.PageSize, UserPositionPost.Filter, UserPositionPost.Sort);
                 _logger.LogInformation("Test log", userPositions);
                 return Ok(new VMResaultDataList<VMUserPosition>(totalItems, userPositions));
             }

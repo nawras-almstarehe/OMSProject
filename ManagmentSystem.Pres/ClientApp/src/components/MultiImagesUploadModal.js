@@ -3,7 +3,7 @@ import { CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CButton, C
 import apiService from '../shared/apiService';
 import { useTranslation } from 'react-i18next';
 
-const MultiImagesUploadModal = ({ show, handleClose, itemId, isRTL }) => {
+const MultiImagesUploadModal = ({ show, handleClose, itemId, isRTL, fromProduct }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [images, setImages] = useState([]);
   const { t, i18n } = useTranslation()
@@ -15,8 +15,13 @@ const MultiImagesUploadModal = ({ show, handleClose, itemId, isRTL }) => {
   const fetchData = async () => {
     try {
       if (show && itemId) {
-        const response = await apiService.get(`api/Images/GetImagesByCategoryId?categoryId=${itemId}`);
-        setImages(response)
+        if (fromProduct) {
+          const response = await apiService.get(`api/Images/GetImagesByProductId?productId=${itemId}`);
+          setImages(response)
+        } else {
+          const response = await apiService.get(`api/Images/GetImagesByCategoryId?categoryId=${itemId}`);
+          setImages(response)
+        }
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
@@ -36,7 +41,7 @@ const MultiImagesUploadModal = ({ show, handleClose, itemId, isRTL }) => {
     formData.append("itemId", itemId);
 
     try {
-      const response = await apiService.postWithMedia('api/Images/Upload', formData);
+      const response = await apiService.postWithMedia('api/Images/Upload?fromProduct=' + fromProduct, formData);
       
       setImages([...images, ...response.data]); // Update UI
       setSelectedFiles([]); // Clear file selection

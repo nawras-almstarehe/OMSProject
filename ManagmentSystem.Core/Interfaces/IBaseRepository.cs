@@ -13,16 +13,28 @@ namespace ManagmentSystem.Core.Interfaces
         //T GetById(int id);
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(string id);
-        Task<T> Add(T entity);
+        Task<T> AddAsync(T entity);
         void Update(T entity);
         void DeleteEntity(T entity);
         int Delete(string id);
         T GetById(string id);
+        Task<TDTO> FindByAnyDataProjectedFirstOrDefault<TDTO>(
+                    Expression<Func<T, TDTO>> projection,
+                    Expression<Func<T, bool>> match = null,
+                    string[] includes = null);
         T Find(Expression<Func<T, bool>> match);
         Task<T> FindAsync(Expression<Func<T, bool>> match);
         Task<T> FindByAnyData(Expression<Func<T, bool>> match, string[] includes = null);
         Task<TDTO> FindByAnyDataProjected<T, TDTO>(Expression<Func<T, bool>> match, string[] includes = null, Expression<Func<T, TDTO>> projection = null) where T : class;
         Task<List<TDTO>> FindByAnyDataProjectedList<T, TDTO>(Expression < Func<T, TDTO>> projection, Expression<Func<T, bool>> match = null, string[] includes = null) where T : class;
+        Task<(List<TDTO> items, int totalCount)> FindByAnyDataProjectedPagedList<T, TDTO, TOrderKey>(
+                                                    Expression<Func<T, TDTO>> projection,
+                                                    Expression<Func<T, bool>> match = null,
+                                                    Expression<Func<T, TOrderKey>> orderBy = null,
+                                                    bool orderByDescending = false,
+                                                    int? skip = null,
+                                                    int? take = null,
+                                                    string[] includes = null) where T : class;
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, string[] includes = null);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int take, int skip);
         IEnumerable<T> FindAll(Expression<Func<T, bool>> match, int? take, int? skip,

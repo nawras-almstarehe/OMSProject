@@ -42,7 +42,7 @@ namespace ManagmentSystem.Controllers
 
             try
             {
-                var (positions, totalItems) = await _positionService.GetPositionsAll(PositionPost.page, PositionPost.pageSize, PositionPost.filter, PositionPost.sort);
+                var (positions, totalItems) = await _positionService.GetPositionsAll(PositionPost.Page, PositionPost.PageSize, PositionPost.Filter, PositionPost.Sort);
                 _logger.LogInformation("Test log", positions);
                 return Ok(new VMResaultDataList<Position>(totalItems, positions));
             }

@@ -4,6 +4,7 @@
   "description": "ManagSysSite",
   "homepage": "http://.",
   "scripts": {
+    "dev": "vite",
     "build": "vite build",
     "lint": "eslint \"src/**/*.js\"",
     "serve": "vite preview",

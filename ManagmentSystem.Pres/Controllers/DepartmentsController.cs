@@ -36,7 +36,7 @@ namespace ManagmentSystem.Pres.Controllers
 
             try
             {
-                var (departments, totalItems) = await _departmentService.GetDepartmentsAll(DepartmentPost.page, DepartmentPost.pageSize, DepartmentPost.filter, DepartmentPost.sort);
+                var (departments, totalItems) = await _departmentService.GetDepartmentsAll(DepartmentPost.Page, DepartmentPost.PageSize, DepartmentPost.Filter, DepartmentPost.Sort);
                 _logger.LogInformation("Test log", departments);
                 return Ok(new VMResaultDataList<VMDepartment>(totalItems, departments));
             }

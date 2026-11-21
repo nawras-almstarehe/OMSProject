@@ -41,7 +41,7 @@ namespace ManagmentSystem.Controllers
 
             try
             {
-                var (roles, totalItems) = await _roleService.GetRolesAll(RolePost.page, RolePost.pageSize, RolePost.filter, RolePost.sort);
+                var (roles, totalItems) = await _roleService.GetRolesAll(RolePost.Page, RolePost.PageSize, RolePost.Filter, RolePost.Sort);
                 _logger.LogInformation("Test log", roles);
                 return Ok(new VMResaultDataList<Role>(totalItems, roles));
             }

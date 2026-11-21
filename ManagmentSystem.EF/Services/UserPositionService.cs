@@ -45,7 +45,7 @@ namespace ManagmentSystem.EF.Services
                     StartDate = userPosition.StartDate,
                     EndDate = userPosition.EndDate,
                 };
-                var UserPosition = await _unitOfWork.UserPositions.Add(userPositionObj);
+                var UserPosition = await _unitOfWork.UserPositions.AddAsync(userPositionObj);
                 if (UserPosition != null)
                 {
                     await _unitOfWork.CompleteAsync();

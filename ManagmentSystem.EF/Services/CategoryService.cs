@@ -4,7 +4,9 @@ using ManagmentSystem.Core.UnitOfWorks;
 using ManagmentSystem.Core.VModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,21 +21,28 @@ namespace ManagmentSystem.EF.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
-        public CategoryService(IUnitOfWork unitOfWork, IWebHostEnvironment env)
+        private readonly IDistributedCache _cache;
+        public CategoryService(IUnitOfWork unitOfWork, IWebHostEnvironment env, IDistributedCache cache)
         {
             _unitOfWork = unitOfWork;
             _env = env ?? throw new ArgumentNullException(nameof(env));
+            _cache = cache;
         }
 
         public async Task<int> AddCategory(Category category)
         {
             try
             {
-                var categoryObj = new Category { EName = category.EName, AName = category.AName, Description = category.Description };
-                var Category = await _unitOfWork.Categories.Add(categoryObj);
+                var categoryObj = new Category { 
+                    EName = category.EName,
+                    AName = category.AName,
+                    Description = category.Description
+                };
+                var Category = await _unitOfWork.Categories.AddAsync(categoryObj);
                 if (Category != null)
                 {
                     await _unitOfWork.CompleteAsync();
+                    await _cache.RemoveAsync("AllCategories");
                     return 1;
                 } else
                 {
@@ -70,6 +79,7 @@ namespace ManagmentSystem.EF.Services
                 if (Category != 0)
                 {
                     await _unitOfWork.CompleteAsync();
+                    await _cache.RemoveAsync("AllCategories");
                     return 1;
                 }
                 else
@@ -109,6 +119,46 @@ namespace ManagmentSystem.EF.Services
             }
         }
 
+        public async Task<IEnumerable<VMCategoriesList>> GetCategoriesList(string filter)
+        {
+            try
+            {
+                string cacheKey = "AllCategories";
+                var cachedCategories = await _cache.GetStringAsync(cacheKey);
+
+                IEnumerable<VMCategoriesList> allCategories;
+
+                if (!string.IsNullOrEmpty(cachedCategories))
+                {
+                    // Deserialize cached data
+                    allCategories = JsonConvert.DeserializeObject<IEnumerable<VMCategoriesList>>(cachedCategories);
+                }
+                else
+                {
+                    // Fetch from database and cache it
+                    allCategories = await _unitOfWork.Categories.GetAllCategoriesList(u => true);
+                    var serializedCategories = JsonConvert.SerializeObject(allCategories);
+                    await _cache.SetStringAsync(cacheKey, serializedCategories, new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30),
+                        SlidingExpiration = TimeSpan.FromMinutes(10)
+                    });
+                }
+
+                // Apply filtering logic
+                return string.IsNullOrEmpty(filter)
+                    ? allCategories
+                    : allCategories.Where(d =>
+                        d.AName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                        d.EName.Contains(filter, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
+        }
         public async Task<Category> GetCategory(string Id)
         {
             try
@@ -129,6 +179,7 @@ namespace ManagmentSystem.EF.Services
                 var categoryObj = new Category {Id = category.Id, EName = category.EName, AName = category.AName, Description = category.Description };
                 _unitOfWork.Categories.Update(categoryObj);
                 await _unitOfWork.CompleteAsync();
+                await _cache.RemoveAsync("AllCategories");
                 return 1;
             }
             catch (Exception)

@@ -41,7 +41,7 @@ namespace ManagmentSystem.EF.Services
                     IsActive = position.IsActive,
                     IsLeader = position.IsLeader
                 };
-                var Position = await _unitOfWork.Positions.Add(positionObj);
+                var Position = await _unitOfWork.Positions.AddAsync(positionObj);
                 if (Position != null)
                 {
                     await _unitOfWork.CompleteAsync();

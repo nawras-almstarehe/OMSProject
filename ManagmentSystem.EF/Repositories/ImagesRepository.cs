@@ -20,5 +20,10 @@ namespace ManagmentSystem.EF.Repositories
             IQueryable<ImageFolder> query = _context.Set<ImageFolder>();
             return await query.Where(img => img.CategoryId == categoryId).ToListAsync();
         }
+        public async Task<IEnumerable<ImageFolder>> GetImagesByProductId(string productId)
+        {
+            IQueryable<ImageFolder> query = _context.Set<ImageFolder>();
+            return await query.Where(img => img.ProductId == productId).ToListAsync();
+        }
     }
 }

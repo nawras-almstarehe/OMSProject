@@ -11,6 +11,7 @@ namespace ManagmentSystem.Core.IServices
     public interface ICategoryService
     {
         Task<(IEnumerable<Category> categories, int totalItems)> GetCategoriesAll(int page, int pageSize, Dictionary<string, string> search = null, ObjSort sort = null);
+        Task<IEnumerable<VMCategoriesList>> GetCategoriesList(string filter);
         Task<Category> GetCategory(string Id);
         Task<int> AddCategory(Category category);
         Task<int> UpdateCategory(Category category);

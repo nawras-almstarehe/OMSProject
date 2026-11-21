@@ -80,7 +80,7 @@ namespace ManagmentSystem.EF.Services
                     IsActive = department.IsActive,
                 };
 
-                var Department = await _unitOfWork.Departments.Add(departmentObj);
+                var Department = await _unitOfWork.Departments.AddAsync(departmentObj);
                 if (Department != null)
                 {
                     await _unitOfWork.CompleteAsync();

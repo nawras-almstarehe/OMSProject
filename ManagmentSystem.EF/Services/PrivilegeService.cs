@@ -38,7 +38,7 @@ namespace ManagmentSystem.EF.Services
                     Type = privilege.Type,
                     Code = privilege.Code,
                 };
-                var Privilege = await _unitOfWork.Privileges.Add(privilegeObj);
+                var Privilege = await _unitOfWork.Privileges.AddAsync(privilegeObj);
                 if (Privilege != null)
                 {
                     await _unitOfWork.CompleteAsync();

@@ -41,6 +41,12 @@ const _nav = () => {
       icon: <CIcon icon={cilTags} customClassName="nav-icon" />
     },
     {
+      component: CNavItem,
+      name: t('product'),
+      to: '/menue/product',
+      icon: <CIcon icon={cilTags} customClassName="nav-icon" />
+    },
+    {
       component: CNavGroup,
       name: t('configuration'),
       to: '/configuration',

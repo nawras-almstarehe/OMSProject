@@ -35,7 +35,7 @@ namespace ManagmentSystem.EF.Services
                     EName = role.EName,
                     AName = role.AName
                 };
-                var Role = await _unitOfWork.Roles.Add(roleObj);
+                var Role = await _unitOfWork.Roles.AddAsync(roleObj);
                 if (Role != null)
                 {
                     await _unitOfWork.CompleteAsync();

@@ -11,5 +11,6 @@ namespace ManagmentSystem.Core.Interfaces
     public interface IImagesRepository : IBaseRepository<ImageFolder>
     {
         Task<IEnumerable<ImageFolder>> GetImagesByCategoryId(string categoryId);
+        Task<IEnumerable<ImageFolder>> GetImagesByProductId(string productId);
     }
 }

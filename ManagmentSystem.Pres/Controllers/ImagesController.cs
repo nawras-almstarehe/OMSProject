@@ -24,7 +24,7 @@ namespace ManagmentSystem.Pres.Controllers
         }
 
         [HttpPost("Upload")]
-        public async Task<IActionResult> Upload([FromForm] string itemId, [FromForm] List<IFormFile> files)
+        public async Task<IActionResult> Upload([FromForm] string itemId, [FromForm] List<IFormFile> files, [FromQuery] bool fromProduct = false)
         {
             if (itemId == null || itemId == "" || files.Count == 0)
             {
@@ -37,7 +37,7 @@ namespace ManagmentSystem.Pres.Controllers
 
             try
             {
-                var Images = await _imageService.UploadFiles(itemId, files);
+                var Images = await _imageService.UploadFiles(itemId, files, fromProduct);
                 _logger.LogInformation("Test log", Images);
                 return Ok(Images);
             }
@@ -62,6 +62,30 @@ namespace ManagmentSystem.Pres.Controllers
             try
             {
                 var Images = await _imageService.GetImagesByCategoryId(categoryId);
+                _logger.LogInformation("Test log", Images);
+                return Ok(Images);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpGet("GetImagesByProductId")]
+        public async Task<IActionResult> GetImagesByProductId(string productId)
+        {
+            if (productId == null || productId == "")
+            {
+                return BadRequest(new
+                {
+                    Message = "Invalid request payload.",
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+            }
+
+            try
+            {
+                var Images = await _imageService.GetImagesByProductId(productId);
                 _logger.LogInformation("Test log", Images);
                 return Ok(Images);
             }

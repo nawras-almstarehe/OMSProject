@@ -22,6 +22,8 @@ namespace ManagmentSystem.EF.UnitOfWorks
             _context = context;
             //Categories = new BaseRepository<Category>(_context);//initial // Comment after add spicial method
             Categories = new CategoriesRepository(_context);// After add spicial method
+            Productes = new ProductesRepository(_context);
+            CategoryProductes = new CategoryProductesRepository(_context);
             Users = new UsersRepository(_context);
             UserPositions = new UserPositionsRepository(_context);
             Images = new ImagesRepository(_context);
@@ -33,6 +35,8 @@ namespace ManagmentSystem.EF.UnitOfWorks
 
         //public IBaseRepository<Category> Categories { get; private set; } Comment After add spicial method
         public ICategoriesRepository Categories { get; private set; } // After add spicial method
+        public IProductesRepository Productes { get; private set; } 
+        public ICategoryProductesRepository CategoryProductes { get; private set; } 
         public IUsersRepository Users { get; private set; }
         public IUserPositionsRepository UserPositions { get; private set; }
         public IImagesRepository Images { get; private set; }

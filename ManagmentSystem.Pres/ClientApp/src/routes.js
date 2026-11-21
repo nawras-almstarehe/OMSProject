@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const Category = React.lazy(() => import('./views/menue/Category'));
+const Product = React.lazy(() => import('./views/menue/Product'));
 const Users = React.lazy(() => import('./views/configuration/Users'));
 const Departments = React.lazy(() => import('./views/configuration/Departments'));
 const Positions = React.lazy(() => import('./views/configuration/Positions'));
@@ -17,6 +18,7 @@ const routes = () => {
     { path: '/dashboard', name: t('dashboard'), element: Dashboard },
     { path: '/menue', name: t('menu'), element: Category, exact: true },
     { path: '/menue/category', name: t('category'), element: Category },
+    { path: '/menue/product', name: t('product'), element: Product },
     { path: '/configuration', name: t('configuration'), element: Users, exact: true },
     { path: '/configuration/users', name: t('users'), element: Users },
     { path: '/configuration/departments', name: t('users'), element: Departments },

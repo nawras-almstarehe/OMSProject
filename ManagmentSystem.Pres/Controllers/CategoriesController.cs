@@ -41,13 +41,29 @@ namespace ManagmentSystem.Controllers
 
             try
             {
-                var (categories, totalItems) = await _categoryService.GetCategoriesAll(CategoryPost.page, CategoryPost.pageSize, CategoryPost.filter, CategoryPost.sort);
+                var (categories, totalItems) = await _categoryService.GetCategoriesAll(CategoryPost.Page, CategoryPost.PageSize, CategoryPost.Filter, CategoryPost.Sort);
                 _logger.LogInformation("Test log", categories);
                 return Ok(new VMResaultDataList<Category>(totalItems, categories));
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpGet("GetCategoriesList")]
+        public async Task<IActionResult> GetCategoriesList(string filter)
+        {
+            try
+            {
+                var categories = await _categoryService.GetCategoriesList(filter);
+                _logger.LogInformation("Test log", categories);
+                return Ok(categories);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching categories");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Internal server error");
             }
         }
 

@@ -201,6 +201,10 @@ const Positions = (props) => {
     actions: useRef(null)
   };
 
+  const handleFilterChangeBoolCol = (columnKey, value) => {
+    setFilter({ ...filter, [columnKey]: value });
+  };
+
   const customStylesDepValidateError = {
     control: (provided, state) => ({
       ...provided,
@@ -380,7 +384,7 @@ const Positions = (props) => {
                 },
                 {
                   key: 'isLeader',
-                  label: (<div ref={headersRefs.isActive} style={{ whiteSpace: 'nowrap' }} title={t('isLeader')} > {t('isLeader')} </div>),
+                  label: (<div ref={headersRefs.isLeader} style={{ whiteSpace: 'nowrap' }} title={t('isLeader')} > {t('isLeader')} </div>),
                   filter: (_, onChange) => {
                     return (
                       <CFormSelect
